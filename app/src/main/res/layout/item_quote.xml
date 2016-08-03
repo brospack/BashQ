@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="4dp"
+    android:layout_marginEnd="8dp"
+    android:layout_marginStart="8dp"
+    android:layout_marginTop="4dp"
+    android:background="@android:color/white"
+    app:cardCornerRadius="2sp"
+    app:cardElevation="2dp"
+    >
+
+    <LinearLayout
+        android:id="@+id/linear_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+
+        <FrameLayout
+            android:id="@+id/frame_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            >
+
+            <TextView
+                android:id="@+id/number"
+                fontPath="fonts/Roboto-Regular.ttf"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:textColor="@color/colorSecondaryText"
+                android:textSize="15sp"
+                tools:text="#444444"
+                />
+
+            <TextView
+                android:id="@+id/date"
+                fontPath="fonts/Roboto-Regular.ttf"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:textColor="@color/colorSecondaryText"
+                android:textSize="15sp"
+                tools:text="2016-07-28 13:12"
+                />
+
+        </FrameLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorDivider"
+            />
+
+        <TextView
+            android:id="@+id/content"
+            fontPath="fonts/Roboto-Medium.ttf"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:textColor="@color/colorPrimaryText"
+            android:textSize="17sp"
+            tools:text="Комментарий в обсуждении чехла для телефона, который защищает от слежки путём блокирования излучения частотой до 1000 МГц:- Заблокировать все каналы связи на средстве связи, конечно, прикольно, но с тем же успехом я могу носить в кармане бутерброд."
+            />
+
+        <View
+            android:id="@+id/votesDivider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorDivider"
+            />
+
+        <RelativeLayout
+            android:id="@+id/votes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+
+            <TextView
+                android:id="@+id/voteOld"
+                fontPath="fonts/Roboto-Regular.ttf"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:background="@drawable/ripple"
+                android:padding="8dp"
+                android:text="@string/action_vote_old"
+                android:textSize="17sp"
+                />
+
+            <ImageView
+                android:id="@+id/voteMinus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toStartOf="@+id/rating"
+                android:background="@drawable/ripple"
+                android:padding="8dp"
+                android:src="@drawable/ic_minus"
+                />
+
+            <TextView
+                android:id="@+id/rating"
+                fontPath="fonts/Roboto-Regular.ttf"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toStartOf="@+id/votePlus"
+                android:padding="8dp"
+                android:textColor="@color/colorSecondaryText"
+                android:textSize="17sp"
+                tools:text="2235"
+                />
+
+            <ImageView
+                android:id="@+id/votePlus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:background="@drawable/ripple"
+                android:padding="8dp"
+                android:src="@drawable/ic_plus"
+                />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</android.support.v7.widget.CardView>
