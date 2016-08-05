@@ -6,6 +6,7 @@ data class Quote(val id: String,
                  val content: String,
                  val voteUp: String,
                  val voteDown: String,
-                 val voteOld: String
+                 val voteOld: String,
+                 var voteCount: Int = 0
 )
 
