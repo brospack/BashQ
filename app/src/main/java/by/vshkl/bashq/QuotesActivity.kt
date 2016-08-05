@@ -13,8 +13,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import by.vshkl.bashq.constants.Ratings
 import by.vshkl.bashq.constants.Urls
 import by.vshkl.bashq.model.Quote
+import by.vshkl.bashq.model.Rating
 import by.vshkl.bashq.presenter.QuotesPresenter
 import by.vshkl.bashq.view.QuoteActionListener
 import by.vshkl.bashq.view.QuotesList
@@ -53,7 +55,7 @@ class QuotesActivity : AppCompatActivity(), QuotesList, QuoteActionListener {
 
         list.layoutManager = LinearLayoutManager(this)
 
-        url = Urls.urlNew
+        url = Urls.Companion.urlNew
         presenter.loadQuotes(url, false)
 
         initDrawer(savedInstanceState, toolbar, presenter)
@@ -159,31 +161,31 @@ class QuotesActivity : AppCompatActivity(), QuotesList, QuoteActionListener {
                     val identifier = drawerItem?.identifier?.toInt()
                     when (identifier) {
                         1 -> {
-                            url = Urls.urlNew
+                            url = Urls.Companion.urlNew
                             toolbar.setSubtitle(R.string.drawer_item_new)
                         }
                         2 -> {
-                            url = Urls.urlRandom
+                            url = Urls.Companion.urlRandom
                             toolbar.setSubtitle(R.string.drawer_item_random)
                         }
                         3 -> {
-                            url = Urls.urlBest
+                            url = Urls.Companion.urlBest
                             toolbar.setSubtitle(R.string.drawer_item_best)
                         }
                         4 -> {
-                            url = Urls.urlByRating
+                            url = Urls.Companion.urlByRating
                             toolbar.setSubtitle(R.string.drawer_item_best)
                         }
                         5 -> {
-                            url = Urls.urlAbyss
+                            url = Urls.Companion.urlAbyss
                             toolbar.setSubtitle(R.string.drawer_item_abyss)
                         }
                         6 -> {
-                            url = Urls.urlAbyssTop
+                            url = Urls.Companion.urlAbyssTop
                             toolbar.setSubtitle(R.string.drawer_item_abyss_top)
                         }
                         7 -> {
-                            url = Urls.urlAbyssBest
+                            url = Urls.Companion.urlAbyssBest
                             toolbar.setSubtitle(R.string.drawer_item_abyss_best)
                         }
                     }
@@ -239,9 +241,24 @@ class QuotesActivity : AppCompatActivity(), QuotesList, QuoteActionListener {
                     itemView.votesDivider.visibility = View.GONE
                 } else {
                     itemView.rating.text = quote.rating
-                    itemView.votePlus.setOnClickListener { listener.vote(voteUp, "rulez") }
-                    itemView.voteMinus.setOnClickListener { listener.vote(voteDown, "sux") }
-                    itemView.voteOld.setOnClickListener { listener.vote(voteOld, "bayan") }
+                    itemView.votePlus.setOnClickListener {
+                        listener.vote(voteUp, "rulez")
+                        val ratingObj = Ratings.Companion.updateRating(Rating(quote.rating, quote.voteCount), 1)
+                        quote.voteCount = ratingObj.voteCount
+                        itemView.rating.text = ratingObj.rating
+                    }
+                    itemView.voteMinus.setOnClickListener {
+                        listener.vote(voteDown, "sux")
+                        val ratingObj = Ratings.Companion.updateRating(Rating(quote.rating, quote.voteCount), -1)
+                        quote.voteCount = ratingObj.voteCount
+                        itemView.rating.text = ratingObj.rating
+                    }
+                    itemView.voteOld.setOnClickListener {
+                        listener.vote(voteOld, "bayan")
+                        val ratingObj = Ratings.Companion.updateRating(Rating(quote.rating, quote.voteCount), 0)
+                        quote.voteCount = ratingObj.voteCount
+                        itemView.rating.text = ratingObj.rating
+                    }
                     itemView.setOnClickListener { listener.share(content) }
                 }
             }
