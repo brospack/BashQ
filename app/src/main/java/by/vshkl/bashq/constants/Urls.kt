@@ -9,5 +9,6 @@ class Urls {
         val urlAbyss = "http://bash.im/abyss"
         val urlAbyssTop = "http://bash.im/abysstop"
         val urlAbyssBest = "http://bash.im/abyssbest"
+        val urlComicsCalendar = "http://bash.im/comics-calendar"
     }
 }
