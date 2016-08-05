@@ -155,7 +155,11 @@ class QuotesActivity : AppCompatActivity(), QuotesList, QuoteActionListener {
                         PrimaryDrawerItem()
                                 .withName(R.string.drawer_item_abyss_best)
                                 .withIcon(R.drawable.ic_abyss_best)
-                                .withIdentifier(7)
+                                .withIdentifier(7),
+                        PrimaryDrawerItem()
+                                .withName(R.string.draer_item_gallery)
+                                .withIcon(R.drawable.ic_gallery)
+                                .withIdentifier(8)
                 )
                 .withOnDrawerItemClickListener { view, position, drawerItem ->
                     val identifier = drawerItem?.identifier?.toInt()
@@ -187,6 +191,10 @@ class QuotesActivity : AppCompatActivity(), QuotesList, QuoteActionListener {
                         7 -> {
                             url = Urls.Companion.urlAbyssBest
                             toolbar.setSubtitle(R.string.drawer_item_abyss_best)
+                        }
+                        8 -> {
+                            val galleryIntent = Intent(this@QuotesActivity, GalleryActivity::class.java)
+                            startActivity(galleryIntent)
                         }
                     }
                     presenter.loadQuotes(url, false)
