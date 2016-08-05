@@ -157,7 +157,7 @@ class QuotesActivity : AppCompatActivity(), QuotesList, QuoteActionListener {
                                 .withIcon(R.drawable.ic_abyss_best)
                                 .withIdentifier(7),
                         PrimaryDrawerItem()
-                                .withName(R.string.draer_item_gallery)
+                                .withName(R.string.drawer_item_gallery)
                                 .withIcon(R.drawable.ic_gallery)
                                 .withIdentifier(8)
                 )
@@ -193,8 +193,9 @@ class QuotesActivity : AppCompatActivity(), QuotesList, QuoteActionListener {
                             toolbar.setSubtitle(R.string.drawer_item_abyss_best)
                         }
                         8 -> {
-                            val galleryIntent = Intent(this@QuotesActivity, GalleryActivity::class.java)
-                            startActivity(galleryIntent)
+                            val preferenceIntent = Intent(this@QuotesActivity,
+                                    GalleryActivity::class.java)
+                            startActivity(preferenceIntent)
                         }
                     }
                     presenter.loadQuotes(url, false)
