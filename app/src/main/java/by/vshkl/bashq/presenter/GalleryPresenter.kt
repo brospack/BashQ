@@ -1,6 +1,7 @@
 package by.vshkl.bashq.presenter
 
 import by.vshkl.bashq.GalleryActivity
+import by.vshkl.bashq.R
 import by.vshkl.bashq.model.Comic
 import okhttp3.*
 import org.jsoup.Jsoup
@@ -26,7 +27,7 @@ class GalleryPresenter(val activity: GalleryActivity) {
 
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
-
+                activity.runOnUiThread { activity.onLoadingError(activity.getString(R.string.message_error_connection)) }
             }
 
             override fun onResponse(call: Call, response: Response) {
@@ -41,6 +42,8 @@ class GalleryPresenter(val activity: GalleryActivity) {
                     )
                     comics.add(comic)
                 }
+
+                activity.runOnUiThread { activity.onLoadSuccess(comics, next) }
             }
 
         })

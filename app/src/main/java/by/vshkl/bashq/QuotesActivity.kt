@@ -94,7 +94,7 @@ class QuotesActivity : AppCompatActivity(), QuotesList, QuoteActionListener {
 
     override fun onLoadingError(errorMessage: String?) {
         swipe.isRefreshing = false
-        Toast.makeText(this, errorMessage, Toast.LENGTH_LONG).show()
+        toast(errorMessage.toString())
     }
 
     override fun share(content: String) {
