@@ -1,16 +1,10 @@
-package by.vshkl.bashq.constants
+package by.vshkl.bashq.utils
 
+import by.vshkl.bashq.constants.RatingIndicators
 import by.vshkl.bashq.model.Rating
 
 class Ratings {
     companion object {
-
-        val ratingLeft = arrayOf(
-                "(\uff65_\uff65 )", "(\u00ac_\u00ac )", "(\u0ca0_\u0ca0 )",
-                "(\u0ca0\uff3f\u0ca0 )", "(\u0ca0\u76ca\u0ca0 )", "(>\uff3f< )", "(=\uff3f= )")
-        val ratingRight = arrayOf(
-                "( \uff65_\uff65)", "( \u00ac_\u00ac)", "( \u0ca0_\u0ca0)",
-                "( \u0ca0\uff3f\u0ca0)", "( \u0ca0\u76ca\u0ca0)", "( >\uff3f<)", "( =\uff3f=)")
 
         /**
          * voteType: -1 -> vote down, 0 -> vote bayan, 1 -> vote up
@@ -35,16 +29,16 @@ class Ratings {
                     globalRating = ratingNum.toString()
                 } else {
                     if (voteType == 1) {
-                        if (rating.voteCount - 1 >= ratingRight.size) {
-                            ratingTxt = ratingRight.last()
+                        if (rating.voteCount - 1 >= RatingIndicators.ratingRight.size) {
+                            ratingTxt = RatingIndicators.ratingRight.last()
                         } else {
-                            ratingTxt = ratingRight[rating.voteCount - 1]
+                            ratingTxt = RatingIndicators.ratingRight[rating.voteCount - 1]
                         }
                     } else if (voteType == -1 || voteType == 0) {
-                        if (rating.voteCount - 1 >= ratingRight.size) {
-                            ratingTxt = ratingLeft.last()
+                        if (rating.voteCount - 1 >= RatingIndicators.ratingRight.size) {
+                            ratingTxt = RatingIndicators.ratingLeft.last()
                         } else {
-                            ratingTxt = ratingLeft[rating.voteCount - 1]
+                            ratingTxt = RatingIndicators.ratingLeft[rating.voteCount - 1]
                         }
                     }
 
@@ -65,16 +59,16 @@ class Ratings {
                     globalRating = ratingTxt
                 } else if (rating.voteCount > 0) {
                     if (voteType == 1) {
-                        if (rating.voteCount - 1 >= ratingRight.size) {
-                            ratingTxt = ratingRight.last()
+                        if (rating.voteCount - 1 >= RatingIndicators.ratingRight.size) {
+                            ratingTxt = RatingIndicators.ratingRight.last()
                         } else {
-                            ratingTxt = ratingRight[rating.voteCount - 1]
+                            ratingTxt = RatingIndicators.ratingRight[rating.voteCount - 1]
                         }
                     } else if (voteType == -1 || voteType == 0) {
-                        if (rating.voteCount - 1 >= ratingRight.size) {
-                            ratingTxt = ratingLeft.last()
+                        if (rating.voteCount - 1 >= RatingIndicators.ratingRight.size) {
+                            ratingTxt = RatingIndicators.ratingLeft.last()
                         } else {
-                            ratingTxt = ratingLeft[rating.voteCount - 1]
+                            ratingTxt = RatingIndicators.ratingLeft[rating.voteCount - 1]
                         }
                     }
 
