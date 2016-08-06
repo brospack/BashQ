@@ -14,12 +14,14 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import android.widget.Toast
 import by.vshkl.bashq.constants.Urls
 import by.vshkl.bashq.model.Comic
 import by.vshkl.bashq.presenter.GalleryPresenter
 import by.vshkl.bashq.view.Gallery
 import by.vshkl.bashq.view.GalleryActionListener
+import com.pnikosis.materialishprogress.ProgressWheel
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_comic.view.*
 import java.util.*
@@ -27,8 +29,10 @@ import java.util.*
 class GalleryActivity : AppCompatActivity(), Gallery, GalleryActionListener {
 
     val toolbar by lazy { find<Toolbar>(R.id.toolbar) }
+    val container by lazy {find<FrameLayout>(R.id.container)}
     val swipe by lazy { find<SwipeRefreshLayout>(R.id.swipe) }
     val grid by lazy { find<RecyclerView>(R.id.grid) }
+    val progress by lazy { find<ProgressWheel>(R.id.progress) }
 
     var presenter: GalleryPresenter
     var comicsList: MutableList<Comic> = ArrayList()
@@ -76,6 +80,7 @@ class GalleryActivity : AppCompatActivity(), Gallery, GalleryActionListener {
 
     override fun onLoadSuccess(comics: MutableList<Comic>, next: Boolean) {
         swipe.isRefreshing = false
+
         if (!next) {
             comicsList = comics
             grid.adapter = GalleryActivity.ComicsAdapter(comicsList, this, this)
@@ -83,6 +88,9 @@ class GalleryActivity : AppCompatActivity(), Gallery, GalleryActionListener {
             comicsList.addAll(comics)
             grid.adapter.notifyDataSetChanged()
         }
+
+        progress.visibility = View.GONE
+        container.visibility = View.VISIBLE
     }
 
     override fun onLoadingError(errorMessage: String?) {

@@ -12,16 +12,18 @@ import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import android.widget.Toast
-import by.vshkl.bashq.utils.Ratings
 import by.vshkl.bashq.constants.Urls
 import by.vshkl.bashq.model.Quote
 import by.vshkl.bashq.model.Rating
 import by.vshkl.bashq.presenter.QuotesPresenter
+import by.vshkl.bashq.utils.Ratings
 import by.vshkl.bashq.view.QuoteActionListener
 import by.vshkl.bashq.view.QuotesList
 import com.mikepenz.materialdrawer.DrawerBuilder
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem
+import com.pnikosis.materialishprogress.ProgressWheel
 import kotlinx.android.synthetic.main.item_quote.view.*
 import org.jsoup.Jsoup
 import java.util.*
@@ -29,8 +31,10 @@ import java.util.*
 class QuotesActivity : AppCompatActivity(), QuotesList, QuoteActionListener {
 
     val toolbar by lazy { find<Toolbar>(R.id.toolbar) }
+    val container by lazy {find<FrameLayout>(R.id.container)}
     val swipe by lazy { find<SwipeRefreshLayout>(R.id.swipe) }
     val list by lazy { find<RecyclerView>(R.id.list) }
+    val progress by lazy { find<ProgressWheel>(R.id.progress) }
 
     var url: String = ""
     var quotesList: MutableList<Quote> = ArrayList()
@@ -49,6 +53,8 @@ class QuotesActivity : AppCompatActivity(), QuotesList, QuoteActionListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_quotes)
         setSupportActionBar(toolbar)
+
+        println("ON CREATE")
 
         toolbar.setOnClickListener { list.scrollToPosition(0) }
         toolbar.setSubtitle(R.string.drawer_item_new)
@@ -83,6 +89,7 @@ class QuotesActivity : AppCompatActivity(), QuotesList, QuoteActionListener {
 
     override fun onLoadSuccess(quotes: MutableList<Quote>, next: Boolean) {
         swipe.isRefreshing = false
+
         if (!next) {
             quotesList = quotes
             list.adapter = QuotesAdapter(quotesList, this)
@@ -90,6 +97,9 @@ class QuotesActivity : AppCompatActivity(), QuotesList, QuoteActionListener {
             quotesList.addAll(quotes)
             list.adapter.notifyDataSetChanged()
         }
+
+        progress.visibility = View.GONE
+        container.visibility = View.VISIBLE
     }
 
     override fun onLoadingError(errorMessage: String?) {
