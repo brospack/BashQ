@@ -119,14 +119,6 @@ class QuotesActivity : AppCompatActivity(), QuotesList, QuoteActionListener {
         presenter.vote(actionLink, action)
     }
 
-    override fun onVoteSuccess(message: String) {
-        toast(message)
-    }
-
-    override fun onVoteError(errorMessage: String) {
-        toast(errorMessage)
-    }
-
     /***********************************************************************************************
      * Various additional methods
      */

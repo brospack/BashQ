@@ -122,11 +122,9 @@ class QuotesPresenter(var activity: QuotesActivity) {
 
             client.newCall(request).enqueue(object : Callback {
                 override fun onFailure(call: Call, e: IOException) {
-                    activity.runOnUiThread { activity.onVoteError(activity.getString(R.string.message_error_vote)) }
                 }
 
                 override fun onResponse(call: Call, response: Response) {
-                    activity.runOnUiThread { activity.onVoteSuccess(activity.getString(R.string.message_success_vote)) }
                 }
             })
         }
