@@ -6,13 +6,17 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.MenuItem
 import android.view.View
-import android.widget.ImageView
+import by.vshkl.bashq.utils.PicassoDecoder
+import by.vshkl.bashq.utils.PicassoRegionDecoder
+import com.davemorrissey.labs.subscaleview.ImageSource
+import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView
 import com.squareup.picasso.Picasso
+import okhttp3.OkHttpClient
 
 class ComicViewActivity : AppCompatActivity() {
 
     val toolbar by lazy { find<Toolbar>(R.id.toolbar) }
-    val comic by lazy { find<ImageView>(R.id.comic) }
+    val comic by lazy { find<SubsamplingScaleImageView>(R.id.comic) }
 
     /***********************************************************************************************
      * Lifecycle methods
@@ -26,7 +30,9 @@ class ComicViewActivity : AppCompatActivity() {
 
         val comicUrl = intent.getStringExtra(GalleryActivity.Companion.EXTRA_COMIC_URL)
 
-        Picasso.with(this).load(comicUrl).into(comic)
+        comic.setBitmapDecoderFactory { PicassoDecoder(comicUrl, Picasso.with(this)) }
+        comic.setRegionDecoderFactory { PicassoRegionDecoder(OkHttpClient()) }
+        comic.setImage(ImageSource.uri(comicUrl))
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
