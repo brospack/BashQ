@@ -16,4 +16,6 @@
     <string name="message_error_connection">Ошибка соединения</string>
     <string name="message_error_vote">Ошибка. Голос не учтён</string>
     <string name="message_success_vote">Ваш голос учтён</string>
+    <!-- Transitions -->
+    <string name="comic_view_transition">COMIC_VIEW</string>
 </resources>

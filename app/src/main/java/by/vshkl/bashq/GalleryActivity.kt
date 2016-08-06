@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.support.v4.app.ActivityOptionsCompat
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.GridLayoutManager
@@ -88,10 +89,16 @@ class GalleryActivity : AppCompatActivity(), Gallery, GalleryActionListener {
         toast(errorMessage.toString())
     }
 
-    override fun onGalleryItemClicked(comicUrl: String) {
+    override fun onGalleryItemClicked(comicUrl: String, view: View) {
         val comicIntent = Intent(this@GalleryActivity, ComicViewActivity::class.java)
         comicIntent.putExtra(EXTRA_COMIC_URL, comicUrl)
-        startActivity(comicIntent)
+
+        val sharedView = view
+        val transitionName = getString(R.string.comic_view_transition)
+        val transitionActivityOptions =
+                ActivityOptionsCompat.makeSceneTransitionAnimation(this, sharedView, transitionName)
+
+        startActivity(comicIntent, transitionActivityOptions.toBundle())
     }
 
     /***********************************************************************************************
@@ -133,7 +140,7 @@ class GalleryActivity : AppCompatActivity(), Gallery, GalleryActionListener {
         fun bindComic(comic: Comic) {
             with(comic) {
                 Picasso.with(context).load(comic.thumbLink).into(itemView.image)
-                itemView.image.setOnClickListener { listener.onGalleryItemClicked(comic.imageLink) }
+                itemView.image.setOnClickListener { listener.onGalleryItemClicked(comic.imageLink, itemView) }
             }
         }
     }
