@@ -4,7 +4,16 @@
         android:height="24dp"
         android:viewportHeight="24"
         android:viewportWidth="24">
-    <path
-        android:fillColor="@color/colorSecondaryText"
-        android:pathData="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z"/>
+    <group
+        android:name="states">
+        <path
+            android:name="default"
+            android:fillColor="@color/colorSecondaryText"
+            android:pathData="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z"/>
+        <!--<path-->
+            <!--android:name="selected"-->
+            <!--android:fillColor="@color/colorAccentSemiTransparent"-->
+            <!--android:pathData="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z"/>-->
+
+    </group>
 </vector>

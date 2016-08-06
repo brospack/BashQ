@@ -82,16 +82,14 @@
             android:layout_height="wrap_content"
             >
 
-            <TextView
+            <ImageView
                 android:id="@+id/voteOld"
-                fontPath="fonts/Roboto-Regular.ttf"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:background="@drawable/ripple"
                 android:padding="8dp"
-                android:text="@string/action_vote_old"
-                android:textSize="17sp"
+                android:src="@drawable/ic_bayan"
                 />
 
             <ImageView

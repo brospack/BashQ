@@ -3,6 +3,7 @@
     <color name="colorPrimary">#212121</color>
     <color name="colorPrimaryDark">#FF000000</color>
     <color name="colorAccent">#FF5722</color>
+    <color name="colorAccentSemiTransparent">#80FF5722</color>
     <color name="colorTransparent">#00000000</color>
     <color name="colorSemiTransparent">#80000000</color>
     <!-- Text colors -->
