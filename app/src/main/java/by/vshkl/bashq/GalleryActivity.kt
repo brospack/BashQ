@@ -2,6 +2,7 @@ package by.vshkl.bashq
 
 import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.app.AppCompatActivity
@@ -33,6 +34,10 @@ class GalleryActivity : AppCompatActivity(), Gallery, GalleryActionListener {
 
     init {
         presenter = GalleryPresenter(this)
+    }
+
+    companion object {
+        val EXTRA_COMIC_URL = "EXTRA_COMIC_URL"
     }
 
     /***********************************************************************************************
@@ -83,8 +88,10 @@ class GalleryActivity : AppCompatActivity(), Gallery, GalleryActionListener {
         toast(errorMessage.toString())
     }
 
-    override fun onGalleryItemClicked() {
-
+    override fun onGalleryItemClicked(comicUrl: String) {
+        val comicIntent = Intent(this@GalleryActivity, ComicViewActivity::class.java)
+        comicIntent.putExtra(EXTRA_COMIC_URL, comicUrl)
+        startActivity(comicIntent)
     }
 
     /***********************************************************************************************
@@ -126,6 +133,7 @@ class GalleryActivity : AppCompatActivity(), Gallery, GalleryActionListener {
         fun bindComic(comic: Comic) {
             with(comic) {
                 Picasso.with(context).load(comic.thumbLink).into(itemView.image)
+                itemView.image.setOnClickListener { listener.onGalleryItemClicked(comic.imageLink) }
             }
         }
     }

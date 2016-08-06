@@ -23,6 +23,9 @@
         <activity android:name=".GalleryActivity"
                   android:theme="@style/AppTheme.NoActionBar"
             />
+        <activity android:name=".ComicViewActivity"
+                  android:theme="@style/AppTheme.NoActionBar"
+            />
     </application>
 
 </manifest>

@@ -2,5 +2,5 @@ package by.vshkl.bashq.view
 
 interface GalleryActionListener {
 
-    fun onGalleryItemClicked()
+    fun onGalleryItemClicked(comicUrl: String)
 }
