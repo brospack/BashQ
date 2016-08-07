@@ -73,7 +73,6 @@ class QuotesActivity : AppCompatActivity(), QuotesList, QuoteActionListener {
                             .findLastCompletelyVisibleItemPosition()
                     if (lastItemPos != RecyclerView.NO_POSITION && lastItemPos
                             == recyclerView?.adapter?.itemCount?.minus(3)) {
-                        swipe.isRefreshing = true
                         presenter.loadQuotes(url, true)
                     }
                 }
