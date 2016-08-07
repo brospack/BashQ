@@ -41,6 +41,7 @@ class GalleryPresenter(val activity: GalleryActivity) {
                             imageLink = e.child(0).attr("src").replace("ts/", "")
                     )
                     comics.add(comic)
+                    comics.reverse()
                 }
 
                 activity.runOnUiThread { activity.onLoadSuccess(comics, next) }
