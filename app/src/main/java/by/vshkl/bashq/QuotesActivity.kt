@@ -54,8 +54,6 @@ class QuotesActivity : AppCompatActivity(), QuotesList, QuoteActionListener {
         setContentView(R.layout.activity_quotes)
         setSupportActionBar(toolbar)
 
-        println("ON CREATE")
-
         toolbar.setOnClickListener { list.scrollToPosition(0) }
         toolbar.setSubtitle(R.string.drawer_item_new)
 
@@ -74,7 +72,7 @@ class QuotesActivity : AppCompatActivity(), QuotesList, QuoteActionListener {
                     val lastItemPos = (recyclerView?.layoutManager as LinearLayoutManager)
                             .findLastCompletelyVisibleItemPosition()
                     if (lastItemPos != RecyclerView.NO_POSITION && lastItemPos
-                            == recyclerView?.adapter?.itemCount?.minus(1)) {
+                            == recyclerView?.adapter?.itemCount?.minus(3)) {
                         swipe.isRefreshing = true
                         presenter.loadQuotes(url, true)
                     }
