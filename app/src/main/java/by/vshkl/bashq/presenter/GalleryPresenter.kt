@@ -11,6 +11,7 @@ import java.util.*
 class GalleryPresenter(val activity: GalleryActivity) {
 
     val firstYear: Int = 2007
+    val currentYear: Int = Calendar.getInstance().get(Calendar.YEAR)
     val client: OkHttpClient
 
     init {
@@ -18,9 +19,9 @@ class GalleryPresenter(val activity: GalleryActivity) {
     }
 
     fun loadComics(url: String, next: Boolean) {
-        val fullUrl: String = url
-        if (next) {
-
+        var fullUrl: String = url
+        if (next && currentYear >= firstYear) {
+           fullUrl = url + "/" + currentYear.minus(1).toString()
         }
 
         val request: Request = Request.Builder().url(fullUrl).build()

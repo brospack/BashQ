@@ -8,6 +8,7 @@ import android.support.v4.app.ActivityOptionsCompat
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.GridLayoutManager
+import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
 import android.view.LayoutInflater
@@ -64,6 +65,20 @@ class GalleryActivity : AppCompatActivity(), Gallery, GalleryActionListener {
         presenter.loadComics(url, false)
 
         swipe.setOnRefreshListener { presenter.loadComics(url, false) }
+
+        grid.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
+                if (dy > 0 && recyclerView?.adapter?.itemCount != null) {
+                    val lastItemPos = (recyclerView?.layoutManager as LinearLayoutManager)
+                            .findLastCompletelyVisibleItemPosition()
+                    if (lastItemPos != RecyclerView.NO_POSITION && lastItemPos
+                            == recyclerView?.adapter?.itemCount?.minus(1)) {
+                        swipe.isRefreshing = true
+                        presenter.loadComics(url, true)
+                    }
+                }
+            }
+        })
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
