@@ -107,12 +107,13 @@ class QuotesActivity : AppCompatActivity(), QuotesList, QuoteActionListener {
         toast(errorMessage.toString())
     }
 
-    override fun share(content: String) {
+    override fun share(content: String): Boolean {
         val intent = Intent()
         intent.action = Intent.ACTION_SEND
         intent.putExtra(Intent.EXTRA_TEXT, Jsoup.parse(content).text())
         intent.type = "text/plain"
         startActivity(intent)
+        return true
     }
 
     override fun vote(actionLink: String, action: String) {
@@ -270,7 +271,7 @@ class QuotesActivity : AppCompatActivity(), QuotesList, QuoteActionListener {
                         quote.voteCount = ratingObj.voteCount
                         itemView.rating.text = ratingObj.rating
                     }
-                    itemView.setOnClickListener { listener.share(content) }
+                    itemView.setOnLongClickListener { listener.share(content) }
                 }
             }
         }
