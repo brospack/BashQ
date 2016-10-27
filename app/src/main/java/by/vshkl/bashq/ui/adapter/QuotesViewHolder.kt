@@ -16,30 +16,35 @@ class QuotesViewHolder(view: View, val listener: QuoteActionListener) :
         with(quote) {
             itemView.number.text = quote.id
             itemView.date.text = quote.date
-            itemView.content.text = Html.fromHtml(quote.content)
+            itemView.content.text = Html.fromHtml(quote.content).trim()
+
             if (quote.rating.equals("")) {
                 itemView.votes.visibility = View.GONE
                 itemView.votesDivider.visibility = View.GONE
             } else {
                 itemView.rating.text = quote.rating
+
                 itemView.votePlus.setOnClickListener {
                     listener.vote(voteUp, "rulez")
                     val ratingObj = Ratings.updateRating(Rating(quote.rating, quote.voteCount), 1)
                     quote.voteCount = ratingObj.voteCount
                     itemView.rating.text = ratingObj.rating
                 }
+
                 itemView.voteMinus.setOnClickListener {
                     listener.vote(voteDown, "sux")
                     val ratingObj = Ratings.updateRating(Rating(quote.rating, quote.voteCount), -1)
                     quote.voteCount = ratingObj.voteCount
                     itemView.rating.text = ratingObj.rating
                 }
+
                 itemView.voteOld.setOnClickListener {
                     listener.vote(voteOld, "bayan")
                     val ratingObj = Ratings.updateRating(Rating(quote.rating, quote.voteCount), 0)
                     quote.voteCount = ratingObj.voteCount
                     itemView.rating.text = ratingObj.rating
                 }
+
                 itemView.setOnLongClickListener { listener.share(content) }
             }
         }
