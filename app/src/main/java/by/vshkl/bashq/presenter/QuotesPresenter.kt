@@ -1,6 +1,6 @@
 package by.vshkl.bashq.presenter
 
-import by.vshkl.bashq.QuotesActivity
+import by.vshkl.bashq.ui.activity.QuotesActivity
 import by.vshkl.bashq.R
 import by.vshkl.bashq.model.Quote
 import okhttp3.*

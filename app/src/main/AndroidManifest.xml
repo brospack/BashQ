@@ -11,7 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".QuotesActivity"
+            android:name=".ui.activity.QuotesActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -20,10 +20,10 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".GalleryActivity"
+        <activity android:name=".ui.activity.GalleryActivity"
                   android:theme="@style/AppTheme.NoActionBar"
             />
-        <activity android:name=".ComicViewActivity"
+        <activity android:name=".ui.activity.ComicViewActivity"
                   android:theme="@style/AppTheme.NoActionBar"
             />
     </application>

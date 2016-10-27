@@ -1,36 +1,34 @@
-package by.vshkl.bashq
+package by.vshkl.bashq.ui.activity
 
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.v4.app.ActivityOptionsCompat
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
-import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
-import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.Toast
+import by.vshkl.bashq.R
+import by.vshkl.bashq.common.Navigator
 import by.vshkl.bashq.constants.Urls
 import by.vshkl.bashq.model.Comic
 import by.vshkl.bashq.presenter.GalleryPresenter
+import by.vshkl.bashq.ui.adapter.GalleryAdapter
 import by.vshkl.bashq.view.Gallery
 import by.vshkl.bashq.view.GalleryActionListener
 import com.pnikosis.materialishprogress.ProgressWheel
-import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.item_comic.view.*
 import java.util.*
 
 class GalleryActivity : AppCompatActivity(), Gallery, GalleryActionListener {
 
     val toolbar by lazy { find<Toolbar>(R.id.toolbar) }
-    val container by lazy {find<FrameLayout>(R.id.container)}
+    val container by lazy { find<FrameLayout>(R.id.container) }
     val swipe by lazy { find<SwipeRefreshLayout>(R.id.swipe) }
     val grid by lazy { find<RecyclerView>(R.id.grid) }
     val progress by lazy { find<ProgressWheel>(R.id.progress) }
@@ -44,6 +42,10 @@ class GalleryActivity : AppCompatActivity(), Gallery, GalleryActionListener {
 
     companion object {
         val EXTRA_COMIC_URL = "EXTRA_COMIC_URL"
+
+        fun getCallingIntent(context: Context): Intent {
+            return Intent(context, GalleryActivity::class.java)
+        }
     }
 
     /***********************************************************************************************
@@ -61,7 +63,7 @@ class GalleryActivity : AppCompatActivity(), Gallery, GalleryActionListener {
 
         grid.layoutManager = GridLayoutManager(this, 3)
 
-        val url = Urls.Companion.urlComicsCalendar
+        val url = Urls.urlComicsCalendar
         presenter.loadComics(url, false)
 
         swipe.setOnRefreshListener { presenter.loadComics(url, false) }
@@ -98,7 +100,7 @@ class GalleryActivity : AppCompatActivity(), Gallery, GalleryActionListener {
 
         if (!next) {
             comicsList = comics
-            grid.adapter = GalleryActivity.ComicsAdapter(comicsList, this, this)
+            grid.adapter = GalleryAdapter(comicsList, this, this)
         } else {
             comicsList.addAll(comics)
             grid.adapter.notifyDataSetChanged()
@@ -113,15 +115,7 @@ class GalleryActivity : AppCompatActivity(), Gallery, GalleryActionListener {
     }
 
     override fun onGalleryItemClicked(comicUrl: String, view: View) {
-        val comicIntent = Intent(this@GalleryActivity, ComicViewActivity::class.java)
-        comicIntent.putExtra(EXTRA_COMIC_URL, comicUrl)
-
-        val sharedView = view
-        val transitionName = getString(R.string.comic_view_transition)
-        val transitionActivityOptions =
-                ActivityOptionsCompat.makeSceneTransitionAnimation(this, sharedView, transitionName)
-
-        startActivity(comicIntent, transitionActivityOptions.toBundle())
+        Navigator.navigateToComicViewActivity(this@GalleryActivity, comicUrl, view)
     }
 
     /***********************************************************************************************
@@ -133,38 +127,4 @@ class GalleryActivity : AppCompatActivity(), Gallery, GalleryActionListener {
     }
 
     inline fun <reified T : View> Activity.find(id: Int): T = findViewById(id) as T
-
-    /***********************************************************************************************
-     * RecyclerView adapter
-     */
-
-    class ComicsAdapter(val comics: List<Comic>, val listener: GalleryActionListener, val context: Context) :
-            RecyclerView.Adapter<GalleryActivity.ViewHolder>() {
-
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GalleryActivity.ViewHolder {
-            val v = LayoutInflater.from(parent.context).inflate(R.layout.item_comic, parent, false)
-            return GalleryActivity.ViewHolder(v, listener, context)
-        }
-
-        override fun onBindViewHolder(holder: GalleryActivity.ViewHolder, position: Int) {
-            holder.bindComic(comics[position])
-        }
-
-        override fun getItemCount() = comics.size
-    }
-
-    /***********************************************************************************************
-     * RecyclerView view holder
-     */
-
-    class ViewHolder(view: View, val listener: GalleryActionListener, val context: Context) :
-            RecyclerView.ViewHolder(view) {
-
-        fun bindComic(comic: Comic) {
-            with(comic) {
-                Picasso.with(context).load(comic.thumbLink).into(itemView.image)
-                itemView.image.setOnClickListener { listener.onGalleryItemClicked(comic.imageLink, itemView) }
-            }
-        }
-    }
 }

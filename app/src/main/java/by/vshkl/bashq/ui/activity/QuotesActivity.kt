@@ -1,4 +1,4 @@
-package by.vshkl.bashq
+package by.vshkl.bashq.ui.activity
 
 import android.app.Activity
 import android.content.Intent
@@ -8,23 +8,20 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
-import android.text.Html
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.Toast
+import by.vshkl.bashq.R
+import by.vshkl.bashq.common.Navigator
 import by.vshkl.bashq.constants.Urls
 import by.vshkl.bashq.model.Quote
-import by.vshkl.bashq.model.Rating
 import by.vshkl.bashq.presenter.QuotesPresenter
-import by.vshkl.bashq.utils.Ratings
+import by.vshkl.bashq.ui.adapter.QuotesAdapter
 import by.vshkl.bashq.view.QuoteActionListener
 import by.vshkl.bashq.view.QuotesList
 import com.mikepenz.materialdrawer.DrawerBuilder
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem
 import com.pnikosis.materialishprogress.ProgressWheel
-import kotlinx.android.synthetic.main.item_quote.view.*
 import org.jsoup.Jsoup
 import java.util.*
 
@@ -59,7 +56,7 @@ class QuotesActivity : AppCompatActivity(), QuotesList, QuoteActionListener {
 
         list.layoutManager = LinearLayoutManager(this)
 
-        url = Urls.Companion.urlNew
+        url = Urls.urlNew
         presenter.loadQuotes(url, false)
 
         initDrawer(savedInstanceState, toolbar, presenter)
@@ -165,37 +162,35 @@ class QuotesActivity : AppCompatActivity(), QuotesList, QuoteActionListener {
                     val identifier = drawerItem?.identifier?.toInt()
                     when (identifier) {
                         1 -> {
-                            url = Urls.Companion.urlNew
+                            url = Urls.urlNew
                             toolbar.setSubtitle(R.string.drawer_item_new)
                         }
                         2 -> {
-                            url = Urls.Companion.urlRandom
+                            url = Urls.urlRandom
                             toolbar.setSubtitle(R.string.drawer_item_random)
                         }
                         3 -> {
-                            url = Urls.Companion.urlBest
+                            url = Urls.urlBest
                             toolbar.setSubtitle(R.string.drawer_item_best)
                         }
                         4 -> {
-                            url = Urls.Companion.urlByRating
+                            url = Urls.urlByRating
                             toolbar.setSubtitle(R.string.drawer_item_best)
                         }
                         5 -> {
-                            url = Urls.Companion.urlAbyss
+                            url = Urls.urlAbyss
                             toolbar.setSubtitle(R.string.drawer_item_abyss)
                         }
                         6 -> {
-                            url = Urls.Companion.urlAbyssTop
+                            url = Urls.urlAbyssTop
                             toolbar.setSubtitle(R.string.drawer_item_abyss_top)
                         }
                         7 -> {
-                            url = Urls.Companion.urlAbyssBest
+                            url = Urls.urlAbyssBest
                             toolbar.setSubtitle(R.string.drawer_item_abyss_best)
                         }
                         8 -> {
-                            val preferenceIntent = Intent(this@QuotesActivity,
-                                    GalleryActivity::class.java)
-                            startActivity(preferenceIntent)
+                            Navigator.navigateToGalleryActivity(this@QuotesActivity)
                         }
                     }
                     presenter.loadQuotes(url, false)
@@ -213,64 +208,4 @@ class QuotesActivity : AppCompatActivity(), QuotesList, QuoteActionListener {
     }
 
     inline fun <reified T : View> Activity.find(id: Int): T = findViewById(id) as T
-
-    /***********************************************************************************************
-     * RecyclerView adapter
-     */
-
-    class QuotesAdapter(val quotes: List<Quote>, val listener: QuoteActionListener) :
-            RecyclerView.Adapter<ViewHolder>() {
-
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-            val v = LayoutInflater.from(parent.context).inflate(R.layout.item_quote, parent, false)
-            return ViewHolder(v, listener)
-        }
-
-        override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-            holder.bindQuote(quotes[position])
-        }
-
-        override fun getItemCount() = quotes.size
-    }
-
-    /***********************************************************************************************
-     * RecyclerView view holder
-     */
-
-    class ViewHolder(view: View, val listener: QuoteActionListener) :
-            RecyclerView.ViewHolder(view) {
-
-        fun bindQuote(quote: Quote) {
-            with(quote) {
-                itemView.number.text = quote.id
-                itemView.date.text = quote.date
-                itemView.content.text = Html.fromHtml(quote.content)
-                if (quote.rating.equals("")) {
-                    itemView.votes.visibility = View.GONE
-                    itemView.votesDivider.visibility = View.GONE
-                } else {
-                    itemView.rating.text = quote.rating
-                    itemView.votePlus.setOnClickListener {
-                        listener.vote(voteUp, "rulez")
-                        val ratingObj = Ratings.Companion.updateRating(Rating(quote.rating, quote.voteCount), 1)
-                        quote.voteCount = ratingObj.voteCount
-                        itemView.rating.text = ratingObj.rating
-                    }
-                    itemView.voteMinus.setOnClickListener {
-                        listener.vote(voteDown, "sux")
-                        val ratingObj = Ratings.Companion.updateRating(Rating(quote.rating, quote.voteCount), -1)
-                        quote.voteCount = ratingObj.voteCount
-                        itemView.rating.text = ratingObj.rating
-                    }
-                    itemView.voteOld.setOnClickListener {
-                        listener.vote(voteOld, "bayan")
-                        val ratingObj = Ratings.Companion.updateRating(Rating(quote.rating, quote.voteCount), 0)
-                        quote.voteCount = ratingObj.voteCount
-                        itemView.rating.text = ratingObj.rating
-                    }
-                    itemView.setOnLongClickListener { listener.share(content) }
-                }
-            }
-        }
-    }
 }

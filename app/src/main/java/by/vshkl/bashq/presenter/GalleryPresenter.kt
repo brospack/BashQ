@@ -1,6 +1,6 @@
 package by.vshkl.bashq.presenter
 
-import by.vshkl.bashq.GalleryActivity
+import by.vshkl.bashq.ui.activity.GalleryActivity
 import by.vshkl.bashq.R
 import by.vshkl.bashq.model.Comic
 import okhttp3.*

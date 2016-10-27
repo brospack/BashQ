@@ -1,11 +1,14 @@
-package by.vshkl.bashq
+package by.vshkl.bashq.ui.activity
 
 import android.app.Activity
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.MenuItem
 import android.view.View
+import by.vshkl.bashq.R
 import by.vshkl.bashq.utils.PicassoDecoder
 import by.vshkl.bashq.utils.PicassoRegionDecoder
 import com.davemorrissey.labs.subscaleview.ImageSource
@@ -18,6 +21,12 @@ class ComicViewActivity : AppCompatActivity() {
     val toolbar by lazy { find<Toolbar>(R.id.toolbar) }
     val comic by lazy { find<SubsamplingScaleImageView>(R.id.comic) }
 
+    companion object {
+        fun getCallingIntent(context: Context): Intent {
+            return Intent(context, ComicViewActivity::class.java)
+        }
+    }
+
     /***********************************************************************************************
      * Lifecycle methods
      */
@@ -28,7 +37,7 @@ class ComicViewActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        val comicUrl = intent.getStringExtra(GalleryActivity.Companion.EXTRA_COMIC_URL)
+        val comicUrl = intent.getStringExtra(GalleryActivity.EXTRA_COMIC_URL)
 
         comic.setBitmapDecoderFactory { PicassoDecoder(comicUrl, Picasso.with(this)) }
         comic.setRegionDecoderFactory { PicassoRegionDecoder(OkHttpClient()) }
