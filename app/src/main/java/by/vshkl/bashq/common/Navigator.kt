@@ -1,6 +1,7 @@
 package by.vshkl.bashq.common
 
 import android.content.Context
+import android.content.Intent
 import android.support.v4.app.ActivityOptionsCompat
 import android.support.v7.app.AppCompatActivity
 import android.view.View
@@ -13,6 +14,7 @@ class Navigator {
     companion object {
         fun navigateToGalleryActivity(context: Context) {
             val intent = GalleryActivity.getCallingIntent(context)
+
             context.startActivity(intent)
         }
 
@@ -26,6 +28,15 @@ class Navigator {
                     context as AppCompatActivity, sharedView, transitionName)
 
             context.startActivity(intent, transitionActivityOptions.toBundle())
+        }
+
+        fun navigateToShareChooser(context: Context, quoteText: String) {
+            val intent = Intent()
+            intent.action = Intent.ACTION_SEND
+            intent.putExtra(Intent.EXTRA_TEXT, quoteText)
+            intent.type = "text/plain"
+
+            context.startActivity(intent)
         }
     }
 }

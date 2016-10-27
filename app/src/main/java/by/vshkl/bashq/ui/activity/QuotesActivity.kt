@@ -1,13 +1,13 @@
 package by.vshkl.bashq.ui.activity
 
 import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
+import android.text.Html
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.Toast
@@ -22,7 +22,6 @@ import by.vshkl.bashq.view.QuotesList
 import com.mikepenz.materialdrawer.DrawerBuilder
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem
 import com.pnikosis.materialishprogress.ProgressWheel
-import org.jsoup.Jsoup
 import java.util.*
 
 class QuotesActivity : AppCompatActivity(), QuotesList, QuoteActionListener {
@@ -102,11 +101,7 @@ class QuotesActivity : AppCompatActivity(), QuotesList, QuoteActionListener {
     }
 
     override fun share(content: String): Boolean {
-        val intent = Intent()
-        intent.action = Intent.ACTION_SEND
-        intent.putExtra(Intent.EXTRA_TEXT, Jsoup.parse(content).text())
-        intent.type = "text/plain"
-        startActivity(intent)
+        Navigator.navigateToShareChooser(this@QuotesActivity, Html.fromHtml(content).toString())
         return true
     }
 
