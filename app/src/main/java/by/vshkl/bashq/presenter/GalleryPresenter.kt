@@ -1,8 +1,8 @@
 package by.vshkl.bashq.presenter
 
-import by.vshkl.bashq.ui.activity.GalleryActivity
 import by.vshkl.bashq.R
 import by.vshkl.bashq.model.Comic
+import by.vshkl.bashq.ui.activity.GalleryActivity
 import okhttp3.*
 import org.jsoup.Jsoup
 import java.io.IOException
@@ -41,6 +41,7 @@ class GalleryPresenter(val activity: GalleryActivity) {
                     val comic = Comic(
                             thumbLink = e.child(0).attr("src"),
                             imageLink = e.child(0).attr("src").replace("ts/", ""),
+                            comicLink = "http://bash.im".plus(e.attr("href"))
                     )
                     comics.add(comic)
                     comics.reverse()

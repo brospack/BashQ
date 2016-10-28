@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/colorPrimaryDark"
     android:fitsSystemWindows="true"
-    tools:context="by.vshkl.bashq.QuotesActivity"
+    tools:context="by.vshkl.bashq.ui.activity.QuotesActivity"
     >
 
     <android.support.design.widget.AppBarLayout
@@ -34,5 +34,29 @@
         android:transitionName="@string/comic_view_transition"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         />
+
+    <ScrollView
+        android:id="@+id/bottom_sheet"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorSemiTransparent"
+        android:clipToPadding="true"
+        app:behavior_hideable="false"
+        app:behavior_peekHeight="56dp"
+        app:layout_behavior="android.support.design.widget.BottomSheetBehavior"
+        >
+
+        <TextView
+            android:id="@+id/quote"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            android:text="Потеряли кота. Искали 6 часов, бегали под балкон, думали, упал с 9 этажа. Но ни трупа, ни крови, все этажи проверили, чердак. Разместили объявление во всех соц.сетях о пропаже. Успокаиваю жену валерьянкой, а себя коньком. Дорог был нам этот мохнатый шотландский мудак. Вдруг в 2 ночи слышим короткое МЯУ и звук упавших кастрюль. Выбегаем, врубаем свет и видим картину маслом: наш кот в борще и и макаронах. Оказалось, что у нас на кухне отошла сетка от вентиляции, кот это дело просек, лапой отодвинул, пролез (с его-то 5 кг!) и по вентиляции гулял, там где-то и уснул! Экстремал, блин!!!"
+            android:textColor="#FFFFFF"
+            android:textSize="17sp"
+            />
+
+    </ScrollView>
 
 </android.support.design.widget.CoordinatorLayout>
