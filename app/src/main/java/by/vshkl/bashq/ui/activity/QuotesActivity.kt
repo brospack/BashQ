@@ -18,13 +18,13 @@ import by.vshkl.bashq.model.Quote
 import by.vshkl.bashq.presenter.QuotesPresenter
 import by.vshkl.bashq.ui.adapter.QuotesAdapter
 import by.vshkl.bashq.view.QuoteActionListener
-import by.vshkl.bashq.view.QuotesList
+import by.vshkl.bashq.view.Quotes
 import com.mikepenz.materialdrawer.DrawerBuilder
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem
 import com.pnikosis.materialishprogress.ProgressWheel
 import java.util.*
 
-class QuotesActivity : AppCompatActivity(), QuotesList, QuoteActionListener {
+class QuotesActivity : AppCompatActivity(), Quotes, QuoteActionListener {
 
     val toolbar by lazy { find<Toolbar>(R.id.toolbar) }
     val container by lazy {find<FrameLayout>(R.id.container)}

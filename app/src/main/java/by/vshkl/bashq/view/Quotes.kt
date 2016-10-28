@@ -2,7 +2,7 @@ package by.vshkl.bashq.view
 
 import by.vshkl.bashq.model.Quote
 
-interface QuotesList {
+interface Quotes {
 
     fun onLoadSuccess(quotes: MutableList<Quote>, next: Boolean)
 

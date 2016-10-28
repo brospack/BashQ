@@ -14,7 +14,7 @@ class GalleryViewHolder(view: View, val listener: GalleryActionListener, val con
     fun bindComic(comic: Comic) {
         with(comic) {
             Picasso.with(context).load(comic.thumbLink).into(itemView.image)
-            itemView.image.setOnClickListener { listener.onGalleryItemClicked(comic.imageLink, itemView) }
+            itemView.image.setOnClickListener { listener.onGalleryItemClicked(comic.comicLink, itemView) }
         }
     }
 }
