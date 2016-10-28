@@ -8,8 +8,8 @@ import com.davemorrissey.labs.subscaleview.decoder.ImageDecoder;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 
-public class PicassoDecoder implements ImageDecoder
-{
+public class PicassoDecoder implements ImageDecoder {
+
     private String tag;
     private Picasso picasso;
 

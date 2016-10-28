@@ -22,12 +22,13 @@ import com.davemorrissey.labs.subscaleview.ImageSource
 import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView
 import com.pnikosis.materialishprogress.ProgressWheel
 import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.activity_comic.*
 import okhttp3.OkHttpClient
 
 class ComicActivity : AppCompatActivity(), ComicView {
 
     val toolbar by lazy { find<Toolbar>(R.id.toolbar) }
-    val comic by lazy { find<SubsamplingScaleImageView>(R.id.comic) }
+    val comicImage by lazy { find<SubsamplingScaleImageView>(R.id.comic) }
     val progress by lazy { find<ProgressWheel>(R.id.progress) }
     val swipe by lazy { find<SwipeRefreshLayout>(R.id.swipe) }
     val bottomSheet by lazy { find<LinearLayout>(R.id.bottom_sheet) }
@@ -119,7 +120,7 @@ class ComicActivity : AppCompatActivity(), ComicView {
 
     override fun onLoadSuccess(comicDetail: ComicDetail) {
         swipe.isRefreshing = false
-        comic.visibility = View.VISIBLE
+        comicImage.visibility = View.VISIBLE
 
         val creator = comicDetail.creator
         val index = creator.indexOf("по")
@@ -128,9 +129,9 @@ class ComicActivity : AppCompatActivity(), ComicView {
 
         quoteNumber.text = "Цитата " + creator.substring(creator.indexOf("#"))
 
-        comic.setBitmapDecoderFactory { PicassoDecoder(comicDetail.imageLink, Picasso.with(this)) }
-        comic.setRegionDecoderFactory { PicassoRegionDecoder(OkHttpClient()) }
-        comic.setOnImageEventListener(object : SubsamplingScaleImageView.DefaultOnImageEventListener() {
+        comicImage.setBitmapDecoderFactory { PicassoDecoder(comicDetail.imageLink, Picasso.with(this)) }
+        comicImage.setRegionDecoderFactory { PicassoRegionDecoder(OkHttpClient()) }
+        comicImage.setOnImageEventListener(object : SubsamplingScaleImageView.DefaultOnImageEventListener() {
             override fun onReady() {
                 progress.visibility = View.GONE
             }
@@ -138,7 +139,7 @@ class ComicActivity : AppCompatActivity(), ComicView {
             override fun onImageLoaded() {
             }
         })
-        comic.setImage(ImageSource.uri(comicDetail.imageLink))
+        comicImage.setImage(ImageSource.uri(comicDetail.imageLink))
 
         quoteContent.text = Html.fromHtml(comicDetail.quoteContent)
     }
@@ -146,7 +147,7 @@ class ComicActivity : AppCompatActivity(), ComicView {
     override fun onLoadingError(errorMessage: String?) {
         swipe.isRefreshing = false
         progress.visibility = View.GONE
-        comic.visibility = View.VISIBLE
+        comicImage.visibility = View.VISIBLE
 
         swipe.isEnabled = true
 

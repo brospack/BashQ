@@ -16,6 +16,7 @@ import java.io.InputStream;
 import okhttp3.OkHttpClient;
 
 public class PicassoRegionDecoder implements ImageRegionDecoder {
+
     private OkHttpClient client;
     private BitmapRegionDecoder decoder;
     private final Object decoderLock = new Object();

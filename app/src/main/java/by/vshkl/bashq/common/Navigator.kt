@@ -2,6 +2,7 @@ package by.vshkl.bashq.common
 
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.support.v4.app.ActivityOptionsCompat
 import android.support.v7.app.AppCompatActivity
 import android.view.View
@@ -30,13 +31,24 @@ class Navigator {
             context.startActivity(intent, transitionActivityOptions.toBundle())
         }
 
-        fun navigateToShareChooser(context: Context, quoteText: String) {
+        fun navigateToShareQuoteChooser(context: Context, quoteText: String) {
             val intent = Intent()
             intent.action = Intent.ACTION_SEND
             intent.putExtra(Intent.EXTRA_TEXT, quoteText)
             intent.type = "text/plain"
 
-            context.startActivity(intent)
+            context.startActivity(Intent.createChooser(intent, "Share quote..."))
+        }
+
+        fun navigateToShareComicChooser(context: Context, quoteText: String, imageUri: Uri) {
+            val intent = Intent()
+            intent.action = Intent.ACTION_SEND
+            intent.putExtra(Intent.EXTRA_TEXT, quoteText)
+            intent.putExtra(Intent.EXTRA_STREAM, imageUri)
+            intent.type = "image/*"
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+
+            context.startActivity(Intent.createChooser(intent, "Share comic..."))
         }
     }
 }

@@ -2,6 +2,9 @@
     <string name="app_name">BashQ</string>
     <!-- Actions -->
     <string name="action_settings">Settings</string>
+    <string name="action_comic_share">Share comic</string>
+    <string name="action_comic_share_pic">Share picture</string>
+    <string name="action_comic_download_pic">Download pic</string>
     <string name="action_vote_old">[:||||:]</string>
     <!-- Drawer items -->
     <string name="drawer_item_new">Новые</string>

@@ -101,7 +101,7 @@ class QuotesActivity : AppCompatActivity(), QuotesView, QuoteActionListener {
     }
 
     override fun share(content: String, link: String): Boolean {
-        Navigator.navigateToShareChooser(this@QuotesActivity, Html.fromHtml(content).toString() + '\n' + '\n' + link)
+        Navigator.navigateToShareQuoteChooser(this@QuotesActivity, Html.fromHtml(content).toString() + '\n' + '\n' + link)
         return true
     }
 
