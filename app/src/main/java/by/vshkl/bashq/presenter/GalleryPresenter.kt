@@ -48,7 +48,6 @@ class GalleryPresenter(val activity: GalleryActivity) {
 
                 activity.runOnUiThread { activity.onLoadSuccess(comics, next) }
             }
-
         })
     }
 }

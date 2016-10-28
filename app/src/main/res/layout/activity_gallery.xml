@@ -8,7 +8,7 @@
     android:layout_height="match_parent"
     android:background="@color/colorPrimaryDark"
     android:fitsSystemWindows="true"
-    tools:context="by.vshkl.bashq.QuotesActivity"
+    tools:context="by.vshkl.bashq.ui.activity.QuotesActivity"
     >
 
     <android.support.design.widget.AppBarLayout

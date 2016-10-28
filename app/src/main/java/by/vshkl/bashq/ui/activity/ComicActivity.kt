@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.BottomSheetBehavior
+import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.text.Html
@@ -30,6 +31,7 @@ class ComicActivity : AppCompatActivity(), Comic {
     val toolbar by lazy { find<Toolbar>(R.id.toolbar) }
     val comic by lazy { find<SubsamplingScaleImageView>(R.id.comic) }
     val progress by lazy { find<ProgressWheel>(R.id.progress) }
+    val swipe by lazy { find<SwipeRefreshLayout>(R.id.swipe) }
     val bottomSheet by lazy { find<ScrollView>(R.id.bottom_sheet) }
     val quoteContent by lazy { find<TextView>(R.id.quote) }
 
@@ -59,6 +61,11 @@ class ComicActivity : AppCompatActivity(), Comic {
 
         val comicUrl = intent.getStringExtra(GalleryActivity.EXTRA_COMIC_URL)
         presenter.loadComic(comicUrl)
+
+        swipe.isEnabled = false
+        swipe.setOnRefreshListener {
+            presenter.loadComic(comicUrl)
+        }
 
         comic.setOnClickListener({
             bottomSheetBehaviour?.state = BottomSheetBehavior.STATE_COLLAPSED
@@ -103,6 +110,8 @@ class ComicActivity : AppCompatActivity(), Comic {
     override fun onLoadingError(errorMessage: String?) {
         progress.visibility = View.GONE
         comic.visibility = View.VISIBLE
+
+        swipe.isEnabled = true
 
         toast(errorMessage.toString())
     }
