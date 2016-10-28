@@ -12,6 +12,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.ScrollView
 import android.widget.TextView
+import android.widget.Toast
 import by.vshkl.bashq.R
 import by.vshkl.bashq.model.ComicDetail
 import by.vshkl.bashq.presenter.ComicPresenter
@@ -20,6 +21,7 @@ import by.vshkl.bashq.utils.PicassoRegionDecoder
 import by.vshkl.bashq.view.Comic
 import com.davemorrissey.labs.subscaleview.ImageSource
 import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView
+import com.pnikosis.materialishprogress.ProgressWheel
 import com.squareup.picasso.Picasso
 import okhttp3.OkHttpClient
 
@@ -27,6 +29,7 @@ class ComicActivity : AppCompatActivity(), Comic {
 
     val toolbar by lazy { find<Toolbar>(R.id.toolbar) }
     val comic by lazy { find<SubsamplingScaleImageView>(R.id.comic) }
+    val progress by lazy { find<ProgressWheel>(R.id.progress) }
     val bottomSheet by lazy { find<ScrollView>(R.id.bottom_sheet) }
     val quoteContent by lazy { find<TextView>(R.id.quote) }
 
@@ -75,8 +78,18 @@ class ComicActivity : AppCompatActivity(), Comic {
      */
 
     override fun onLoadSuccess(comicDetail: ComicDetail) {
+        comic.visibility = View.VISIBLE
+
         comic.setBitmapDecoderFactory { PicassoDecoder(comicDetail.imageLink, Picasso.with(this)) }
         comic.setRegionDecoderFactory { PicassoRegionDecoder(OkHttpClient()) }
+        comic.setOnImageEventListener(object : SubsamplingScaleImageView.DefaultOnImageEventListener() {
+            override fun onReady() {
+                progress.visibility = View.GONE
+            }
+
+            override fun onImageLoaded() {
+            }
+        })
         comic.setImage(ImageSource.uri(comicDetail.imageLink))
 
         quoteContent.text = Html.fromHtml(comicDetail.quoteContent)
@@ -85,6 +98,10 @@ class ComicActivity : AppCompatActivity(), Comic {
     }
 
     override fun onLoadingError(errorMessage: String?) {
+        progress.visibility = View.GONE
+        comic.visibility = View.VISIBLE
+
+        toast(errorMessage.toString())
     }
 
     /***********************************************************************************************
@@ -92,4 +109,8 @@ class ComicActivity : AppCompatActivity(), Comic {
      */
 
     inline fun <reified T : View> Activity.find(id: Int): T = findViewById(id) as T
+
+    fun Activity.toast(message: CharSequence, duration: Int = Toast.LENGTH_SHORT) {
+        Toast.makeText(this, message, duration).show()
+    }
 }

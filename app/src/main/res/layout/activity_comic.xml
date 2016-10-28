@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:wheel="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimaryDark"
@@ -31,8 +32,19 @@
         android:id="@+id/comic"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:visibility="gone"
         android:transitionName="@string/comic_view_transition"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        />
+
+    <com.pnikosis.materialishprogress.ProgressWheel
+        android:id="@+id/progress"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_gravity="center"
+        android:visibility="visible"
+        wheel:matProg_barColor="@color/colorAccent"
+        wheel:matProg_progressIndeterminate="true"
         />
 
     <ScrollView
@@ -50,9 +62,10 @@
             android:id="@+id/quote"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
             android:layout_marginEnd="16dp"
             android:layout_marginStart="16dp"
-            android:text="Потеряли кота. Искали 6 часов, бегали под балкон, думали, упал с 9 этажа. Но ни трупа, ни крови, все этажи проверили, чердак. Разместили объявление во всех соц.сетях о пропаже. Успокаиваю жену валерьянкой, а себя коньком. Дорог был нам этот мохнатый шотландский мудак. Вдруг в 2 ночи слышим короткое МЯУ и звук упавших кастрюль. Выбегаем, врубаем свет и видим картину маслом: наш кот в борще и и макаронах. Оказалось, что у нас на кухне отошла сетка от вентиляции, кот это дело просек, лапой отодвинул, пролез (с его-то 5 кг!) и по вентиляции гулял, там где-то и уснул! Экстремал, блин!!!"
+            android:layout_marginTop="8dp"
             android:textColor="#FFFFFF"
             android:textSize="17sp"
             />
