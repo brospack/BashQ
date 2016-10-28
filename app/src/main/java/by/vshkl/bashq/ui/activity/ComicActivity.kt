@@ -19,14 +19,14 @@ import by.vshkl.bashq.model.ComicDetail
 import by.vshkl.bashq.presenter.ComicPresenter
 import by.vshkl.bashq.utils.PicassoDecoder
 import by.vshkl.bashq.utils.PicassoRegionDecoder
-import by.vshkl.bashq.view.Comic
+import by.vshkl.bashq.view.ComicView
 import com.davemorrissey.labs.subscaleview.ImageSource
 import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView
 import com.pnikosis.materialishprogress.ProgressWheel
 import com.squareup.picasso.Picasso
 import okhttp3.OkHttpClient
 
-class ComicActivity : AppCompatActivity(), Comic {
+class ComicActivity : AppCompatActivity(), ComicView {
 
     val toolbar by lazy { find<Toolbar>(R.id.toolbar) }
     val comic by lazy { find<SubsamplingScaleImageView>(R.id.comic) }

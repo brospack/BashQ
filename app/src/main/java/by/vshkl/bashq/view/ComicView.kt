@@ -2,7 +2,7 @@ package by.vshkl.bashq.view
 
 import by.vshkl.bashq.model.ComicDetail
 
-interface Comic {
+interface ComicView {
 
     fun onLoadSuccess(comicDetail: ComicDetail)
 
