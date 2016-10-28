@@ -80,6 +80,11 @@ class ComicActivity : AppCompatActivity(), Comic {
     override fun onLoadSuccess(comicDetail: ComicDetail) {
         comic.visibility = View.VISIBLE
 
+        val creator = comicDetail.creator
+        val index = creator.indexOf("по")
+        toolbar.title = creator.substring(0, index)
+        toolbar.subtitle = creator.substring(index)
+
         comic.setBitmapDecoderFactory { PicassoDecoder(comicDetail.imageLink, Picasso.with(this)) }
         comic.setRegionDecoderFactory { PicassoRegionDecoder(OkHttpClient()) }
         comic.setOnImageEventListener(object : SubsamplingScaleImageView.DefaultOnImageEventListener() {
@@ -93,8 +98,6 @@ class ComicActivity : AppCompatActivity(), Comic {
         comic.setImage(ImageSource.uri(comicDetail.imageLink))
 
         quoteContent.text = Html.fromHtml(comicDetail.quoteContent)
-
-        toolbar.subtitle = comicDetail.creator
     }
 
     override fun onLoadingError(errorMessage: String?) {
