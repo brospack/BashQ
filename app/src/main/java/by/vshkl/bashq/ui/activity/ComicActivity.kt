@@ -11,10 +11,7 @@ import android.support.v7.widget.Toolbar
 import android.text.Html
 import android.view.MenuItem
 import android.view.View
-import android.widget.FrameLayout
-import android.widget.LinearLayout
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import by.vshkl.bashq.R
 import by.vshkl.bashq.model.ComicDetail
 import by.vshkl.bashq.presenter.ComicPresenter
@@ -37,6 +34,8 @@ class ComicActivity : AppCompatActivity(), ComicView {
     val quote by lazy { find<FrameLayout>(R.id.quote) }
     val quoteNumber by lazy { find<TextView>(R.id.quote_number) }
     val quoteContent by lazy { find<TextView>(R.id.quote_content) }
+    val arrowLeft by lazy { find<ImageView>(R.id.arrow_left) }
+    val arrowRight by lazy { find<ImageView>(R.id.arrow_right) }
 
     val bottomSheetBehaviour: BottomSheetBehavior<LinearLayout>? by lazy { BottomSheetBehavior.from(bottomSheet) }
 
@@ -72,6 +71,37 @@ class ComicActivity : AppCompatActivity(), ComicView {
 
         comic.setOnClickListener({
             bottomSheetBehaviour?.state = BottomSheetBehavior.STATE_COLLAPSED
+        })
+
+        quote.setOnClickListener {
+            when(bottomSheetBehaviour?.state) {
+                BottomSheetBehavior.STATE_COLLAPSED -> {
+                    bottomSheetBehaviour?.state = BottomSheetBehavior.STATE_EXPANDED
+                }
+                BottomSheetBehavior.STATE_EXPANDED -> {
+                    bottomSheetBehaviour?.state = BottomSheetBehavior.STATE_COLLAPSED
+                }
+            }
+        }
+
+        bottomSheetBehaviour?.setBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
+            override fun onSlide(bottomSheet: View, slideOffset: Float) {
+
+            }
+
+            override fun onStateChanged(bottomSheet: View, newState: Int) {
+                when(newState) {
+                    BottomSheetBehavior.STATE_COLLAPSED -> {
+                        arrowLeft.rotation = 0F
+                        arrowRight.rotation = 0F
+                    }
+                    BottomSheetBehavior.STATE_EXPANDED -> {
+                        arrowLeft.rotation = 180F
+                        arrowRight.rotation = 180F
+                    }
+                }
+            }
+
         })
     }
 

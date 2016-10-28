@@ -74,6 +74,7 @@
             >
 
             <ImageView
+                android:id="@+id/arrow_left"
                 android:layout_width="56dp"
                 android:layout_height="56dp"
                 android:layout_gravity="start"
@@ -96,6 +97,7 @@
                 />
 
             <ImageView
+                android:id="@+id/arrow_right"
                 android:layout_width="56dp"
                 android:layout_height="56dp"
                 android:layout_gravity="end"
