@@ -21,7 +21,7 @@ class GalleryPresenter(val activity: GalleryActivity) {
     fun loadComics(url: String, next: Boolean) {
         var fullUrl: String = url
         if (next && currentYear >= firstYear) {
-           fullUrl = url + "/" + currentYear.minus(1).toString()
+            fullUrl = url + "/" + currentYear.minus(1).toString()
         }
 
         val request: Request = Request.Builder().url(fullUrl).build()
@@ -36,10 +36,11 @@ class GalleryPresenter(val activity: GalleryActivity) {
                 val document = Jsoup.parse(response.body().string())
 
                 val comicsElements = document.select("div#calendar a[href]")
+
                 for (e in comicsElements) {
                     val comic = Comic(
                             thumbLink = e.child(0).attr("src"),
-                            imageLink = e.child(0).attr("src").replace("ts/", "")
+                            imageLink = e.child(0).attr("src").replace("ts/", ""),
                     )
                     comics.add(comic)
                     comics.reverse()
