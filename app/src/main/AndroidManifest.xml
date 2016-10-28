@@ -24,7 +24,7 @@
                   android:theme="@style/AppTheme.NoActionBar"
             />
         <activity android:name=".ui.activity.ComicActivity"
-                  android:theme="@style/AppTheme.NoActionBar"
+                  android:theme="@style/AppThemeDark.NoActionBar"
             />
     </application>
 

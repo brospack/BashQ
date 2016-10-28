@@ -11,6 +11,9 @@ import android.support.v7.widget.Toolbar
 import android.text.Html
 import android.view.MenuItem
 import android.view.View
+import android.view.animation.Animation
+import android.view.animation.LinearInterpolator
+import android.view.animation.RotateAnimation
 import android.widget.*
 import by.vshkl.bashq.R
 import by.vshkl.bashq.model.ComicDetail
