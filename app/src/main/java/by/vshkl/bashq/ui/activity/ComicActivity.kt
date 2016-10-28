@@ -4,10 +4,12 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.support.design.widget.BottomSheetBehavior
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.MenuItem
 import android.view.View
+import android.widget.ScrollView
 import by.vshkl.bashq.R
 import by.vshkl.bashq.utils.PicassoDecoder
 import by.vshkl.bashq.utils.PicassoRegionDecoder
@@ -16,14 +18,17 @@ import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView
 import com.squareup.picasso.Picasso
 import okhttp3.OkHttpClient
 
-class ComicViewActivity : AppCompatActivity() {
+class ComicActivity : AppCompatActivity() {
 
     val toolbar by lazy { find<Toolbar>(R.id.toolbar) }
     val comic by lazy { find<SubsamplingScaleImageView>(R.id.comic) }
+    val bottomSheet by lazy { find<ScrollView>(R.id.bottom_sheet) }
+
+    val bottomSheetBehaviour by lazy { BottomSheetBehavior.from(bottomSheet) }
 
     companion object {
         fun getCallingIntent(context: Context): Intent {
-            return Intent(context, ComicViewActivity::class.java)
+            return Intent(context, ComicActivity::class.java)
         }
     }
 
@@ -42,6 +47,9 @@ class ComicViewActivity : AppCompatActivity() {
         comic.setBitmapDecoderFactory { PicassoDecoder(comicUrl, Picasso.with(this)) }
         comic.setRegionDecoderFactory { PicassoRegionDecoder(OkHttpClient()) }
         comic.setImage(ImageSource.uri(comicUrl))
+        comic.setOnClickListener({
+            bottomSheetBehaviour.state = BottomSheetBehavior.STATE_COLLAPSED
+        })
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

@@ -6,7 +6,7 @@ import android.support.v4.app.ActivityOptionsCompat
 import android.support.v7.app.AppCompatActivity
 import android.view.View
 import by.vshkl.bashq.R
-import by.vshkl.bashq.ui.activity.ComicViewActivity
+import by.vshkl.bashq.ui.activity.ComicActivity
 import by.vshkl.bashq.ui.activity.GalleryActivity
 
 class Navigator {
@@ -19,7 +19,7 @@ class Navigator {
         }
 
         fun navigateToComicViewActivity(context: Context, comicUrl: String, view: View) {
-            val intent = ComicViewActivity.getCallingIntent(context)
+            val intent = ComicActivity.getCallingIntent(context)
             intent.putExtra(GalleryActivity.EXTRA_COMIC_URL, comicUrl)
 
             val sharedView = view
