@@ -40,7 +40,6 @@ class GalleryPresenter(val activity: GalleryActivity) {
                 for (e in comicsElements) {
                     val comic = Comic(
                             thumbLink = e.child(0).attr("src"),
-                            imageLink = e.child(0).attr("src").replace("ts/", ""),
                             comicLink = "http://bash.im".plus(e.attr("href"))
                     )
                     comics.add(comic)
