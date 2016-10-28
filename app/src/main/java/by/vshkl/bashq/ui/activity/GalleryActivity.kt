@@ -20,8 +20,8 @@ import by.vshkl.bashq.constants.Urls
 import by.vshkl.bashq.model.Comic
 import by.vshkl.bashq.presenter.GalleryPresenter
 import by.vshkl.bashq.ui.adapter.GalleryAdapter
-import by.vshkl.bashq.view.GalleryView
 import by.vshkl.bashq.view.GalleryActionListener
+import by.vshkl.bashq.view.GalleryView
 import com.pnikosis.materialishprogress.ProgressWheel
 import java.util.*
 

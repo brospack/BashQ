@@ -11,9 +11,6 @@ import android.support.v7.widget.Toolbar
 import android.text.Html
 import android.view.MenuItem
 import android.view.View
-import android.view.animation.Animation
-import android.view.animation.LinearInterpolator
-import android.view.animation.RotateAnimation
 import android.widget.*
 import by.vshkl.bashq.R
 import by.vshkl.bashq.model.ComicDetail
@@ -77,7 +74,7 @@ class ComicActivity : AppCompatActivity(), ComicView {
         })
 
         quote.setOnClickListener {
-            when(bottomSheetBehaviour?.state) {
+            when (bottomSheetBehaviour?.state) {
                 BottomSheetBehavior.STATE_COLLAPSED -> {
                     bottomSheetBehaviour?.state = BottomSheetBehavior.STATE_EXPANDED
                 }
@@ -93,7 +90,7 @@ class ComicActivity : AppCompatActivity(), ComicView {
             }
 
             override fun onStateChanged(bottomSheet: View, newState: Int) {
-                when(newState) {
+                when (newState) {
                     BottomSheetBehavior.STATE_COLLAPSED -> {
                         arrowLeft.rotation = 0F
                         arrowRight.rotation = 0F

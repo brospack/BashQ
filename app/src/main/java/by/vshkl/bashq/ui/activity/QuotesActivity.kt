@@ -58,7 +58,7 @@ class QuotesActivity : AppCompatActivity(), QuotesView, QuoteActionListener {
         url = Urls.urlNew
         presenter.loadQuotes(url, false)
 
-        initDrawer(savedInstanceState, toolbar, presenter)
+        initializeDrawer(savedInstanceState, toolbar, presenter)
 
         swipe.setOnRefreshListener { presenter.loadQuotes(url, false) }
 
@@ -113,7 +113,7 @@ class QuotesActivity : AppCompatActivity(), QuotesView, QuoteActionListener {
      * Various additional methods
      */
 
-    private fun initDrawer(savedInstanceState: Bundle?, toolbar: Toolbar, presenter: QuotesPresenter) {
+    private fun initializeDrawer(savedInstanceState: Bundle?, toolbar: Toolbar, presenter: QuotesPresenter) {
         DrawerBuilder()
                 .withActivity(this)
                 .withToolbar(toolbar)
