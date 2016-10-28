@@ -11,7 +11,8 @@ import android.support.v7.widget.Toolbar
 import android.text.Html
 import android.view.MenuItem
 import android.view.View
-import android.widget.ScrollView
+import android.widget.FrameLayout
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import by.vshkl.bashq.R
@@ -32,10 +33,12 @@ class ComicActivity : AppCompatActivity(), ComicView {
     val comic by lazy { find<SubsamplingScaleImageView>(R.id.comic) }
     val progress by lazy { find<ProgressWheel>(R.id.progress) }
     val swipe by lazy { find<SwipeRefreshLayout>(R.id.swipe) }
-    val bottomSheet by lazy { find<ScrollView>(R.id.bottom_sheet) }
-    val quoteContent by lazy { find<TextView>(R.id.quote) }
+    val bottomSheet by lazy { find<LinearLayout>(R.id.bottom_sheet) }
+    val quote by lazy { find<FrameLayout>(R.id.quote) }
+    val quoteNumber by lazy { find<TextView>(R.id.quote_number) }
+    val quoteContent by lazy { find<TextView>(R.id.quote_content) }
 
-    val bottomSheetBehaviour: BottomSheetBehavior<ScrollView>? by lazy { BottomSheetBehavior.from(bottomSheet) }
+    val bottomSheetBehaviour: BottomSheetBehavior<LinearLayout>? by lazy { BottomSheetBehavior.from(bottomSheet) }
 
     companion object {
         fun getCallingIntent(context: Context): Intent {
@@ -85,12 +88,15 @@ class ComicActivity : AppCompatActivity(), ComicView {
      */
 
     override fun onLoadSuccess(comicDetail: ComicDetail) {
+        swipe.isRefreshing = false
         comic.visibility = View.VISIBLE
 
         val creator = comicDetail.creator
         val index = creator.indexOf("по")
         toolbar.title = creator.substring(0, index)
         toolbar.subtitle = creator.substring(index)
+
+        quoteNumber.text = "Цитата " + creator.substring(creator.indexOf("#"))
 
         comic.setBitmapDecoderFactory { PicassoDecoder(comicDetail.imageLink, Picasso.with(this)) }
         comic.setRegionDecoderFactory { PicassoRegionDecoder(OkHttpClient()) }
@@ -108,6 +114,7 @@ class ComicActivity : AppCompatActivity(), ComicView {
     }
 
     override fun onLoadingError(errorMessage: String?) {
+        swipe.isRefreshing = false
         progress.visibility = View.GONE
         comic.visibility = View.VISIBLE
 

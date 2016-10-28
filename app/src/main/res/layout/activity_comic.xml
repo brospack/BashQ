@@ -32,15 +32,15 @@
         android:id="@+id/swipe"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:transitionName="@string/comic_view_transition"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
         >
 
         <com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView
             android:id="@+id/comic"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:transitionName="@string/comic_view_transition"
             android:visibility="gone"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
             />
 
     </android.support.v4.widget.SwipeRefreshLayout>
@@ -55,29 +55,78 @@
         wheel:matProg_progressIndeterminate="true"
         />
 
-    <ScrollView
+    <LinearLayout
         android:id="@+id/bottom_sheet"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorSemiTransparent"
         android:clipToPadding="true"
+        android:orientation="vertical"
         app:behavior_hideable="false"
         app:behavior_peekHeight="56dp"
         app:layout_behavior="android.support.design.widget.BottomSheetBehavior"
         >
 
-        <TextView
+        <FrameLayout
             android:id="@+id/quote"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:textColor="#FFFFFF"
-            android:textSize="17sp"
-            />
+            android:layout_height="56dp"
+            android:background="@color/colorSemiTransparent"
+            >
 
-    </ScrollView>
+            <ImageView
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:layout_gravity="start"
+                android:padding="8dp"
+                android:src="@drawable/ic_arrow"
+                />
+
+            <TextView
+                android:id="@+id/quote_number"
+                fontPath="fonts/Roboto-Medium.ttf"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="56dp"
+                android:layout_marginEnd="56dp"
+                android:layout_gravity="center_vertical"
+                android:textAlignment="center"
+                android:textSize="17sp"
+                android:textColor="#FFFFFF"
+                tools:text="Цитата #456879"
+                />
+
+            <ImageView
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:layout_gravity="end"
+                android:padding="8dp"
+                android:src="@drawable/ic_arrow"
+                />
+
+        </FrameLayout>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorSemiTransparent"
+            >
+
+            <TextView
+                android:id="@+id/quote_content"
+                fontPath="fonts/Roboto-Medium.ttf"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:textColor="#FFFFFF"
+                android:textSize="17sp"
+                />
+
+        </ScrollView>
+
+    </LinearLayout>
+
 
 </android.support.design.widget.CoordinatorLayout>
