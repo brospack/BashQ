@@ -77,8 +77,17 @@ class QuotesPresenter(var activity: QuotesActivity) {
                             voteOldLink = ""
                         }
 
+                        val link = element.select(".id").first()
+                        val quoteLink: String
+                        if (link != null) {
+                            quoteLink = baseUrl + link.attr("href")
+                        } else {
+                            quoteLink = ""
+                        }
+
                         val quote = Quote(
                                 id = id,
+                                link = quoteLink,
                                 date = date,
                                 rating = rating,
                                 content = element.select(".text").first().html(),

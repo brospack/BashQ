@@ -1,6 +1,7 @@
 package by.vshkl.bashq.model
 
 data class Quote(val id: String,
+                 val link: String,
                  val date: String,
                  val rating: String,
                  val content: String,

@@ -45,7 +45,7 @@ class QuotesViewHolder(view: View, val listener: QuoteActionListener) :
                     itemView.rating.text = ratingObj.rating
                 }
 
-                itemView.setOnLongClickListener { listener.share(content) }
+                itemView.setOnLongClickListener { listener.share(content, link) }
             }
         }
     }
