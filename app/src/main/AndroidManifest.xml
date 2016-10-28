@@ -20,9 +20,11 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+
         <activity android:name=".ui.activity.GalleryActivity"
-                  android:theme="@style/AppTheme.NoActionBar"
+                  android:theme="@style/AppThemeDark.NoActionBar"
             />
+
         <activity android:name=".ui.activity.ComicActivity"
                   android:theme="@style/AppThemeDark.NoActionBar"
             />

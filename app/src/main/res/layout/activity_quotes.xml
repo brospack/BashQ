@@ -45,7 +45,7 @@
                 android:id="@+id/list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#F5F5F5"
+                android:background="@color/md_grey_200"
                 />
 
         </android.support.v4.widget.SwipeRefreshLayout>
