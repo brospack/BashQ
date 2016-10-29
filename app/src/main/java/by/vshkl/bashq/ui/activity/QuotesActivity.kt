@@ -85,7 +85,7 @@ class QuotesActivity : AppCompatActivity(), QuotesView, QuoteActionListener {
 
         if (!next) {
             quotesList = quotes
-            list.adapter = QuotesAdapter(quotesList, this)
+            list.adapter = QuotesAdapter(quotesList, this, this@QuotesActivity)
         } else {
             quotesList.addAll(quotes)
             list.adapter.notifyDataSetChanged()
@@ -101,7 +101,8 @@ class QuotesActivity : AppCompatActivity(), QuotesView, QuoteActionListener {
     }
 
     override fun share(content: String, link: String): Boolean {
-        Navigator.navigateToShareQuoteChooser(this@QuotesActivity, Html.fromHtml(content).toString() + '\n' + '\n' + link)
+        Navigator.navigateToShareQuoteChooser(
+                this@QuotesActivity, Html.fromHtml(content).toString() + '\n' + '\n' + link)
         return true
     }
 
