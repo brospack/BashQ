@@ -100,22 +100,26 @@
 
             <ImageView
                 android:id="@+id/voteMinus"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_toStartOf="@+id/rating"
                 android:background="@drawable/ripple"
                 android:paddingBottom="8dp"
                 android:paddingTop="8dp"
-                android:src="@drawable/ic_minus"
+                android:src="@drawable/ic_thumb_down"
                 />
 
             <TextView
                 android:id="@+id/rating"
                 fontPath="fonts/Roboto-Regular.ttf"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
                 android:layout_toStartOf="@+id/votePlus"
-                android:padding="8dp"
+                android:paddingBottom="8dp"
+                android:paddingEnd="16dp"
+                android:paddingStart="16dp"
+                android:paddingTop="8dp"
+                android:textAlignment="center"
                 android:textColor="@color/colorSecondaryText"
                 android:textSize="16sp"
                 tools:text="2235"
@@ -123,13 +127,13 @@
 
             <ImageView
                 android:id="@+id/votePlus"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:background="@drawable/ripple"
                 android:paddingBottom="8dp"
                 android:paddingTop="8dp"
-                android:src="@drawable/ic_plus"
+                android:src="@drawable/ic_thumb_up"
                 />
 
         </RelativeLayout>
