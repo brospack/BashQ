@@ -73,7 +73,7 @@ public class QuotesPresenter implements Presenter<QuotesView> {
     //==================================================================================================================
 
     private void getQuotes() {
-        String fullUrl = UrlBuilder.BuildUrl(subsection, currentIndex);
+        String fullUrl = UrlBuilder.BuildMainUrl(subsection, currentIndex);
 
         fetchQuotesUsecase.setFullUrl(fullUrl);
         disposable = fetchQuotesUsecase.execute()

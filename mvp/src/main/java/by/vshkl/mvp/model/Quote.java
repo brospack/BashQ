@@ -10,7 +10,7 @@ public class Quote {
     private String date;
     private String link;
     private String content;
-    private int rating;
+    private String rating;
     private VoteState voteState = VoteState.VOTED_NONE;
 
     public Quote() {
@@ -48,11 +48,11 @@ public class Quote {
         this.content = content;
     }
 
-    public int getRating() {
+    public String getRating() {
         return rating;
     }
 
-    public void setRating(int rating) {
+    public void setRating(String rating) {
         this.rating = rating;
     }
 
