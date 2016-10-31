@@ -17,7 +17,7 @@ class QuotesAdapter(val quotes: List<Quote>, val listener: QuoteActionListener, 
     }
 
     override fun onBindViewHolder(holder: QuotesViewHolder, position: Int) {
-        holder.bindQuote(activity, quotes[position])
+        holder.bindQuote(activity, this@QuotesAdapter, quotes[position])
     }
 
     override fun getItemCount() = quotes.size
