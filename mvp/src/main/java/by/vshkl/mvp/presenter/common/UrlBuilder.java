@@ -23,12 +23,12 @@ public class UrlBuilder {
     private static final String SLASH = "/";
     private static final String DEFAULT_PARAM_BY_RATING = "1";
 
-    public static String BuildMainUrl(Subsection subsection, String currentIndex) {
+    public static String BuildMainUrl(Subsection subsection) {
         String resultingUrl = null;
 
         switch (subsection) {
             case INDEX:
-                resultingUrl = buildIndex(currentIndex);
+                resultingUrl = buildIndex();
                 break;
             case RANDOM:
                 resultingUrl = buildRandom();
@@ -87,10 +87,10 @@ public class UrlBuilder {
 
     //==================================================================================================================
 
-    private static String buildIndex(String currentIndex) {
+    private static String buildIndex() {
         StringBuilder sb = new StringBuilder(BASE_URL);
 
-        sb.append(INDEX).append(currentIndex);
+        sb.append(INDEX);
 
         return sb.toString();
     }

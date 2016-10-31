@@ -2,7 +2,6 @@ package by.vshkl.mvp.domain;
 
 import java.util.List;
 
-import by.vshkl.mvp.domain.common.ResponseMappingFunc;
 import by.vshkl.mvp.model.Comic;
 import by.vshkl.repository.Repository;
 import io.reactivex.Observable;
@@ -17,6 +16,6 @@ public class FetchComicsUsecase implements Usecase<List<Comic>> {
 
     @Override
     public Observable<List<Comic>> execute() {
-        return repository.getComics().map(new ResponseMappingFunc<List<Comic>>());
+        return repository.getComics();
     }
 }

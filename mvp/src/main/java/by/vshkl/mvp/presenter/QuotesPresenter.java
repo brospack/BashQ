@@ -22,7 +22,6 @@ public class QuotesPresenter implements Presenter<QuotesView> {
     private Disposable disposable;
     private List<Quote> quotes;
     private Subsection subsection;
-    private String currentIndex;
 
     public QuotesPresenter(FetchQuotesUsecase fetchQuotesUsecase, VoteQuoteUsecase voteQuoteUsecase) {
         this.fetchQuotesUsecase = fetchQuotesUsecase;
@@ -56,7 +55,6 @@ public class QuotesPresenter implements Presenter<QuotesView> {
     @Override
     public void attachView(QuotesView view) {
         this.view = view;
-        getQuotes();
     }
 
     //==================================================================================================================
@@ -65,23 +63,20 @@ public class QuotesPresenter implements Presenter<QuotesView> {
         this.subsection = subsection;
     }
 
-    public void setCurrentIndex(String currentIndex) {
-        this.currentIndex = currentIndex;
-    }
-
-
     //==================================================================================================================
 
-    private void getQuotes() {
-        String fullUrl = UrlBuilder.BuildMainUrl(subsection, currentIndex);
+    public void getQuotes() {
+        String fullUrl = UrlBuilder.BuildMainUrl(subsection);
 
+        view.showLoading();
         fetchQuotesUsecase.setFullUrl(fullUrl);
         disposable = fetchQuotesUsecase.execute()
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(Schedulers.newThread())
                 .onErrorReturn(new Function<Throwable, List<Quote>>() {
                     @Override
                     public List<Quote> apply(Throwable throwable) throws Exception {
                         throwable.printStackTrace();
+                        view.hideLoading();
                         view.showError(Errors.QUOTES_LOADING_FAILED);
                         return null;
                     }
@@ -90,8 +85,10 @@ public class QuotesPresenter implements Presenter<QuotesView> {
                     @Override
                     public void accept(List<Quote> quotes) throws Exception {
                         if (quotes != null) {
+                            view.hideLoading();
                             view.showQuotes(quotes);
                         } else {
+                            view.hideLoading();
                             view.showEmpty();
                         }
                     }
