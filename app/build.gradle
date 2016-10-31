@@ -46,6 +46,14 @@ dependencies {
     // Networking
     compile 'com.squareup.okhttp3:okhttp:3.4.1'
 
+    // Navigation drawer
+    compile('com.mikepenz:materialdrawer:5.7.0@aar') {
+        transitive = true
+    }
+
+    // Custom typeface
+    compile 'uk.co.chrisjenx:calligraphy:2.2.0'
+
     // MVP module
     compile project(':mvp')
 }
