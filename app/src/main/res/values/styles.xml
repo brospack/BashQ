@@ -13,8 +13,8 @@
     </style>
 
     <style name="AppThemeDark" parent="Theme.AppCompat.Light.DarkActionBar">
-        <item name="colorPrimary">@color/md_black_1000</item>
-        <item name="colorPrimaryDark">@color/md_black_1000</item>
+        <item name="colorPrimary">@color/colorPrimaryDark</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:windowContentTransitions">true</item>
     </style>

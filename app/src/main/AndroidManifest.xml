@@ -21,13 +21,6 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ui.activity.GalleryActivity"
-                  android:theme="@style/AppThemeDark.NoActionBar"
-            />
-
-        <activity android:name=".ui.activity.ComicActivity"
-                  android:theme="@style/AppThemeDark.NoActionBar"
-            />
     </application>
 
 </manifest>

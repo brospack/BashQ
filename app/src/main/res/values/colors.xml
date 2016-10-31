@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">@color/md_grey_900</color>
-    <color name="colorPrimaryDark">@color/md_black_1000</color>
-    <color name="colorAccent">@color/md_red_A700</color>
+    <color name="colorPrimary">#000000</color>
+    <color name="colorPrimaryDark">#000000</color>
+    <color name="colorAccent">#FFFFFF</color>
     <color name="colorTransparent">#00000000</color>
     <color name="colorSemiTransparent">#80000000</color>
     <!-- Text colors -->
-    <color name="colorPrimaryText">@color/md_grey_900</color>
-    <color name="colorSecondaryText">@color/md_grey_500</color>
+    <color name="colorPrimaryText">#000000</color>
+    <color name="colorSecondaryText">#000000</color>
     <!-- Divider -->
-    <color name="colorDivider">@color/md_grey_300</color>
+    <color name="colorDivider">#000000</color>
 </resources>
