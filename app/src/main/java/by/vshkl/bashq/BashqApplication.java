@@ -13,6 +13,7 @@ public class BashqApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        setupInjector();
     }
 
     public ApplicationComponent getApplicationComponent() {
