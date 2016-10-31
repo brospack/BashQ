@@ -11,11 +11,11 @@ public interface Repository {
 
     Observable<ResponseWrapper<List<Quote>>> getQuotes();
 
-    Observable<Quote> getQuote();
+    Observable<Quote> getQuote(String quoteId);
 
     Observable<Boolean> voteQuote(Quote.VoteState requiredVoteStatus);
 
     Observable<ResponseWrapper<List<Comic>>> getComics();
 
-    Observable<Comic> getComic();
+    Observable<Comic> getComic(String comicId);
 }
