@@ -1,19 +1,22 @@
 package by.vshkl.bashq.network;
 
 import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 import by.vshkl.mvp.model.Comic;
 import by.vshkl.mvp.model.Quote;
-import by.vshkl.mvp.model.ResponseWrapper;
 import by.vshkl.mvp.presenter.common.UrlBuilder;
 import by.vshkl.repository.Repository;
 import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
+import io.reactivex.schedulers.Schedulers;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.OkHttpClient;
@@ -23,6 +26,7 @@ import okhttp3.Response;
 public class NetworkRepository implements Repository {
 
     private OkHttpClient client;
+    private int currentMaxIndex;
 
     public NetworkRepository(OkHttpClient client) {
         this.client = client;
@@ -38,7 +42,7 @@ public class NetworkRepository implements Repository {
 
         client.newCall(request).enqueue(new Callback() {
             @Override
-            public void onFailure(Call call, IOException e) {
+            public void onFailure(okhttp3.Call call, IOException e) {
                 e.printStackTrace();
             }
 
@@ -51,39 +55,36 @@ public class NetworkRepository implements Repository {
             }
         });
 
+        currentMaxIndex = Integer.parseInt(index[0]);
         return Observable.just(index[0]);
     }
 
     @Override
-    public Observable<ResponseWrapper<List<Quote>>> getQuotes(String fullUrl) {
-        final ResponseWrapper<List<Quote>> responseWrapper = new ResponseWrapper<>();
-
-        Request request = new Request.Builder()
-                .url(fullUrl)
-                .build();
-
-        client.newCall(request).enqueue(new Callback() {
+    public Observable<List<Quote>> getQuotes(final String fullUrl) {
+        return Observable.defer(new Callable<ObservableSource<? extends List<Quote>>>() {
             @Override
-            public void onFailure(Call call, IOException e) {
-                e.printStackTrace();
-            }
+            public ObservableSource<? extends List<Quote>> call() throws Exception {
+                Request request = new Request.Builder()
+                        .url(fullUrl)
+                        .build();
 
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
                 List<Quote> quotes = new ArrayList<>();
-
-                Elements quoteElements = Jsoup.parse(response.body().toString()).select(".quote");
-                if (quoteElements != null) {
-                    for (Element quoteElement : quoteElements) {
-                        quotes.add(parseQuote(quoteElement));
+                try {
+                    Response response = client.newCall(request).execute();
+                    Document document = Jsoup.parse(response.body().string());
+                    Elements quoteElements = document.select(".quote");
+                    if (quoteElements != null) {
+                        for (Element quoteElement : quoteElements) {
+                            quotes.add(parseQuote(quoteElement));
+                        }
                     }
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
 
-                responseWrapper.body = quotes;
+                return Observable.just(quotes);
             }
-        });
-
-        return Observable.just(responseWrapper);
+        }).subscribeOn(Schedulers.newThread());
     }
 
     @Override
@@ -118,7 +119,7 @@ public class NetworkRepository implements Repository {
     }
 
     @Override
-    public Observable<ResponseWrapper<List<Comic>>> getComics() {
+    public Observable<List<Comic>> getComics() {
         return null;
     }
 
