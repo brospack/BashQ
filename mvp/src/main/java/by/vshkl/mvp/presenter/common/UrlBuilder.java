@@ -17,10 +17,10 @@ public class UrlBuilder {
     private static final String SLASH = "/";
     private static final String DEFAULT_PARAM_BY_RATING = "1";
 
-    public static String BuildUrl(Subsections subsections, String currentIndex) {
+    public static String BuildUrl(Subsection subsection, String currentIndex) {
         String resultingUrl = null;
 
-        switch (subsections) {
+        switch (subsection) {
             case INDEX:
                 resultingUrl = buildIndex(currentIndex);
             case RANDOM:

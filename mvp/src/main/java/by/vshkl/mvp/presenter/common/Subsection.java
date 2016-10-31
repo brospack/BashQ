@@ -1,6 +1,6 @@
 package by.vshkl.mvp.presenter.common;
 
-public enum Subsections {
+public enum Subsection {
     INDEX,
     RANDOM,
     BEST,
