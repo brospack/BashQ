@@ -1,5 +1,7 @@
 package by.vshkl.mvp.view;
 
+import by.vshkl.mvp.model.Errors;
+
 public interface View {
 
     void showEmpty();
@@ -8,5 +10,5 @@ public interface View {
 
     void hideLoading();
 
-    void showError(String errorMessage);
+    void showError(Errors errorType);
 }
