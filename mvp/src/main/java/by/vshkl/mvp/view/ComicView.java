@@ -1,6 +1,6 @@
-package by.vshkl.view;
+package by.vshkl.mvp.view;
 
-import by.vshkl.model.Comic;
+import by.vshkl.mvp.model.Comic;
 
 public interface ComicView extends View {
 

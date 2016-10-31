@@ -1,8 +1,8 @@
-package by.vshkl.view;
+package by.vshkl.mvp.view;
 
 import java.util.List;
 
-import by.vshkl.model.Quote;
+import by.vshkl.mvp.model.Quote;
 
 public interface QuotesView extends View {
 

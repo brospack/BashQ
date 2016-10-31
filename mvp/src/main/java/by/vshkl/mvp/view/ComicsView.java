@@ -1,8 +1,8 @@
-package by.vshkl.view;
+package by.vshkl.mvp.view;
 
 import java.util.List;
 
-import by.vshkl.model.Comic;
+import by.vshkl.mvp.model.Comic;
 
 public interface ComicsView extends View {
 

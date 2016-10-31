@@ -1,8 +1,8 @@
-package by.vshkl.model;
+package by.vshkl.mvp.model;
 
 public class Quote {
 
-    enum VoteState {
+    public enum VoteState {
         VOTED_NONE, VOTED_UP, VOTED_DOWN, VOTED_OLD
     }
 

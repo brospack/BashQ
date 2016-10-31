@@ -1,4 +1,4 @@
-package by.vshkl.view;
+package by.vshkl.mvp.view;
 
 public interface View {
 
