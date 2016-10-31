@@ -1,24 +1,33 @@
 <resources>
     <string name="app_name">BashQ</string>
+
     <!-- Actions -->
     <string name="action_settings">Settings</string>
     <string name="action_comic_share">Share comic</string>
     <string name="action_comic_share_pic">Share picture</string>
     <string name="action_comic_download_pic">Download pic</string>
     <string name="action_vote_old">[:||||:]</string>
+
     <!-- Drawer items -->
-    <string name="drawer_item_new">Новые</string>
-    <string name="drawer_item_random">Случайные</string>
-    <string name="drawer_item_best">Лучшие</string>
-    <string name="drawer_item_rating">По рейтингу</string>
-    <string name="drawer_item_abyss">Бездна</string>
-    <string name="drawer_item_abyss_top">Топ бездны</string>
-    <string name="drawer_item_abyss_best">Лучшее бездны</string>
-    <string name="drawer_item_gallery">Комиксы</string>
+    <string name="nd_new">Новые</string>
+    <string name="nd_random">Случайные</string>
+    <string name="nd_best">Лучшие</string>
+    <string name="nd_rating">По рейтингу</string>
+    <string name="nd_abyss">Бездна</string>
+    <string name="nd_abyss_top">Топ бездны</string>
+    <string name="nd_abyss_best">Лучшее бездны</string>
+    <string name="nd_comics">Комиксы</string>
+    <string name="nd_fav_quotes">Избранные цитаты</string>
+    <string name="nd_fav_comics">Избранные комиксы</string>
+    <string name="nd_settings">Настройки</string>
+    <string name="nd_fav">Избранное</string>
+    <string name="nd_other">Прочее</string>
+
     <!-- Messages -->
     <string name="message_error_connection">Ошибка соединения</string>
     <string name="message_error_vote">Ошибка. Голос не учтён</string>
     <string name="message_success_vote">Ваш голос учтён</string>
+
     <!-- Transitions -->
     <string name="comic_view_transition">COMIC_VIEW</string>
 </resources>
