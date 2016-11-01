@@ -4,13 +4,14 @@ import java.util.List;
 
 import by.vshkl.mvp.model.Comic;
 import by.vshkl.mvp.model.Quote;
+import by.vshkl.mvp.presenter.common.Subsection;
 import io.reactivex.Observable;
 
 public interface Repository {
 
     Observable<String> getNewestIndex();
 
-    Observable<List<Quote>> getQuotes(String fullUrl);
+    Observable<List<Quote>> getQuotes(Subsection subsection, boolean next);
 
     Observable<Quote> getQuote(String quoteId);
 

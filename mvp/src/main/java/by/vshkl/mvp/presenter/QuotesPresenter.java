@@ -7,7 +7,6 @@ import by.vshkl.mvp.domain.VoteQuoteUsecase;
 import by.vshkl.mvp.model.Errors;
 import by.vshkl.mvp.model.Quote;
 import by.vshkl.mvp.presenter.common.Subsection;
-import by.vshkl.mvp.presenter.common.UrlBuilder;
 import by.vshkl.mvp.view.QuotesView;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
@@ -37,7 +36,7 @@ public class QuotesPresenter implements Presenter<QuotesView> {
 
     @Override
     public void onStart() {
-        getQuotes();
+        getQuotes(false);
     }
 
     @Override
@@ -65,11 +64,11 @@ public class QuotesPresenter implements Presenter<QuotesView> {
 
     //==================================================================================================================
 
-    public void getQuotes() {
-        String fullUrl = UrlBuilder.BuildMainUrl(subsection);
-
+    public void getQuotes(boolean next) {
         view.showLoading();
-        fetchQuotesUsecase.setFullUrl(fullUrl);
+
+        fetchQuotesUsecase.setSubsection(subsection);
+        fetchQuotesUsecase.setNext(next);
         disposable = fetchQuotesUsecase.execute()
                 .subscribeOn(Schedulers.newThread())
                 .onErrorReturn(new Function<Throwable, List<Quote>>() {

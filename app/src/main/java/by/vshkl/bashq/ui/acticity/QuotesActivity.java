@@ -170,31 +170,31 @@ public class QuotesActivity extends AppCompatActivity implements QuotesView {
                         switch ((int) drawerItem.getIdentifier()) {
                             case 1:
                                 quotesPresenter.setSubsection(Subsection.INDEX);
-                                quotesPresenter.getQuotes();
+                                quotesPresenter.getQuotes(false);
                                 break;
                             case 2:
                                 quotesPresenter.setSubsection(Subsection.RANDOM);
-                                quotesPresenter.getQuotes();
+                                quotesPresenter.getQuotes(false);
                                 break;
                             case 3:
                                 quotesPresenter.setSubsection(Subsection.BEST);
-                                quotesPresenter.getQuotes();
+                                quotesPresenter.getQuotes(false);
                                 break;
                             case 4:
                                 quotesPresenter.setSubsection(Subsection.BY_RATING);
-                                quotesPresenter.getQuotes();
+                                quotesPresenter.getQuotes(false);
                                 break;
                             case 5:
                                 quotesPresenter.setSubsection(Subsection.ABYSS);
-                                quotesPresenter.getQuotes();
+                                quotesPresenter.getQuotes(false);
                                 break;
                             case 6:
                                 quotesPresenter.setSubsection(Subsection.ABYSS_TOP);
-                                quotesPresenter.getQuotes();
+                                quotesPresenter.getQuotes(false);
                                 break;
                             case 7:
                                 quotesPresenter.setSubsection(Subsection.ABYSS_BEST);
-                                quotesPresenter.getQuotes();
+                                quotesPresenter.getQuotes(false);
                                 break;
                             case 8:
                             case 9:

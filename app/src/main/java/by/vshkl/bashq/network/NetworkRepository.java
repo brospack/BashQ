@@ -12,6 +12,7 @@ import java.util.concurrent.Callable;
 
 import by.vshkl.mvp.model.Comic;
 import by.vshkl.mvp.model.Quote;
+import by.vshkl.mvp.presenter.common.Subsection;
 import by.vshkl.mvp.presenter.common.UrlBuilder;
 import by.vshkl.repository.Repository;
 import io.reactivex.Observable;
@@ -26,7 +27,7 @@ import okhttp3.Response;
 public class NetworkRepository implements Repository {
 
     private OkHttpClient client;
-    private int currentMaxIndex;
+    private String nextUrlPart = "";
 
     public NetworkRepository(OkHttpClient client) {
         this.client = client;
@@ -34,46 +35,45 @@ public class NetworkRepository implements Repository {
 
     @Override
     public Observable<String> getNewestIndex() {
-        final String[] index = new String[1];
-
-        Request request = new Request.Builder()
-                .url("http://bash.im")
-                .build();
-
-        client.newCall(request).enqueue(new Callback() {
+        return Observable.defer(new Callable<ObservableSource<? extends String>>() {
             @Override
-            public void onFailure(okhttp3.Call call, IOException e) {
-                e.printStackTrace();
-            }
+            public ObservableSource<? extends String> call() throws Exception {
+                Request request = new Request.Builder().url("http://bash.im").build();
 
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                Element pageElement = Jsoup.parse(response.body().toString()).select(".page").first();
-                if (pageElement != null) {
-                    index[0] = pageElement.attr("max");
+                String index = null;
+                try {
+                    Response response = client.newCall(request).execute();
+                    Document document = Jsoup.parse(response.body().string());
+
+                    Element pageElement = document.select(".page").first();
+                    if (pageElement != null) {
+                        index = pageElement.attr("max");
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-            }
-        });
 
-        currentMaxIndex = Integer.parseInt(index[0]);
-        return Observable.just(index[0]);
+                return Observable.just(index);
+            }
+        }).subscribeOn(Schedulers.newThread());
     }
 
     @Override
-    public Observable<List<Quote>> getQuotes(final String fullUrl) {
+    public Observable<List<Quote>> getQuotes(final Subsection subsection, final boolean next) {
         return Observable.defer(new Callable<ObservableSource<? extends List<Quote>>>() {
             @Override
             public ObservableSource<? extends List<Quote>> call() throws Exception {
-                Request request = new Request.Builder()
-                        .url(fullUrl)
-                        .build();
+                String fullUrl = UrlBuilder.BuildMainUrl(subsection);
+                if (next) {
+                    fullUrl += nextUrlPart;
+                }
+
+                Request request = new Request.Builder().url(fullUrl).build();
 
                 List<Quote> quotes = new ArrayList<>();
                 try {
                     Response response = client.newCall(request).execute();
                     Document document = Jsoup.parse(response.body().string());
-
-
 
                     Elements quoteElements = document.select(".quote");
                     if (quoteElements != null) {
