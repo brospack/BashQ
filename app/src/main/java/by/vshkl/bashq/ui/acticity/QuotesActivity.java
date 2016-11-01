@@ -23,6 +23,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import by.vshkl.bashq.BashqApplication;
 import by.vshkl.bashq.R;
 import by.vshkl.bashq.common.Navigator;
@@ -84,6 +85,18 @@ public class QuotesActivity extends AppCompatActivity implements QuotesView {
     protected void onStop() {
         super.onStop();
         quotesPresenter.onStop();
+    }
+
+    //==================================================================================================================
+
+    @OnClick(R.id.toolbar)
+    void onToolbarClicked() {
+        int position = ((LinearLayoutManager) rvQuotes.getLayoutManager()).findFirstVisibleItemPosition();
+        if (position <= 10) {
+            rvQuotes.smoothScrollToPosition(0);
+        } else {
+            rvQuotes.scrollToPosition(0);
+        }
     }
 
     //==================================================================================================================

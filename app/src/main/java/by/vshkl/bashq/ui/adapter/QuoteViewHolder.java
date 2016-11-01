@@ -8,7 +8,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import by.vshkl.bashq.R;
 
-public class QuoteViewHolder extends RecyclerView.ViewHolder {
+class QuoteViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.number)
     TextView tvNumber;
     @BindView(R.id.date)
@@ -19,7 +19,7 @@ public class QuoteViewHolder extends RecyclerView.ViewHolder {
     TextView tvRating;
 
 
-    public QuoteViewHolder(View itemView) {
+    QuoteViewHolder(View itemView) {
         super(itemView);
         ButterKnife.bind(this, itemView);
     }

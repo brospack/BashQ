@@ -72,10 +72,16 @@ public class NetworkRepository implements Repository {
                 try {
                     Response response = client.newCall(request).execute();
                     Document document = Jsoup.parse(response.body().string());
+
+
+
                     Elements quoteElements = document.select(".quote");
                     if (quoteElements != null) {
                         for (Element quoteElement : quoteElements) {
-                            quotes.add(parseQuote(quoteElement));
+                            Quote quote = parseQuote(quoteElement);
+                            if (quote.getId() != null) {
+                                quotes.add(parseQuote(quoteElement));
+                            }
                         }
                     }
                 } catch (IOException e) {
