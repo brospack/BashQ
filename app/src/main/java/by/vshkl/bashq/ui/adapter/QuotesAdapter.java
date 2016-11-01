@@ -1,6 +1,7 @@
 package by.vshkl.bashq.ui.adapter;
 
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,7 +28,7 @@ public class QuotesAdapter extends RecyclerView.Adapter<QuoteViewHolder> {
 
         holder.tvNumber.setText(quote.getId());
         holder.tvDate.setText(quote.getDate());
-        holder.tvContent.setText(quote.getContent());
+        holder.tvContent.setText(Html.fromHtml(quote.getContent()));
         holder.tvRating.setText(quote.getRating());
     }
 
