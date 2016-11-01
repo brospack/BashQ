@@ -84,6 +84,17 @@ public class NetworkRepository implements Repository {
                             }
                         }
                     }
+
+                    Element nextPageElement = document.select(".arr").last();
+                    if (nextPageElement != null) {
+                        nextUrlPart = nextPageElement.parent().select("a").attr("href");
+                    }
+
+                    Element nextRandomPageElement = document.select(".quote.more").first();
+                    if (nextRandomPageElement != null) {
+                        System.out.println(nextRandomPageElement.select("a").attr("href"));
+                    }
+
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
