@@ -9,8 +9,6 @@ import io.reactivex.Observable;
 
 public interface Repository {
 
-    Observable<String> getNewestIndex();
-
     Observable<List<Quote>> getQuotes(Subsection subsection, boolean next);
 
     Observable<Quote> getQuote(String quoteId);

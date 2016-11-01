@@ -33,6 +33,7 @@ import by.vshkl.bashq.injection.component.QuotesComponent;
 import by.vshkl.bashq.injection.module.ActivityModule;
 import by.vshkl.bashq.injection.module.NavigationModule;
 import by.vshkl.bashq.injection.module.QuotesModule;
+import by.vshkl.bashq.ui.adapter.EndlessScrollListener;
 import by.vshkl.bashq.ui.adapter.QuotesAdapter;
 import by.vshkl.mvp.model.Errors;
 import by.vshkl.mvp.model.Quote;
@@ -60,6 +61,8 @@ public class QuotesActivity extends AppCompatActivity implements QuotesView {
 
     private QuotesComponent quotesComponent;
     private QuotesAdapter quotesAdapter;
+    private EndlessScrollListener scrollListener;
+    private Subsection currentSubsection;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -169,31 +172,52 @@ public class QuotesActivity extends AppCompatActivity implements QuotesView {
                     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
                         switch ((int) drawerItem.getIdentifier()) {
                             case 1:
-                                quotesPresenter.setSubsection(Subsection.INDEX);
+                                currentSubsection = Subsection.INDEX;
+                                quotesPresenter.setSubsection(currentSubsection);
+                                quotesAdapter.clearQuotes();
+                                scrollListener.resetState();
                                 quotesPresenter.getQuotes(false);
                                 break;
                             case 2:
-                                quotesPresenter.setSubsection(Subsection.RANDOM);
+                                currentSubsection = Subsection.RANDOM;
+                                quotesPresenter.setSubsection(currentSubsection);
+                                quotesAdapter.clearQuotes();
+                                scrollListener.resetState();
                                 quotesPresenter.getQuotes(false);
                                 break;
                             case 3:
-                                quotesPresenter.setSubsection(Subsection.BEST);
+                                currentSubsection = Subsection.BEST;
+                                quotesPresenter.setSubsection(currentSubsection);
+                                quotesAdapter.clearQuotes();
+                                scrollListener.resetState();
                                 quotesPresenter.getQuotes(false);
                                 break;
                             case 4:
-                                quotesPresenter.setSubsection(Subsection.BY_RATING);
+                                currentSubsection = Subsection.BY_RATING;
+                                quotesPresenter.setSubsection(currentSubsection);
+                                quotesAdapter.clearQuotes();
+                                scrollListener.resetState();
                                 quotesPresenter.getQuotes(false);
                                 break;
                             case 5:
-                                quotesPresenter.setSubsection(Subsection.ABYSS);
+                                currentSubsection = Subsection.ABYSS;
+                                quotesPresenter.setSubsection(currentSubsection);
+                                quotesAdapter.clearQuotes();
+                                scrollListener.resetState();
                                 quotesPresenter.getQuotes(false);
                                 break;
                             case 6:
-                                quotesPresenter.setSubsection(Subsection.ABYSS_TOP);
+                                currentSubsection = Subsection.ABYSS_TOP;
+                                quotesPresenter.setSubsection(currentSubsection);
+                                quotesAdapter.clearQuotes();
+                                scrollListener.resetState();
                                 quotesPresenter.getQuotes(false);
                                 break;
                             case 7:
-                                quotesPresenter.setSubsection(Subsection.ABYSS_BEST);
+                                currentSubsection = Subsection.ABYSS_BEST;
+                                quotesPresenter.setSubsection(currentSubsection);
+                                quotesAdapter.clearQuotes();
+                                scrollListener.resetState();
                                 quotesPresenter.getQuotes(false);
                                 break;
                             case 8:
@@ -219,17 +243,35 @@ public class QuotesActivity extends AppCompatActivity implements QuotesView {
 
     private void initializePresenter() {
         quotesPresenter.attachView(QuotesActivity.this);
-        quotesPresenter.setSubsection(Subsection.INDEX);
+        currentSubsection = Subsection.INDEX;
+        quotesPresenter.setSubsection(currentSubsection);
     }
 
     private void initializeRecyclerView() {
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        rvQuotes.setLayoutManager(linearLayoutManager);
+
         quotesAdapter = new QuotesAdapter();
-        rvQuotes.setLayoutManager(new LinearLayoutManager(this));
         rvQuotes.setAdapter(quotesAdapter);
+
+        scrollListener = new EndlessScrollListener(linearLayoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                if (currentSubsection == Subsection.INDEX || currentSubsection == Subsection.RANDOM
+                        || currentSubsection == Subsection.BY_RATING || currentSubsection == Subsection.ABYSS
+                        || currentSubsection == Subsection.ABYSS_BEST) {
+                    quotesPresenter.getQuotes(true);
+                } else {
+                    // TODO: show message that end of list reached and instruction about what to do with dat problem
+                }
+            }
+        };
+        rvQuotes.addOnScrollListener(scrollListener);
+
     }
 
     private void addQuotes(List<Quote> quotes) {
-        quotesAdapter.setQuotes(quotes);
+        quotesAdapter.addQuotes(quotes);
         quotesAdapter.notifyDataSetChanged();
     }
 }

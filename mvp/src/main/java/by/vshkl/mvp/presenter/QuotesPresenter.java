@@ -36,7 +36,13 @@ public class QuotesPresenter implements Presenter<QuotesView> {
 
     @Override
     public void onStart() {
+        view.showLoading();
         getQuotes(false);
+    }
+
+    @Override
+    public void onPause() {
+
     }
 
     @Override
@@ -44,11 +50,6 @@ public class QuotesPresenter implements Presenter<QuotesView> {
         if (disposable != null && !disposable.isDisposed()) {
             disposable.dispose();
         }
-    }
-
-    @Override
-    public void onPause() {
-
     }
 
     @Override
@@ -65,8 +66,6 @@ public class QuotesPresenter implements Presenter<QuotesView> {
     //==================================================================================================================
 
     public void getQuotes(boolean next) {
-        view.showLoading();
-
         fetchQuotesUsecase.setSubsection(subsection);
         fetchQuotesUsecase.setNext(next);
         disposable = fetchQuotesUsecase.execute()

@@ -34,31 +34,6 @@ public class NetworkRepository implements Repository {
     }
 
     @Override
-    public Observable<String> getNewestIndex() {
-        return Observable.defer(new Callable<ObservableSource<? extends String>>() {
-            @Override
-            public ObservableSource<? extends String> call() throws Exception {
-                Request request = new Request.Builder().url("http://bash.im").build();
-
-                String index = null;
-                try {
-                    Response response = client.newCall(request).execute();
-                    Document document = Jsoup.parse(response.body().string());
-
-                    Element pageElement = document.select(".page").first();
-                    if (pageElement != null) {
-                        index = pageElement.attr("max");
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-                return Observable.just(index);
-            }
-        }).subscribeOn(Schedulers.newThread());
-    }
-
-    @Override
     public Observable<List<Quote>> getQuotes(final Subsection subsection, final boolean next) {
         return Observable.defer(new Callable<ObservableSource<? extends List<Quote>>>() {
             @Override
@@ -68,6 +43,7 @@ public class NetworkRepository implements Repository {
                     fullUrl += nextUrlPart;
                 }
 
+                System.out.println("LOADING FROM " + fullUrl);
                 Request request = new Request.Builder().url(fullUrl).build();
 
                 List<Quote> quotes = new ArrayList<>();
@@ -87,13 +63,16 @@ public class NetworkRepository implements Repository {
 
                     Element nextPageElement = document.select(".arr").last();
                     if (nextPageElement != null) {
-                        nextUrlPart = nextPageElement.parent().select("a").attr("href");
+                        String nextLink = nextPageElement.parent().select("a").attr("href");
+                        nextUrlPart = nextLink.substring(nextLink.lastIndexOf("/") + 1);
                     }
 
                     Element nextRandomPageElement = document.select(".quote.more").first();
                     if (nextRandomPageElement != null) {
-                        System.out.println(nextRandomPageElement.select("a").attr("href"));
+                        String nextLink = nextRandomPageElement.select("a").attr("href");
+                        nextUrlPart = nextLink.substring(nextLink.indexOf("?"));
                     }
+                    System.out.println("NEW URL PART IS " + nextUrlPart);
 
                 } catch (IOException e) {
                     e.printStackTrace();

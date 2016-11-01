@@ -133,7 +133,7 @@ public class UrlBuilder {
     private static String buildByRating() {
         StringBuilder sb = new StringBuilder(BASE_URL);
 
-        sb.append(BY_RATING).append(DEFAULT_PARAM_BY_RATING);
+        sb.append(BY_RATING);
 
         return sb.toString();
     }

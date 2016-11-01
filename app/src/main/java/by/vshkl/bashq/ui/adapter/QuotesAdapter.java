@@ -36,7 +36,11 @@ public class QuotesAdapter extends RecyclerView.Adapter<QuoteViewHolder> {
         return (this.quotes != null) ? this.quotes.size() : 0;
     }
 
-    public void setQuotes(List<Quote> quotes) {
-        this.quotes = quotes;
+    public void addQuotes(List<Quote> quotes) {
+        this.quotes.addAll(quotes);
+    }
+
+    public void clearQuotes() {
+        this.quotes.clear();
     }
 }
