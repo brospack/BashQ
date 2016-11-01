@@ -43,7 +43,6 @@ public class NetworkRepository implements Repository {
                     fullUrl += nextUrlPart;
                 }
 
-                System.out.println("LOADING FROM " + fullUrl);
                 Request request = new Request.Builder().url(fullUrl).build();
 
                 List<Quote> quotes = new ArrayList<>();
@@ -72,7 +71,6 @@ public class NetworkRepository implements Repository {
                         String nextLink = nextRandomPageElement.select("a").attr("href");
                         nextUrlPart = nextLink.substring(nextLink.indexOf("?"));
                     }
-                    System.out.println("NEW URL PART IS " + nextUrlPart);
 
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -136,10 +134,16 @@ public class NetworkRepository implements Repository {
             quote.setLink(quoteElement.attr("href"));
         }
 
-        // Retrieving quote's id and link for quotes from Abyss Top
-        Element quoteAbyssId = quoteElement.select(".abysstop").first();
+        // Retrieving quote's id and link for quotes from Abyss
+        Element quoteAbyssId = quoteElement.select(".id").first();
         if (quoteAbyssId != null) {
             quote.setId(quoteAbyssId.text());
+        }
+
+        // Retrieving quote's id and link for quotes from Abyss Top
+        Element quoteAbyssTopId = quoteElement.select(".abysstop").first();
+        if (quoteAbyssTopId != null) {
+            quote.setId(quoteAbyssTopId.text());
         }
 
         // Retrieving quote's date for ordinal quotes
