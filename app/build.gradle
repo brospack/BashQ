@@ -62,6 +62,9 @@ dependencies {
     // Date picker
     compile 'com.wdullaer:materialdatetimepicker:2.5.0'
 
+    // Floating action button menu
+    compile 'com.github.clans:fab:1.6.4'
+
     // MVP module
     compile project(':mvp')
 }

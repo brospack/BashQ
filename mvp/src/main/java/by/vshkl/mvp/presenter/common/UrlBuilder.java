@@ -113,7 +113,6 @@ public class UrlBuilder {
         StringBuilder sb = new StringBuilder(BASE_URL);
 
 //        sb.append(BEST_YEAR).append(String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
-        sb.append(BEST_YEAR);
 
         return sb.toString();
     }
@@ -125,7 +124,6 @@ public class UrlBuilder {
 //                .append(String.valueOf(Calendar.getInstance().get(Calendar.YEAR)))
 //                .append(SLASH)
 //                .append(String.valueOf(Calendar.getInstance().get(Calendar.MONTH)));
-        sb.append(BEST_MONTH);
 
         return sb.toString();
     }

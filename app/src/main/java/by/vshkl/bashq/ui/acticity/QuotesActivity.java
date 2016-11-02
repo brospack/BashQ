@@ -2,7 +2,6 @@ package by.vshkl.bashq.ui.acticity;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,6 +11,8 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 
+import com.github.clans.fab.FloatingActionButton;
+import com.github.clans.fab.FloatingActionMenu;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
@@ -61,7 +62,9 @@ public class QuotesActivity extends AppCompatActivity implements QuotesView, Dat
     RecyclerView rvQuotes;
     @BindView(R.id.pb_progress)
     ProgressBar pbProgress;
-    @BindView(R.id.fab_upload)
+    @BindView(R.id.fab_calendar_multiple)
+    FloatingActionMenu fabCalendarMenu;
+    @BindView(R.id.fab_calendar_single)
     FloatingActionButton fabCalendar;
 
     private QuotesComponent quotesComponent;
@@ -101,18 +104,18 @@ public class QuotesActivity extends AppCompatActivity implements QuotesView, Dat
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
         switch (currentSubsection) {
             case BEST_MONTH:
-                quotesPresenter.setUrlPartBest("bestmonth/" + year + "/" + monthOfYear);
+                quotesPresenter.setUrlPartBest("/bestmonth/" + year + "/" + monthOfYear);
                 quotesAdapter.clearQuotes();
                 quotesPresenter.getQuotes(false);
                 break;
             case BEST_YEAR:
-                quotesPresenter.setUrlPartBest("bestyear/" + year);
+                quotesPresenter.setUrlPartBest("/bestyear/" + year);
                 quotesAdapter.clearQuotes();
                 quotesPresenter.getQuotes(false);
                 break;
             case ABYSS_BEST:
                 quotesPresenter.setUrlPartBest(
-                        String.valueOf(year) + String.format("%02d", monthOfYear) + String.valueOf(dayOfMonth));
+                        String.valueOf(year) + String.format("%02d", monthOfYear) + String.format("%02d", dayOfMonth));
                 quotesAdapter.clearQuotes();
                 quotesPresenter.getQuotes(false);
                 break;
@@ -131,30 +134,23 @@ public class QuotesActivity extends AppCompatActivity implements QuotesView, Dat
         }
     }
 
-    @OnClick(R.id.fab_upload)
-    void onFabCalendarClicked() {
-        Calendar calendarMaxDate = Calendar.getInstance();
-        DatePickerDialog datePickerDialog = DatePickerDialog.newInstance(
-                QuotesActivity.this,
-                calendarMaxDate.get(Calendar.YEAR),
-                calendarMaxDate.get(Calendar.MONTH),
-                calendarMaxDate.get(Calendar.DAY_OF_MONTH)
-        );
-        datePickerDialog.setMaxDate(calendarMaxDate);
+    @OnClick(R.id.fab_calendar_multiple_month)
+    void onFabCalendarMultipleMonthClicked() {
+        currentSubsection = Subsection.BEST_MONTH;
+        quotesPresenter.setSubsection(currentSubsection);
+        showDatePickerDialog();
+    }
 
-        Calendar calendarMinDate = Calendar.getInstance();
-        if (currentSubsection == Subsection.ABYSS_BEST) {
-            calendarMinDate.set(Calendar.YEAR, calendarMaxDate.get(Calendar.YEAR) - 1);
-        } else {
-            calendarMinDate.set(Calendar.YEAR, 2004);
-            calendarMinDate.set(Calendar.MONTH, 8);
-            calendarMinDate.set(Calendar.DAY_OF_MONTH, 1);
-        }
-        datePickerDialog.setMinDate(calendarMinDate);
+    @OnClick(R.id.fab_calendar_multiple_year)
+    void onFabCalendarMultipleYearClicked() {
+        currentSubsection = Subsection.BEST_YEAR;
+        quotesPresenter.setSubsection(currentSubsection);
+        showDatePickerDialog();
+    }
 
-        datePickerDialog.showYearPickerFirst(true);
-
-        datePickerDialog.show(getFragmentManager(), "Pick a date");
+    @OnClick(R.id.fab_calendar_single)
+    void onFabCalendarSingleClicked() {
+        showDatePickerDialog();
     }
 
     //==================================================================================================================
@@ -313,10 +309,15 @@ public class QuotesActivity extends AppCompatActivity implements QuotesView, Dat
 
     private void toggleFloatingActionButton() {
         if (currentSubsection == Subsection.BEST || currentSubsection == Subsection.BEST_YEAR
-                || currentSubsection == Subsection.BEST_MONTH || currentSubsection == Subsection.ABYSS_BEST) {
+                || currentSubsection == Subsection.BEST_MONTH) {
+            fabCalendar.setVisibility(View.GONE);
+            fabCalendarMenu.setVisibility(View.VISIBLE);
+        } else if (currentSubsection == Subsection.ABYSS_BEST) {
             fabCalendar.setVisibility(View.VISIBLE);
+            fabCalendarMenu.setVisibility(View.GONE);
         } else {
             fabCalendar.setVisibility(View.GONE);
+            fabCalendarMenu.setVisibility(View.GONE);
         }
     }
 
@@ -341,6 +342,31 @@ public class QuotesActivity extends AppCompatActivity implements QuotesView, Dat
         };
         rvQuotes.addOnScrollListener(scrollListener);
 
+    }
+
+    private void showDatePickerDialog() {
+        Calendar calendarMaxDate = Calendar.getInstance();
+        DatePickerDialog datePickerDialog = DatePickerDialog.newInstance(
+                QuotesActivity.this,
+                calendarMaxDate.get(Calendar.YEAR),
+                calendarMaxDate.get(Calendar.MONTH),
+                calendarMaxDate.get(Calendar.DAY_OF_MONTH)
+        );
+        datePickerDialog.setMaxDate(calendarMaxDate);
+
+        Calendar calendarMinDate = Calendar.getInstance();
+        if (currentSubsection == Subsection.ABYSS_BEST) {
+            calendarMinDate.set(Calendar.YEAR, calendarMaxDate.get(Calendar.YEAR) - 1);
+        } else {
+            calendarMinDate.set(Calendar.YEAR, 2004);
+            calendarMinDate.set(Calendar.MONTH, 8);
+            calendarMinDate.set(Calendar.DAY_OF_MONTH, 1);
+        }
+        datePickerDialog.setMinDate(calendarMinDate);
+
+        datePickerDialog.showYearPickerFirst(true);
+
+        datePickerDialog.show(getFragmentManager(), "Pick a date");
     }
 
     private void addQuotes(List<Quote> quotes) {
