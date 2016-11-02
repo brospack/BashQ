@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#000000</color>
-    <color name="colorPrimaryDark">#000000</color>
-    <color name="colorAccent">#FF0000</color>
-    <color name="colorTransparent">#00000000</color>
-    <color name="colorSemiTransparent">#80000000</color>
-    <!-- Text colors -->
-    <color name="colorPrimaryText">#000000</color>
-    <color name="colorSecondaryText">#000000</color>
+    <!-- Main -->
+    <color name="colorPrimary">#009688</color>
+    <color name="colorPrimaryDark">#00796B</color>
+    <color name="colorPrimaryLight">#B2DFDB</color>
+    <color name="colorAccent">#FFC107</color>
+    <color name="colorBackgroundBack">#FAFAFA</color>
+    <color name="colorBackgroundFront">#FFFFFF</color>
+    <!-- Text -->
+    <color name="colorPrimaryText">#212121</color>
+    <color name="colorSecondaryText">#757575</color>
+    <!-- Icon -->
+    <color name="colorIcons">#757575</color>
     <!-- Divider -->
-    <color name="colorDivider">#000000</color>
+    <color name="colorDivider">#BDBDBD</color>
 </resources>

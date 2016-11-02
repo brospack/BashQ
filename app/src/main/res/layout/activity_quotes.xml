@@ -44,7 +44,7 @@
                 android:id="@+id/rv_quotes"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/md_grey_200"
+                android:background="@color/colorBackgroundBack"
                 />
 
         </android.support.v4.widget.SwipeRefreshLayout>
