@@ -65,6 +65,9 @@ dependencies {
     // Floating action button menu
     compile 'com.github.clans:fab:1.6.4'
 
+    // Fancy spark button
+    compile 'hanks.xyz:smallbang-library:0.1.2'
+
     // MVP module
     compile project(':mvp')
 }

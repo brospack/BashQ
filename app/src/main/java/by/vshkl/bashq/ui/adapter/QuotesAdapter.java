@@ -11,6 +11,7 @@ import java.util.List;
 
 import by.vshkl.bashq.R;
 import by.vshkl.mvp.model.Quote;
+import xyz.hanks.library.SmallBang;
 
 public class QuotesAdapter extends RecyclerView.Adapter<QuoteViewHolder> {
 
@@ -27,6 +28,7 @@ public class QuotesAdapter extends RecyclerView.Adapter<QuoteViewHolder> {
     }
 
     private List<Quote> quotes = new ArrayList<>();
+    private SmallBang bang;
     private OnVoteUpClickListener onVoteUpClickListener;
     private OnVoteDownClickListener onVoteDownClickListener;
     private OnVoteOldClickListener onVoteOldClickListener;
@@ -55,6 +57,7 @@ public class QuotesAdapter extends RecyclerView.Adapter<QuoteViewHolder> {
             holder.ivVoteUp.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    bang.bang(view, 75, null);
                     if (onVoteUpClickListener != null) {
                         onVoteUpClickListener.onVoteUpClicked(quote.getId());
                     }
@@ -63,6 +66,7 @@ public class QuotesAdapter extends RecyclerView.Adapter<QuoteViewHolder> {
             holder.ivVoteDown.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    bang.bang(view, 75, null);
                     if (onVoteDownClickListener != null) {
                         onVoteDownClickListener.onVoteDownClicked(quote.getId());
                     }
@@ -71,6 +75,7 @@ public class QuotesAdapter extends RecyclerView.Adapter<QuoteViewHolder> {
             holder.ivVoteOld.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    bang.bang(view, 75, null);
                     if (onVoteOldClickListener != null) {
                         onVoteOldClickListener.onVoteOldClicked(quote.getId());
                     }
@@ -90,6 +95,12 @@ public class QuotesAdapter extends RecyclerView.Adapter<QuoteViewHolder> {
 
     public void clearQuotes() {
         this.quotes.clear();
+    }
+
+    public void setSmallBang(SmallBang bang) {
+        this.bang = bang;
+        bang.setColors(new int[]{0xFF757575, 0xFFFFC107});
+        bang.setDotNumber(25);
     }
 
     public void setOnVoteUpClickListener(OnVoteUpClickListener onVoteUpClickListener) {

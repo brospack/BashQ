@@ -95,8 +95,7 @@
                 android:background="@drawable/ripple"
                 android:paddingBottom="8dp"
                 android:paddingTop="8dp"
-                android:rotation="45"
-                android:src="@drawable/ic_plus"
+                android:src="@drawable/ic_crux"
                 />
 
             <ImageView

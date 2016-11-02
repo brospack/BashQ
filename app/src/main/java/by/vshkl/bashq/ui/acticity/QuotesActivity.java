@@ -44,6 +44,7 @@ import by.vshkl.mvp.model.Quote;
 import by.vshkl.mvp.presenter.QuotesPresenter;
 import by.vshkl.mvp.presenter.common.Subsection;
 import by.vshkl.mvp.view.QuotesView;
+import xyz.hanks.library.SmallBang;
 
 public class QuotesActivity extends AppCompatActivity implements QuotesView, SwipeRefreshLayout.OnRefreshListener,
         Drawer.OnDrawerItemClickListener, DatePickerDialog.OnDateSetListener {
@@ -297,6 +298,7 @@ public class QuotesActivity extends AppCompatActivity implements QuotesView, Swi
         rvQuotes.setLayoutManager(linearLayoutManager);
 
         quotesAdapter = new QuotesAdapter();
+        quotesAdapter.setSmallBang(SmallBang.attach2Window(QuotesActivity.this));
         rvQuotes.setAdapter(quotesAdapter);
 
         rvQuotes.addOnScrollListener(new HidingScrollListener() {
