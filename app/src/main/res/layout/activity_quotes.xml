@@ -52,11 +52,22 @@
     </FrameLayout>
 
     <ProgressBar
-        android:id="@+id/progress"
+        android:id="@+id/pb_progress"
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_gravity="center"
         android:visibility="visible"
+        />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_upload"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        android:background="@color/colorAccent"
+        app:srcCompat="@drawable/ic_calendar"
+        android:visibility="gone"
         />
 
 </android.support.design.widget.CoordinatorLayout>

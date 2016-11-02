@@ -59,6 +59,9 @@ dependencies {
     // Custom typeface
     compile 'uk.co.chrisjenx:calligraphy:2.2.0'
 
+    // Date picker
+    compile 'com.wdullaer:materialdatetimepicker:2.5.0'
+
     // MVP module
     compile project(':mvp')
 }

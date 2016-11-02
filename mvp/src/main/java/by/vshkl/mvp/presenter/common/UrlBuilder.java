@@ -1,7 +1,5 @@
 package by.vshkl.mvp.presenter.common;
 
-import java.util.Calendar;
-
 import by.vshkl.mvp.model.Quote;
 
 public class UrlBuilder {
@@ -114,7 +112,8 @@ public class UrlBuilder {
     private static String buildBestYear() {
         StringBuilder sb = new StringBuilder(BASE_URL);
 
-        sb.append(BEST_YEAR).append(String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
+//        sb.append(BEST_YEAR).append(String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
+        sb.append(BEST_YEAR);
 
         return sb.toString();
     }
@@ -122,10 +121,11 @@ public class UrlBuilder {
     private static String buildBestMonth() {
         StringBuilder sb = new StringBuilder(BASE_URL);
 
-        sb.append(BEST_MONTH)
-                .append(String.valueOf(Calendar.getInstance().get(Calendar.YEAR)))
-                .append(SLASH)
-                .append(String.valueOf(Calendar.getInstance().get(Calendar.MONTH)));
+//        sb.append(BEST_MONTH)
+//                .append(String.valueOf(Calendar.getInstance().get(Calendar.YEAR)))
+//                .append(SLASH)
+//                .append(String.valueOf(Calendar.getInstance().get(Calendar.MONTH)));
+        sb.append(BEST_MONTH);
 
         return sb.toString();
     }
@@ -157,10 +157,11 @@ public class UrlBuilder {
     private static String buildAbyssBest() {
         StringBuilder sb = new StringBuilder(BASE_URL);
 
-        sb.append(ABYSS_BEST)
-                .append(String.valueOf(Calendar.getInstance().get(Calendar.YEAR)))
-                .append(String.valueOf(Calendar.getInstance().get(Calendar.MONTH)))
-                .append(String.valueOf(Calendar.getInstance().get(Calendar.DAY_OF_MONTH)));
+//        sb.append(ABYSS_BEST)
+//                .append(String.valueOf(Calendar.getInstance().get(Calendar.YEAR)))
+//                .append(String.valueOf(Calendar.getInstance().get(Calendar.MONTH)))
+//                .append(String.valueOf(Calendar.getInstance().get(Calendar.DAY_OF_MONTH)));
+        sb.append(ABYSS_BEST);
 
         return sb.toString();
     }

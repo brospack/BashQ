@@ -9,7 +9,7 @@ import io.reactivex.Observable;
 
 public interface Repository {
 
-    Observable<List<Quote>> getQuotes(Subsection subsection, boolean next);
+    Observable<List<Quote>> getQuotes(Subsection subsection, boolean next, String urlPartBest);
 
     Observable<Quote> getQuote(String quoteId);
 

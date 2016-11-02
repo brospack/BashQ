@@ -34,7 +34,7 @@ public class NetworkRepository implements Repository {
     }
 
     @Override
-    public Observable<List<Quote>> getQuotes(final Subsection subsection, final boolean next) {
+    public Observable<List<Quote>> getQuotes(final Subsection subsection, final boolean next, final String urlPartBest) {
         return Observable.defer(new Callable<ObservableSource<? extends List<Quote>>>() {
             @Override
             public ObservableSource<? extends List<Quote>> call() throws Exception {
@@ -43,7 +43,17 @@ public class NetworkRepository implements Repository {
                     fullUrl += nextUrlPart;
                 }
 
+                if (urlPartBest != null) {
+                    if (subsection == Subsection.BEST_MONTH || subsection == Subsection.BEST_YEAR
+                            || subsection == Subsection.ABYSS_BEST) {
+                        fullUrl = UrlBuilder.BuildMainUrl(subsection);
+                        fullUrl += urlPartBest;
+                    }
+                }
+
+                System.out.println(fullUrl);
                 Request request = new Request.Builder().url(fullUrl).build();
+
 
                 List<Quote> quotes = new ArrayList<>();
                 try {

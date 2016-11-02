@@ -11,6 +11,7 @@ public class FetchQuotesUsecase implements Usecase<List<Quote>> {
 
     private Repository repository;
     private Subsection subsection;
+    private String urlPartBest;
     private boolean next;
 
     public FetchQuotesUsecase(Repository repository) {
@@ -25,8 +26,12 @@ public class FetchQuotesUsecase implements Usecase<List<Quote>> {
         this.next = next;
     }
 
+    public void setUrlPartBest(String urlPartBest) {
+        this.urlPartBest = urlPartBest;
+    }
+
     @Override
     public Observable<List<Quote>> execute() {
-        return repository.getQuotes(subsection, next);
+        return repository.getQuotes(subsection, next, urlPartBest);
     }
 }

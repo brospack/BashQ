@@ -2,6 +2,7 @@ package by.vshkl.bashq.ui.acticity;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,7 +17,9 @@ import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.SectionDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
+import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
+import java.util.Calendar;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -41,7 +44,7 @@ import by.vshkl.mvp.presenter.QuotesPresenter;
 import by.vshkl.mvp.presenter.common.Subsection;
 import by.vshkl.mvp.view.QuotesView;
 
-public class QuotesActivity extends AppCompatActivity implements QuotesView {
+public class QuotesActivity extends AppCompatActivity implements QuotesView, DatePickerDialog.OnDateSetListener {
 
     @Inject
     QuotesPresenter quotesPresenter;
@@ -56,8 +59,10 @@ public class QuotesActivity extends AppCompatActivity implements QuotesView {
     SwipeRefreshLayout srlUpdate;
     @BindView(R.id.rv_quotes)
     RecyclerView rvQuotes;
-    @BindView(R.id.progress)
+    @BindView(R.id.pb_progress)
     ProgressBar pbProgress;
+    @BindView(R.id.fab_upload)
+    FloatingActionButton fabCalendar;
 
     private QuotesComponent quotesComponent;
     private QuotesAdapter quotesAdapter;
@@ -92,6 +97,30 @@ public class QuotesActivity extends AppCompatActivity implements QuotesView {
 
     //==================================================================================================================
 
+    @Override
+    public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
+        switch (currentSubsection) {
+            case BEST_MONTH:
+                quotesPresenter.setUrlPartBest("bestmonth/" + year + "/" + monthOfYear);
+                quotesAdapter.clearQuotes();
+                quotesPresenter.getQuotes(false);
+                break;
+            case BEST_YEAR:
+                quotesPresenter.setUrlPartBest("bestyear/" + year);
+                quotesAdapter.clearQuotes();
+                quotesPresenter.getQuotes(false);
+                break;
+            case ABYSS_BEST:
+                quotesPresenter.setUrlPartBest(
+                        String.valueOf(year) + String.format("%02d", monthOfYear) + String.valueOf(dayOfMonth));
+                quotesAdapter.clearQuotes();
+                quotesPresenter.getQuotes(false);
+                break;
+        }
+    }
+
+    //==================================================================================================================
+
     @OnClick(R.id.toolbar)
     void onToolbarClicked() {
         int position = ((LinearLayoutManager) rvQuotes.getLayoutManager()).findFirstVisibleItemPosition();
@@ -100,6 +129,32 @@ public class QuotesActivity extends AppCompatActivity implements QuotesView {
         } else {
             rvQuotes.scrollToPosition(0);
         }
+    }
+
+    @OnClick(R.id.fab_upload)
+    void onFabCalendarClicked() {
+        Calendar calendarMaxDate = Calendar.getInstance();
+        DatePickerDialog datePickerDialog = DatePickerDialog.newInstance(
+                QuotesActivity.this,
+                calendarMaxDate.get(Calendar.YEAR),
+                calendarMaxDate.get(Calendar.MONTH),
+                calendarMaxDate.get(Calendar.DAY_OF_MONTH)
+        );
+        datePickerDialog.setMaxDate(calendarMaxDate);
+
+        Calendar calendarMinDate = Calendar.getInstance();
+        if (currentSubsection == Subsection.ABYSS_BEST) {
+            calendarMinDate.set(Calendar.YEAR, calendarMaxDate.get(Calendar.YEAR) - 1);
+        } else {
+            calendarMinDate.set(Calendar.YEAR, 2004);
+            calendarMinDate.set(Calendar.MONTH, 8);
+            calendarMinDate.set(Calendar.DAY_OF_MONTH, 1);
+        }
+        datePickerDialog.setMinDate(calendarMinDate);
+
+        datePickerDialog.showYearPickerFirst(true);
+
+        datePickerDialog.show(getFragmentManager(), "Pick a date");
     }
 
     //==================================================================================================================
@@ -173,6 +228,7 @@ public class QuotesActivity extends AppCompatActivity implements QuotesView {
                         switch ((int) drawerItem.getIdentifier()) {
                             case 1:
                                 currentSubsection = Subsection.INDEX;
+                                toggleFloatingActionButton();
                                 quotesPresenter.setSubsection(currentSubsection);
                                 quotesAdapter.clearQuotes();
                                 scrollListener.resetState();
@@ -180,6 +236,7 @@ public class QuotesActivity extends AppCompatActivity implements QuotesView {
                                 break;
                             case 2:
                                 currentSubsection = Subsection.RANDOM;
+                                toggleFloatingActionButton();
                                 quotesPresenter.setSubsection(currentSubsection);
                                 quotesAdapter.clearQuotes();
                                 scrollListener.resetState();
@@ -187,6 +244,7 @@ public class QuotesActivity extends AppCompatActivity implements QuotesView {
                                 break;
                             case 3:
                                 currentSubsection = Subsection.BEST;
+                                toggleFloatingActionButton();
                                 quotesPresenter.setSubsection(currentSubsection);
                                 quotesAdapter.clearQuotes();
                                 scrollListener.resetState();
@@ -194,6 +252,7 @@ public class QuotesActivity extends AppCompatActivity implements QuotesView {
                                 break;
                             case 4:
                                 currentSubsection = Subsection.BY_RATING;
+                                toggleFloatingActionButton();
                                 quotesPresenter.setSubsection(currentSubsection);
                                 quotesAdapter.clearQuotes();
                                 scrollListener.resetState();
@@ -201,6 +260,7 @@ public class QuotesActivity extends AppCompatActivity implements QuotesView {
                                 break;
                             case 5:
                                 currentSubsection = Subsection.ABYSS;
+                                toggleFloatingActionButton();
                                 quotesPresenter.setSubsection(currentSubsection);
                                 quotesAdapter.clearQuotes();
                                 scrollListener.resetState();
@@ -208,6 +268,7 @@ public class QuotesActivity extends AppCompatActivity implements QuotesView {
                                 break;
                             case 6:
                                 currentSubsection = Subsection.ABYSS_TOP;
+                                toggleFloatingActionButton();
                                 quotesPresenter.setSubsection(currentSubsection);
                                 quotesAdapter.clearQuotes();
                                 scrollListener.resetState();
@@ -215,7 +276,9 @@ public class QuotesActivity extends AppCompatActivity implements QuotesView {
                                 break;
                             case 7:
                                 currentSubsection = Subsection.ABYSS_BEST;
+                                toggleFloatingActionButton();
                                 quotesPresenter.setSubsection(currentSubsection);
+                                quotesPresenter.setUrlPartBest(null);
                                 quotesAdapter.clearQuotes();
                                 scrollListener.resetState();
                                 quotesPresenter.getQuotes(false);
@@ -245,6 +308,16 @@ public class QuotesActivity extends AppCompatActivity implements QuotesView {
         quotesPresenter.attachView(QuotesActivity.this);
         currentSubsection = Subsection.INDEX;
         quotesPresenter.setSubsection(currentSubsection);
+        toggleFloatingActionButton();
+    }
+
+    private void toggleFloatingActionButton() {
+        if (currentSubsection == Subsection.BEST || currentSubsection == Subsection.BEST_YEAR
+                || currentSubsection == Subsection.BEST_MONTH || currentSubsection == Subsection.ABYSS_BEST) {
+            fabCalendar.setVisibility(View.VISIBLE);
+        } else {
+            fabCalendar.setVisibility(View.GONE);
+        }
     }
 
     private void initializeRecyclerView() {

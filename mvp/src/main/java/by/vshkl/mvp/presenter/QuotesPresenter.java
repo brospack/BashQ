@@ -21,6 +21,7 @@ public class QuotesPresenter implements Presenter<QuotesView> {
     private Disposable disposable;
     private List<Quote> quotes;
     private Subsection subsection;
+    private String urlPartBest;
 
     public QuotesPresenter(FetchQuotesUsecase fetchQuotesUsecase, VoteQuoteUsecase voteQuoteUsecase) {
         this.fetchQuotesUsecase = fetchQuotesUsecase;
@@ -63,11 +64,16 @@ public class QuotesPresenter implements Presenter<QuotesView> {
         this.subsection = subsection;
     }
 
+    public void setUrlPartBest(String urlPartBest) {
+        this.urlPartBest = urlPartBest;
+    }
+
     //==================================================================================================================
 
     public void getQuotes(boolean next) {
         fetchQuotesUsecase.setSubsection(subsection);
         fetchQuotesUsecase.setNext(next);
+        fetchQuotesUsecase.setUrlPartBest(urlPartBest);
         disposable = fetchQuotesUsecase.execute()
                 .subscribeOn(Schedulers.newThread())
                 .onErrorReturn(new Function<Throwable, List<Quote>>() {
