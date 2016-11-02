@@ -313,7 +313,6 @@ public class QuotesActivity extends AppCompatActivity implements QuotesView, Dra
         quotesAdapter.clearQuotes();
         scrollListener.resetState();
         quotesPresenter.getQuotes(next);
-        //TODO: add colour tint to images
     }
 
     private void addQuotes(List<Quote> quotes) {
