@@ -14,7 +14,22 @@ import by.vshkl.mvp.model.Quote;
 
 public class QuotesAdapter extends RecyclerView.Adapter<QuoteViewHolder> {
 
+    public interface OnVoteUpClickListener {
+        void onVoteUpClicked(String quoteId);
+    }
+
+    public interface OnVoteDownClickListener {
+        void onVoteDownClicked(String quoteId);
+    }
+
+    public interface OnVoteOldClickListener {
+        void onVoteOldClicked(String quoteId);
+    }
+
     private List<Quote> quotes = new ArrayList<>();
+    private OnVoteUpClickListener onVoteUpClickListener;
+    private OnVoteDownClickListener onVoteDownClickListener;
+    private OnVoteOldClickListener onVoteOldClickListener;
 
     @Override
     public QuoteViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -37,6 +52,30 @@ public class QuotesAdapter extends RecyclerView.Adapter<QuoteViewHolder> {
             holder.rlVotes.setVisibility(View.VISIBLE);
             holder.vVotesDivider.setVisibility(View.VISIBLE);
             holder.tvRating.setText(quote.getRating());
+            holder.ivVoteUp.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (onVoteUpClickListener != null) {
+                        onVoteUpClickListener.onVoteUpClicked(quote.getId());
+                    }
+                }
+            });
+            holder.ivVoteDown.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (onVoteDownClickListener != null) {
+                        onVoteDownClickListener.onVoteDownClicked(quote.getId());
+                    }
+                }
+            });
+            holder.ivVoteOld.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (onVoteOldClickListener != null) {
+                        onVoteOldClickListener.onVoteOldClicked(quote.getId());
+                    }
+                }
+            });
         }
     }
 
@@ -51,5 +90,17 @@ public class QuotesAdapter extends RecyclerView.Adapter<QuoteViewHolder> {
 
     public void clearQuotes() {
         this.quotes.clear();
+    }
+
+    public void setOnVoteUpClickListener(OnVoteUpClickListener onVoteUpClickListener) {
+        this.onVoteUpClickListener = onVoteUpClickListener;
+    }
+
+    public void setOnVoteDownClickListener(OnVoteDownClickListener onVoteDownClickListener) {
+        this.onVoteDownClickListener = onVoteDownClickListener;
+    }
+
+    public void setOnVoteOldClickListener(OnVoteOldClickListener onVoteOldClickListener) {
+        this.onVoteOldClickListener = onVoteOldClickListener;
     }
 }

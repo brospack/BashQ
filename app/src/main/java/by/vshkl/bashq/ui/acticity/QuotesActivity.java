@@ -72,6 +72,9 @@ public class QuotesActivity extends AppCompatActivity implements QuotesView, Swi
     private QuotesAdapter quotesAdapter;
     private EndlessScrollListener scrollListener;
     private Subsection currentSubsection;
+    private QuotesAdapter.OnVoteUpClickListener onVoteUpClickListener;
+    private QuotesAdapter.OnVoteDownClickListener onVoteDownClickListener;
+    private QuotesAdapter.OnVoteOldClickListener onVoteOldClickListener;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -260,6 +263,35 @@ public class QuotesActivity extends AppCompatActivity implements QuotesView, Swi
         toggleFloatingActionButton();
     }
 
+    private void initializeClickListeners() {
+        onVoteUpClickListener = new QuotesAdapter.OnVoteUpClickListener() {
+            @Override
+            public void onVoteUpClicked(String quoteId) {
+                quotesPresenter.setVoteQuoteId(quoteId);
+                quotesPresenter.setRequiredVoteState(Quote.VoteState.VOTED_UP);
+                quotesPresenter.voteQuote();
+            }
+        };
+
+        onVoteDownClickListener = new QuotesAdapter.OnVoteDownClickListener() {
+            @Override
+            public void onVoteDownClicked(String quoteId) {
+                quotesPresenter.setVoteQuoteId(quoteId);
+                quotesPresenter.setRequiredVoteState(Quote.VoteState.VOTED_DOWN);
+                quotesPresenter.voteQuote();
+            }
+        };
+
+        onVoteOldClickListener = new QuotesAdapter.OnVoteOldClickListener() {
+            @Override
+            public void onVoteOldClicked(String quoteId) {
+                quotesPresenter.setVoteQuoteId(quoteId);
+                quotesPresenter.setRequiredVoteState(Quote.VoteState.VOTED_OLD);
+                quotesPresenter.voteQuote();
+            }
+        };
+    }
+
     private void initializeRecyclerView() {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         rvQuotes.setLayoutManager(linearLayoutManager);
@@ -298,6 +330,11 @@ public class QuotesActivity extends AppCompatActivity implements QuotesView, Swi
             }
         };
         rvQuotes.addOnScrollListener(scrollListener);
+
+        initializeClickListeners();
+        quotesAdapter.setOnVoteUpClickListener(onVoteUpClickListener);
+        quotesAdapter.setOnVoteDownClickListener(onVoteDownClickListener);
+        quotesAdapter.setOnVoteOldClickListener(onVoteOldClickListener);
     }
 
     private void initializeSwipeRefreshLayout() {

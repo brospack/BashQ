@@ -7,10 +7,15 @@ import io.reactivex.Observable;
 public class VoteQuoteUsecase implements Usecase<Boolean> {
 
     private Repository repository;
+    private String quoteId;
     private Quote.VoteState requiredQuoteVoteState;
 
     public VoteQuoteUsecase(Repository repository) {
         this.repository = repository;
+    }
+
+    public void setQuoteId(String quoteId) {
+        this.quoteId = quoteId;
     }
 
     public void setRequiredQuoteVoteState(Quote.VoteState requiredQuoteVoteState) {
@@ -19,6 +24,6 @@ public class VoteQuoteUsecase implements Usecase<Boolean> {
 
     @Override
     public Observable<Boolean> execute() {
-        return repository.voteQuote(requiredQuoteVoteState);
+        return repository.voteQuote(quoteId, requiredQuoteVoteState);
     }
 }

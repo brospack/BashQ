@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import by.vshkl.mvp.model.Comic;
 import by.vshkl.mvp.model.Quote;
@@ -20,9 +22,13 @@ import io.reactivex.ObservableSource;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.Call;
 import okhttp3.Callback;
+import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
+
+import static android.R.attr.action;
 
 public class NetworkRepository implements Repository {
 
@@ -118,8 +124,27 @@ public class NetworkRepository implements Repository {
     }
 
     @Override
-    public Observable<Boolean> voteQuote(Quote.VoteState requiredVoteStatus) {
-        return null;
+    public Observable<Boolean> voteQuote(final String quoteId, final Quote.VoteState requiredVoteStatus) {
+        return Observable.defer(new Callable<ObservableSource<? extends Boolean>>() {
+            @Override
+            public ObservableSource<? extends Boolean> call() throws Exception {
+                String voteUrl = UrlBuilder.BuildVoteUrl(requiredVoteStatus, quoteId);
+
+                Request request = new Request.Builder()
+                        .url(UrlBuilder.BuildQuoteUrl(voteUrl))
+                        .post(RequestBody.create(MediaType.parse(
+                                "application/x-www-form-urlencoded; charset=UTF-8"),
+                                "quote=" + quoteId + "&act=" + action))
+                        .build();
+
+                Response response = client.newCall(request).execute();
+                if (response.isSuccessful()) {
+                    Observable.just(true);
+                }
+
+                return Observable.just(false);
+            }
+        }).subscribeOn(Schedulers.newThread());
     }
 
     @Override

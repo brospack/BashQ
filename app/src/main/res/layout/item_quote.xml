@@ -100,7 +100,7 @@
                 />
 
             <ImageView
-                android:id="@+id/voteMinus"
+                android:id="@+id/voteDown"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toStartOf="@+id/rating"
@@ -115,7 +115,7 @@
                 fontPath="fonts/Roboto-Regular.ttf"
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
-                android:layout_toStartOf="@+id/votePlus"
+                android:layout_toStartOf="@+id/voteUp"
                 android:paddingBottom="8dp"
                 android:paddingEnd="16dp"
                 android:paddingStart="16dp"
@@ -127,7 +127,7 @@
                 />
 
             <ImageView
-                android:id="@+id/votePlus"
+                android:id="@+id/voteUp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"

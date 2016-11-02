@@ -13,7 +13,7 @@ public interface Repository {
 
     Observable<Quote> getQuote(String quoteId);
 
-    Observable<Boolean> voteQuote(Quote.VoteState requiredVoteStatus);
+    Observable<Boolean> voteQuote(String quoteId, Quote.VoteState requiredVoteStatus);
 
     Observable<List<Comic>> getComics();
 

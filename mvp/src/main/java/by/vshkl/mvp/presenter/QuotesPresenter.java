@@ -19,9 +19,10 @@ public class QuotesPresenter implements Presenter<QuotesView> {
     private FetchQuotesUsecase fetchQuotesUsecase;
     private VoteQuoteUsecase voteQuoteUsecase;
     private Disposable disposable;
-    private List<Quote> quotes;
     private Subsection subsection;
     private String urlPartBest;
+    private String voteQuoteId;
+    private Quote.VoteState requiredVoteState;
 
     public QuotesPresenter(FetchQuotesUsecase fetchQuotesUsecase, VoteQuoteUsecase voteQuoteUsecase) {
         this.fetchQuotesUsecase = fetchQuotesUsecase;
@@ -68,6 +69,14 @@ public class QuotesPresenter implements Presenter<QuotesView> {
         this.urlPartBest = urlPartBest;
     }
 
+    public void setVoteQuoteId(String voteQuoteId) {
+        this.voteQuoteId = voteQuoteId;
+    }
+
+    public void setRequiredVoteState(Quote.VoteState requiredVoteState) {
+        this.requiredVoteState = requiredVoteState;
+    }
+
     //==================================================================================================================
 
     public void getQuotes(boolean next) {
@@ -81,7 +90,7 @@ public class QuotesPresenter implements Presenter<QuotesView> {
                     public List<Quote> apply(Throwable throwable) throws Exception {
                         throwable.printStackTrace();
                         view.hideLoading();
-                        view.showError(Errors.QUOTES_LOADING_FAILED);
+                        view.showError(Errors.QUOTES_LOAD_FAILED);
                         return null;
                     }
                 })
@@ -99,7 +108,28 @@ public class QuotesPresenter implements Presenter<QuotesView> {
                 });
     }
 
-    private void voteQuote(String quoteId) {
-
+    public void voteQuote() {
+        voteQuoteUsecase.setQuoteId(voteQuoteId);
+        voteQuoteUsecase.setRequiredQuoteVoteState(requiredVoteState);
+        disposable = voteQuoteUsecase.execute()
+                .subscribeOn(Schedulers.newThread())
+                .onErrorReturn(new Function<Throwable, Boolean>() {
+                    @Override
+                    public Boolean apply(Throwable throwable) throws Exception {
+                        throwable.printStackTrace();
+                        view.showError(Errors.QUOTES_VOTE_FAILED);
+                        return null;
+                    }
+                })
+                .subscribe(new Consumer<Boolean>() {
+                    @Override
+                    public void accept(Boolean aBoolean) throws Exception {
+                        if (aBoolean) {
+                            view.showMessage("Vote passed!");
+                        } else {
+                            view.showMessage("Vote failed!");
+                        }
+                    }
+                });
     }
 }

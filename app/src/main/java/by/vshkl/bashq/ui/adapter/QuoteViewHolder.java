@@ -2,6 +2,7 @@ package by.vshkl.bashq.ui.adapter;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -23,6 +24,12 @@ class QuoteViewHolder extends RecyclerView.ViewHolder {
     RelativeLayout rlVotes;
     @BindView(R.id.votesDivider)
     View vVotesDivider;
+    @BindView(R.id.voteUp)
+    ImageView ivVoteUp;
+    @BindView(R.id.voteDown)
+    ImageView ivVoteDown;
+    @BindView(R.id.voteOld)
+    ImageView ivVoteOld;
 
     QuoteViewHolder(View itemView) {
         super(itemView);
