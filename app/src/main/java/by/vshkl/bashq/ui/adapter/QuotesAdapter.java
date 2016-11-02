@@ -26,16 +26,18 @@ public class QuotesAdapter extends RecyclerView.Adapter<QuoteViewHolder> {
     public void onBindViewHolder(QuoteViewHolder holder, int position) {
         final Quote quote = quotes.get(position);
 
+        holder.tvNumber.setText(quote.getId());
+        holder.tvDate.setText(quote.getDate());
+        holder.tvContent.setText(Html.fromHtml(quote.getContent().trim()));
+
         if (quote.getRating() == null) {
             holder.rlVotes.setVisibility(View.GONE);
             holder.vVotesDivider.setVisibility(View.GONE);
         } else {
+            holder.rlVotes.setVisibility(View.VISIBLE);
+            holder.vVotesDivider.setVisibility(View.VISIBLE);
             holder.tvRating.setText(quote.getRating());
         }
-
-        holder.tvNumber.setText(quote.getId());
-        holder.tvDate.setText(quote.getDate());
-        holder.tvContent.setText(Html.fromHtml(quote.getContent()));
     }
 
     @Override
