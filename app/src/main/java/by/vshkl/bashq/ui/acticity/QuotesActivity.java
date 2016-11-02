@@ -45,7 +45,8 @@ import by.vshkl.mvp.presenter.QuotesPresenter;
 import by.vshkl.mvp.presenter.common.Subsection;
 import by.vshkl.mvp.view.QuotesView;
 
-public class QuotesActivity extends AppCompatActivity implements QuotesView, Drawer.OnDrawerItemClickListener, DatePickerDialog.OnDateSetListener {
+public class QuotesActivity extends AppCompatActivity implements QuotesView, SwipeRefreshLayout.OnRefreshListener,
+        Drawer.OnDrawerItemClickListener, DatePickerDialog.OnDateSetListener {
 
     @Inject
     QuotesPresenter quotesPresenter;
@@ -57,7 +58,7 @@ public class QuotesActivity extends AppCompatActivity implements QuotesView, Dra
     @BindView(R.id.fl_container)
     FrameLayout flContainer;
     @BindView(R.id.srl_update)
-    SwipeRefreshLayout srlUpdate;
+    SwipeRefreshLayout srlRefresh;
     @BindView(R.id.rv_quotes)
     RecyclerView rvQuotes;
     @BindView(R.id.pb_progress)
@@ -84,6 +85,8 @@ public class QuotesActivity extends AppCompatActivity implements QuotesView, Dra
         initializeDaggerComponent(((BashqApplication) getApplication()).getApplicationComponent());
         initializePresenter();
         initializeRecyclerView();
+        initializeSwipeRefreshLayout();
+        initializeFloatingActionButtons();
     }
 
     @Override
@@ -133,6 +136,11 @@ public class QuotesActivity extends AppCompatActivity implements QuotesView, Dra
     }
 
     @Override
+    public void onRefresh() {
+        handleUpdate();
+    }
+
+    @Override
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
         switch (currentSubsection) {
             case BEST_MONTH:
@@ -167,6 +175,7 @@ public class QuotesActivity extends AppCompatActivity implements QuotesView, Dra
         currentSubsection = Subsection.BEST_MONTH;
         quotesPresenter.setSubsection(currentSubsection);
         showDatePickerDialog();
+        fabCalendarMenu.close(true);
     }
 
     @OnClick(R.id.fab_calendar_multiple_year)
@@ -174,6 +183,7 @@ public class QuotesActivity extends AppCompatActivity implements QuotesView, Dra
         currentSubsection = Subsection.BEST_YEAR;
         quotesPresenter.setSubsection(currentSubsection);
         showDatePickerDialog();
+        fabCalendarMenu.close(true);
     }
 
     @OnClick(R.id.fab_calendar_single)
@@ -216,6 +226,7 @@ public class QuotesActivity extends AppCompatActivity implements QuotesView, Dra
             public void run() {
                 pbProgress.setVisibility(View.GONE);
                 flContainer.setVisibility(View.VISIBLE);
+                srlRefresh.setRefreshing(false);
             }
         });
     }
@@ -289,6 +300,19 @@ public class QuotesActivity extends AppCompatActivity implements QuotesView, Dra
         rvQuotes.addOnScrollListener(scrollListener);
     }
 
+    private void initializeSwipeRefreshLayout() {
+        srlRefresh.setOnRefreshListener(QuotesActivity.this);
+        srlRefresh.setColorSchemeResources(R.color.colorAccent);
+    }
+
+    private void initializeFloatingActionButtons() {
+        fabCalendar.setColorNormalResId(R.color.colorButtonNormal);
+        fabCalendar.setColorPressedResId(R.color.colorButtonPressed);
+
+        fabCalendarMenu.setMenuButtonColorNormalResId(R.color.colorButtonNormal);
+        fabCalendarMenu.setMenuButtonColorPressedResId(R.color.colorButtonPressed);
+    }
+
     private void toggleFloatingActionButton() {
         if (isScopeBest()) {
             fabCalendar.setVisibility(View.GONE);
@@ -313,6 +337,13 @@ public class QuotesActivity extends AppCompatActivity implements QuotesView, Dra
         quotesAdapter.clearQuotes();
         scrollListener.resetState();
         quotesPresenter.getQuotes(next);
+    }
+
+    private void handleUpdate() {
+        quotesAdapter.clearQuotes();
+        scrollListener.resetState();
+        quotesPresenter.setUrlPartBest(null);
+        quotesPresenter.getQuotes(false);
     }
 
     private void addQuotes(List<Quote> quotes) {

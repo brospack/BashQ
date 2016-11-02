@@ -18,6 +18,7 @@ public class DrawerHelper {
         return new DrawerBuilder().withActivity(activity)
                 .withToolbar(toolbar)
                 .withSavedInstance(savedInstanceState)
+                .withHeader(R.layout.drawer_header)
                 .addDrawerItems(
                         new PrimaryDrawerItem()
                                 .withName(R.string.nd_new)

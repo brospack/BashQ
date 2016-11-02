@@ -7,6 +7,9 @@
     <color name="colorAccent">#FFC107</color>
     <color name="colorBackgroundBack">#FAFAFA</color>
     <color name="colorBackgroundFront">#FFFFFF</color>
+    <!-- Buttons -->
+    <color name="colorButtonNormal">#FFC107</color>
+    <color name="colorButtonPressed">#FFA000</color>
     <!-- Text -->
     <color name="colorPrimaryText">#212121</color>
     <color name="colorSecondaryText">#757575</color>

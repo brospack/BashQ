@@ -15,10 +15,9 @@
         android:layout_margin="@dimen/fab_margin"
         android:src="@drawable/ic_calendar_single"
         android:visibility="gone"
-        fab:fab_colorNormal="@color/colorAccent"
-        fab:fab_hideAnimation="@anim/fab_scale_down"
-        fab:fab_showAnimation="@anim/fab_scale_up"
-        fab:fab_size="normal"
+        app:fab_hideAnimation="@anim/fab_scale_down"
+        app:fab_showAnimation="@anim/fab_scale_up"
+        app:fab_size="normal"
         />
 
     <com.github.clans.fab.FloatingActionMenu
@@ -28,14 +27,13 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
         android:visibility="gone"
-        fab:menu_icon="@drawable/ic_calendar_multiple"
-        fab:menu_fab_colorNormal="@color/colorAccent"
         fab:menu_fab_size="normal"
+        fab:menu_icon="@drawable/ic_calendar_multiple"
         fab:menu_labels_colorNormal="@color/colorBackgroundFront"
-        fab:menu_labels_textColor="@color/colorPrimaryText"
         fab:menu_labels_hideAnimation="@anim/fab_slide_out_to_right"
         fab:menu_labels_position="left"
         fab:menu_labels_showAnimation="@anim/fab_slide_in_from_right"
+        fab:menu_labels_textColor="@color/colorPrimaryText"
         fab:menu_openDirection="up"
         >
 
@@ -45,6 +43,7 @@
             android:layout_height="wrap_content"
             android:src="@drawable/ic_calendar_question"
             app:fab_colorNormal="@color/colorBackgroundFront"
+            app:fab_colorPressed="@color/colorBackgroundBack"
             app:fab_label="Best for month"
             app:fab_size="mini"
             />
@@ -55,6 +54,7 @@
             android:layout_height="wrap_content"
             android:src="@drawable/ic_calendar_question"
             app:fab_colorNormal="@color/colorBackgroundFront"
+            app:fab_colorPressed="@color/colorBackgroundBack"
             app:fab_label="Best for year"
             app:fab_size="mini"
             />
