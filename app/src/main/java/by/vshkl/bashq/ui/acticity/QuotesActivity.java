@@ -2,6 +2,7 @@ package by.vshkl.bashq.ui.acticity;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.AppBarLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -38,6 +39,7 @@ import by.vshkl.bashq.injection.module.ActivityModule;
 import by.vshkl.bashq.injection.module.NavigationModule;
 import by.vshkl.bashq.injection.module.QuotesModule;
 import by.vshkl.bashq.ui.adapter.EndlessScrollListener;
+import by.vshkl.bashq.ui.adapter.HidingScrollListener;
 import by.vshkl.bashq.ui.adapter.QuotesAdapter;
 import by.vshkl.mvp.model.Errors;
 import by.vshkl.mvp.model.Quote;
@@ -328,6 +330,28 @@ public class QuotesActivity extends AppCompatActivity implements QuotesView, Dat
         quotesAdapter = new QuotesAdapter();
         rvQuotes.setAdapter(quotesAdapter);
 
+        rvQuotes.addOnScrollListener(new HidingScrollListener() {
+            @Override
+            public void onHide() {
+                if (currentSubsection == Subsection.BEST || currentSubsection == Subsection.BEST_YEAR
+                        || currentSubsection == Subsection.BEST_MONTH) {
+                    fabCalendarMenu.hideMenuButton(true);
+                } else if (currentSubsection == Subsection.ABYSS_BEST) {
+                    fabCalendar.hide(true);
+                }
+            }
+
+            @Override
+            public void onShow() {
+                if (currentSubsection == Subsection.BEST || currentSubsection == Subsection.BEST_YEAR
+                        || currentSubsection == Subsection.BEST_MONTH) {
+                    fabCalendarMenu.showMenuButton(true);
+                } else if (currentSubsection == Subsection.ABYSS_BEST) {
+                    fabCalendar.show(true);
+                }
+            }
+        });
+
         scrollListener = new EndlessScrollListener(linearLayoutManager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
@@ -340,6 +364,7 @@ public class QuotesActivity extends AppCompatActivity implements QuotesView, Dat
                 }
             }
         };
+
         rvQuotes.addOnScrollListener(scrollListener);
 
     }
