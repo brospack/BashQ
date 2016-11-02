@@ -7,4 +7,6 @@ import by.vshkl.mvp.model.Quote;
 public interface QuotesView extends View {
 
     void showQuotes(List<Quote> quotes);
+
+    void showMessage(String message);
 }

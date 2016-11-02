@@ -18,6 +18,7 @@ import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
 import java.util.List;
+import java.util.Locale;
 
 import javax.inject.Inject;
 
@@ -145,8 +146,9 @@ public class QuotesActivity extends AppCompatActivity implements QuotesView, Dra
                 quotesPresenter.getQuotes(false);
                 break;
             case ABYSS_BEST:
-                quotesPresenter.setUrlPartBest(
-                        String.valueOf(year) + String.format("%02d", monthOfYear) + String.format("%02d", dayOfMonth));
+                Locale locale = Locale.getDefault();
+                quotesPresenter.setUrlPartBest(String.valueOf(year)
+                        + String.format(locale, "%02d", monthOfYear) + String.format(locale, "%02d", dayOfMonth));
                 quotesAdapter.clearQuotes();
                 quotesPresenter.getQuotes(false);
                 break;
@@ -157,12 +159,7 @@ public class QuotesActivity extends AppCompatActivity implements QuotesView, Dra
 
     @OnClick(R.id.toolbar)
     void onToolbarClicked() {
-        int position = ((LinearLayoutManager) rvQuotes.getLayoutManager()).findFirstVisibleItemPosition();
-        if (position <= 10) {
-            rvQuotes.smoothScrollToPosition(0);
-        } else {
-            rvQuotes.scrollToPosition(0);
-        }
+        rvQuotes.scrollToPosition(0);
     }
 
     @OnClick(R.id.fab_calendar_multiple_month)
@@ -225,6 +222,11 @@ public class QuotesActivity extends AppCompatActivity implements QuotesView, Dra
 
     @Override
     public void showError(Errors errorType) {
+
+    }
+
+    @Override
+    public void showMessage(String message) {
 
     }
 
