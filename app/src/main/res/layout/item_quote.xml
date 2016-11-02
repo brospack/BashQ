@@ -24,7 +24,6 @@
             android:id="@+id/frame_header"
             android:layout_width="match_parent"
             android:layout_height="32dp"
-            android:layout_gravity="center_vertical"
             android:paddingBottom="8dp"
             android:paddingTop="8dp"
             >
@@ -96,7 +95,8 @@
                 android:background="@drawable/ripple"
                 android:paddingBottom="8dp"
                 android:paddingTop="8dp"
-                android:src="@drawable/ic_bioreactor"
+                android:rotation="45"
+                android:src="@drawable/ic_plus"
                 />
 
             <ImageView
@@ -107,7 +107,7 @@
                 android:background="@drawable/ripple"
                 android:paddingBottom="8dp"
                 android:paddingTop="8dp"
-                android:src="@drawable/ic_thumb_down"
+                android:src="@drawable/ic_minus"
                 />
 
             <TextView
@@ -134,7 +134,7 @@
                 android:background="@drawable/ripple"
                 android:paddingBottom="8dp"
                 android:paddingTop="8dp"
-                android:src="@drawable/ic_thumb_up"
+                android:src="@drawable/ic_plus"
                 />
 
         </RelativeLayout>

@@ -14,13 +14,9 @@ import android.widget.ProgressBar;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.mikepenz.materialdrawer.Drawer;
-import com.mikepenz.materialdrawer.DrawerBuilder;
-import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
-import com.mikepenz.materialdrawer.model.SectionDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
-import java.util.Calendar;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -40,13 +36,15 @@ import by.vshkl.bashq.injection.module.QuotesModule;
 import by.vshkl.bashq.ui.adapter.EndlessScrollListener;
 import by.vshkl.bashq.ui.adapter.HidingScrollListener;
 import by.vshkl.bashq.ui.adapter.QuotesAdapter;
+import by.vshkl.bashq.ui.common.DialogHelper;
+import by.vshkl.bashq.ui.common.DrawerHelper;
 import by.vshkl.mvp.model.Errors;
 import by.vshkl.mvp.model.Quote;
 import by.vshkl.mvp.presenter.QuotesPresenter;
 import by.vshkl.mvp.presenter.common.Subsection;
 import by.vshkl.mvp.view.QuotesView;
 
-public class QuotesActivity extends AppCompatActivity implements QuotesView, DatePickerDialog.OnDateSetListener {
+public class QuotesActivity extends AppCompatActivity implements QuotesView, Drawer.OnDrawerItemClickListener, DatePickerDialog.OnDateSetListener {
 
     @Inject
     QuotesPresenter quotesPresenter;
@@ -81,7 +79,7 @@ public class QuotesActivity extends AppCompatActivity implements QuotesView, Dat
 
         setSupportActionBar(toolbar);
 
-        initializeNavigationDrawer(QuotesActivity.this, toolbar, savedInstanceState);
+        DrawerHelper.initializeDrawer(QuotesActivity.this, toolbar, savedInstanceState, QuotesActivity.this);
         initializeDaggerComponent(((BashqApplication) getApplication()).getApplicationComponent());
         initializePresenter();
         initializeRecyclerView();
@@ -100,6 +98,38 @@ public class QuotesActivity extends AppCompatActivity implements QuotesView, Dat
     }
 
     //==================================================================================================================
+
+    @Override
+    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+        switch ((int) drawerItem.getIdentifier()) {
+            case 1:
+                handleSectionClicked(Subsection.INDEX, false);
+                break;
+            case 2:
+                handleSectionClicked(Subsection.RANDOM, false);
+                break;
+            case 3:
+                handleSectionClicked(Subsection.BEST, false);
+                break;
+            case 4:
+                handleSectionClicked(Subsection.BY_RATING, false);
+                break;
+            case 5:
+                handleSectionClicked(Subsection.ABYSS, false);
+                break;
+            case 6:
+                handleSectionClicked(Subsection.ABYSS_TOP, false);
+                break;
+            case 7:
+                handleSectionClicked(Subsection.ABYSS_BEST, false);
+                break;
+            case 8:
+            case 9:
+            case 10:
+            case 11:
+        }
+        return false;
+    }
 
     @Override
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
@@ -200,97 +230,6 @@ public class QuotesActivity extends AppCompatActivity implements QuotesView, Dat
 
     //==================================================================================================================
 
-    private void initializeNavigationDrawer(AppCompatActivity activity, Toolbar toolbar, Bundle savedInstanceState) {
-        new DrawerBuilder().withActivity(activity)
-                .withToolbar(toolbar)
-                .withSavedInstance(savedInstanceState)
-                .addDrawerItems(
-                        new PrimaryDrawerItem().withName(R.string.nd_new).withIcon(R.drawable.ic_new).withIdentifier(1),
-                        new PrimaryDrawerItem().withName(R.string.nd_random).withIcon(R.drawable.ic_random).withIdentifier(2),
-                        new PrimaryDrawerItem().withName(R.string.nd_best).withIcon(R.drawable.ic_best).withIdentifier(3),
-                        new PrimaryDrawerItem().withName(R.string.nd_rating).withIcon(R.drawable.ic_rating).withIdentifier(4),
-                        new PrimaryDrawerItem().withName(R.string.nd_abyss).withIcon(R.drawable.ic_abyss).withIdentifier(5),
-                        new PrimaryDrawerItem().withName(R.string.nd_abyss_top).withIcon(R.drawable.ic_abyss_top).withIdentifier(6),
-                        new PrimaryDrawerItem().withName(R.string.nd_abyss_best).withIcon(R.drawable.ic_abyss_best).withIdentifier(7),
-                        new PrimaryDrawerItem().withName(R.string.nd_comics).withIcon(R.drawable.ic_comics).withIdentifier(8),
-                        new SectionDrawerItem().withName(R.string.nd_fav),
-                        new PrimaryDrawerItem().withName(R.string.nd_fav_quotes).withIcon(R.drawable.ic_favourite).withIdentifier(9),
-                        new PrimaryDrawerItem().withName(R.string.nd_fav_comics).withIcon(R.drawable.ic_favourite).withIdentifier(10),
-                        new SectionDrawerItem().withName(R.string.nd_other),
-                        new PrimaryDrawerItem().withName(R.string.nd_settings).withIcon(R.drawable.ic_settings).withIdentifier(11)
-                )
-                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
-                    @Override
-                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
-                        switch ((int) drawerItem.getIdentifier()) {
-                            case 1:
-                                currentSubsection = Subsection.INDEX;
-                                toggleFloatingActionButton();
-                                quotesPresenter.setSubsection(currentSubsection);
-                                quotesAdapter.clearQuotes();
-                                scrollListener.resetState();
-                                quotesPresenter.getQuotes(false);
-                                break;
-                            case 2:
-                                currentSubsection = Subsection.RANDOM;
-                                toggleFloatingActionButton();
-                                quotesPresenter.setSubsection(currentSubsection);
-                                quotesAdapter.clearQuotes();
-                                scrollListener.resetState();
-                                quotesPresenter.getQuotes(false);
-                                break;
-                            case 3:
-                                currentSubsection = Subsection.BEST;
-                                toggleFloatingActionButton();
-                                quotesPresenter.setSubsection(currentSubsection);
-                                quotesAdapter.clearQuotes();
-                                scrollListener.resetState();
-                                quotesPresenter.getQuotes(false);
-                                break;
-                            case 4:
-                                currentSubsection = Subsection.BY_RATING;
-                                toggleFloatingActionButton();
-                                quotesPresenter.setSubsection(currentSubsection);
-                                quotesAdapter.clearQuotes();
-                                scrollListener.resetState();
-                                quotesPresenter.getQuotes(false);
-                                break;
-                            case 5:
-                                currentSubsection = Subsection.ABYSS;
-                                toggleFloatingActionButton();
-                                quotesPresenter.setSubsection(currentSubsection);
-                                quotesAdapter.clearQuotes();
-                                scrollListener.resetState();
-                                quotesPresenter.getQuotes(false);
-                                break;
-                            case 6:
-                                currentSubsection = Subsection.ABYSS_TOP;
-                                toggleFloatingActionButton();
-                                quotesPresenter.setSubsection(currentSubsection);
-                                quotesAdapter.clearQuotes();
-                                scrollListener.resetState();
-                                quotesPresenter.getQuotes(false);
-                                break;
-                            case 7:
-                                currentSubsection = Subsection.ABYSS_BEST;
-                                toggleFloatingActionButton();
-                                quotesPresenter.setSubsection(currentSubsection);
-                                quotesPresenter.setUrlPartBest(null);
-                                quotesAdapter.clearQuotes();
-                                scrollListener.resetState();
-                                quotesPresenter.getQuotes(false);
-                                break;
-                            case 8:
-                            case 9:
-                            case 10:
-                            case 11:
-                        }
-                        return false;
-                    }
-                })
-                .build();
-    }
-
     private void initializeDaggerComponent(ApplicationComponent applicationComponent) {
         quotesComponent = DaggerQuotesComponent.builder()
                 .quotesModule(new QuotesModule())
@@ -308,20 +247,6 @@ public class QuotesActivity extends AppCompatActivity implements QuotesView, Dat
         toggleFloatingActionButton();
     }
 
-    private void toggleFloatingActionButton() {
-        if (currentSubsection == Subsection.BEST || currentSubsection == Subsection.BEST_YEAR
-                || currentSubsection == Subsection.BEST_MONTH) {
-            fabCalendar.setVisibility(View.GONE);
-            fabCalendarMenu.setVisibility(View.VISIBLE);
-        } else if (currentSubsection == Subsection.ABYSS_BEST) {
-            fabCalendar.setVisibility(View.VISIBLE);
-            fabCalendarMenu.setVisibility(View.GONE);
-        } else {
-            fabCalendar.setVisibility(View.GONE);
-            fabCalendarMenu.setVisibility(View.GONE);
-        }
-    }
-
     private void initializeRecyclerView() {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         rvQuotes.setLayoutManager(linearLayoutManager);
@@ -332,20 +257,18 @@ public class QuotesActivity extends AppCompatActivity implements QuotesView, Dat
         rvQuotes.addOnScrollListener(new HidingScrollListener() {
             @Override
             public void onHide() {
-                if (currentSubsection == Subsection.BEST || currentSubsection == Subsection.BEST_YEAR
-                        || currentSubsection == Subsection.BEST_MONTH) {
+                if (isScopeBest()) {
                     fabCalendarMenu.hideMenuButton(true);
-                } else if (currentSubsection == Subsection.ABYSS_BEST) {
+                } else if (isScopeBestAbyss()) {
                     fabCalendar.hide(true);
                 }
             }
 
             @Override
             public void onShow() {
-                if (currentSubsection == Subsection.BEST || currentSubsection == Subsection.BEST_YEAR
-                        || currentSubsection == Subsection.BEST_MONTH) {
+                if (isScopeBest()) {
                     fabCalendarMenu.showMenuButton(true);
-                } else if (currentSubsection == Subsection.ABYSS_BEST) {
+                } else if (isScopeBestAbyss()) {
                     fabCalendar.show(true);
                 }
             }
@@ -354,47 +277,62 @@ public class QuotesActivity extends AppCompatActivity implements QuotesView, Dat
         scrollListener = new EndlessScrollListener(linearLayoutManager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
-                if (currentSubsection == Subsection.INDEX || currentSubsection == Subsection.RANDOM
-                        || currentSubsection == Subsection.BY_RATING || currentSubsection == Subsection.ABYSS
-                        || currentSubsection == Subsection.ABYSS_BEST) {
+                if (isScopeCanLoadMore()) {
                     quotesPresenter.getQuotes(true);
                 } else {
                     // TODO: show message that end of list reached and instruction about what to do with dat problem
                 }
             }
         };
-
         rvQuotes.addOnScrollListener(scrollListener);
+    }
 
+    private void toggleFloatingActionButton() {
+        if (isScopeBest()) {
+            fabCalendar.setVisibility(View.GONE);
+            fabCalendarMenu.setVisibility(View.VISIBLE);
+        } else if (isScopeBestAbyss()) {
+            fabCalendar.setVisibility(View.VISIBLE);
+            fabCalendarMenu.setVisibility(View.GONE);
+        } else {
+            fabCalendar.setVisibility(View.GONE);
+            fabCalendarMenu.setVisibility(View.GONE);
+        }
     }
 
     private void showDatePickerDialog() {
-        Calendar calendarMaxDate = Calendar.getInstance();
-        DatePickerDialog datePickerDialog = DatePickerDialog.newInstance(
-                QuotesActivity.this,
-                calendarMaxDate.get(Calendar.YEAR),
-                calendarMaxDate.get(Calendar.MONTH),
-                calendarMaxDate.get(Calendar.DAY_OF_MONTH)
-        );
-        datePickerDialog.setMaxDate(calendarMaxDate);
+        DialogHelper.showDatePickerDialog(QuotesActivity.this, currentSubsection);
+    }
 
-        Calendar calendarMinDate = Calendar.getInstance();
-        if (currentSubsection == Subsection.ABYSS_BEST) {
-            calendarMinDate.set(Calendar.YEAR, calendarMaxDate.get(Calendar.YEAR) - 1);
-        } else {
-            calendarMinDate.set(Calendar.YEAR, 2004);
-            calendarMinDate.set(Calendar.MONTH, 8);
-            calendarMinDate.set(Calendar.DAY_OF_MONTH, 1);
-        }
-        datePickerDialog.setMinDate(calendarMinDate);
-
-        datePickerDialog.showYearPickerFirst(true);
-
-        datePickerDialog.show(getFragmentManager(), "Pick a date");
+    private void handleSectionClicked(Subsection subsection, boolean next) {
+        currentSubsection = subsection;
+        toggleFloatingActionButton();
+        quotesPresenter.setSubsection(currentSubsection);
+        quotesAdapter.clearQuotes();
+        scrollListener.resetState();
+        quotesPresenter.getQuotes(next);
+        //TODO: add colour tint to images
     }
 
     private void addQuotes(List<Quote> quotes) {
         quotesAdapter.addQuotes(quotes);
         quotesAdapter.notifyDataSetChanged();
+    }
+
+    //==================================================================================================================
+
+    private boolean isScopeBest() {
+        return currentSubsection == Subsection.BEST || currentSubsection == Subsection.BEST_YEAR
+                || currentSubsection == Subsection.BEST_MONTH;
+    }
+
+    private boolean isScopeBestAbyss() {
+        return currentSubsection == Subsection.ABYSS_BEST;
+    }
+
+    private boolean isScopeCanLoadMore() {
+        return currentSubsection == Subsection.INDEX || currentSubsection == Subsection.RANDOM
+                || currentSubsection == Subsection.BY_RATING || currentSubsection == Subsection.ABYSS
+                || currentSubsection == Subsection.ABYSS_BEST;
     }
 }
