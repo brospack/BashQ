@@ -10,9 +10,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import by.vshkl.bashq.R;
+import by.vshkl.bashq.ui.common.RatingHelper;
 import by.vshkl.mvp.model.Quote;
+import by.vshkl.mvp.model.Rating;
 import xyz.hanks.library.SmallBang;
 
+import static by.vshkl.mvp.model.Quote.VoteState.VOTED_DOWN;
+import static by.vshkl.mvp.model.Quote.VoteState.VOTED_OLD;
 import static by.vshkl.mvp.model.Quote.VoteState.VOTED_UP;
 
 public class QuotesAdapter extends RecyclerView.Adapter<QuoteViewHolder> {
@@ -66,7 +70,10 @@ public class QuotesAdapter extends RecyclerView.Adapter<QuoteViewHolder> {
                 public void onClick(View view) {
                     bang.bang(view, 75, null);
                     if (onVoteUpClickListener != null) {
-                        onVoteUpClickListener.onVoteUpClicked(quote.getId());
+                        if (quote.getVoteCount() == 0) {
+                            onVoteUpClickListener.onVoteUpClicked(quote.getId());
+                        }
+                        notifyDataSetChanged();
                     }
                     updateVoteState(VOTED_UP, holder, quotePosition);
                 }
@@ -76,9 +83,12 @@ public class QuotesAdapter extends RecyclerView.Adapter<QuoteViewHolder> {
                 public void onClick(View view) {
                     bang.bang(view, 75, null);
                     if (onVoteDownClickListener != null) {
-                        onVoteDownClickListener.onVoteDownClicked(quote.getId());
+                        if (quote.getVoteCount() == 0) {
+                            onVoteDownClickListener.onVoteDownClicked(quote.getId());
+                        }
+                        notifyDataSetChanged();
                     }
-                    updateVoteState(VOTED_UP, holder, quotePosition);
+                    updateVoteState(VOTED_DOWN, holder, quotePosition);
                 }
             });
             holder.ivVoteOld.setOnClickListener(new View.OnClickListener() {
@@ -86,9 +96,12 @@ public class QuotesAdapter extends RecyclerView.Adapter<QuoteViewHolder> {
                 public void onClick(View view) {
                     bang.bang(view, 75, null);
                     if (onVoteOldClickListener != null) {
-                        onVoteOldClickListener.onVoteOldClicked(quote.getId());
+                        if (quote.getVoteCount() == 0) {
+                            onVoteOldClickListener.onVoteOldClicked(quote.getId());
+                        }
+                        notifyDataSetChanged();
                     }
-                    updateVoteState(VOTED_UP, holder, quotePosition);
+                    updateVoteState(VOTED_OLD, holder, quotePosition);
                 }
             });
         }
@@ -102,8 +115,17 @@ public class QuotesAdapter extends RecyclerView.Adapter<QuoteViewHolder> {
     //==================================================================================================================
 
     private void updateVoteState(Quote.VoteState voteState, QuoteViewHolder holder, int position) {
-        quotes.get(position).setVoteState(voteState);
+        Quote quote = quotes.get(position);
+
+        quote.setVoteState(voteState);
         updateVoteStateImage(voteState, holder);
+
+        Rating rating = RatingHelper.updateRating(voteState, new Rating(quote.getRating(), quote.getVoteCount()));
+
+        quote.setVoteCount(rating.getVoteCount());
+        quote.setRating(rating.getRating());
+
+        quotes.set(position, quote);
     }
 
     private void updateVoteStateImage(Quote.VoteState voteState, QuoteViewHolder holder) {

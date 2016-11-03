@@ -12,6 +12,7 @@ public class Quote {
     private String content;
     private String rating;
     private VoteState voteState = VoteState.VOTED_NONE;
+    private int voteCount = 0;
 
     public Quote() {
     }
@@ -62,6 +63,14 @@ public class Quote {
 
     public void setVoteState(VoteState voteState) {
         this.voteState = voteState;
+    }
+
+    public int getVoteCount() {
+        return voteCount;
+    }
+
+    public void setVoteCount(int voteCount) {
+        this.voteCount = voteCount;
     }
 
     @Override

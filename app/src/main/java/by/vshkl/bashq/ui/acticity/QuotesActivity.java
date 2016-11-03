@@ -278,7 +278,6 @@ public class QuotesActivity extends AppCompatActivity implements QuotesView, Swi
                 quotesPresenter.setVoteQuoteId(quoteId);
                 quotesPresenter.setRequiredVoteState(Quote.VoteState.VOTED_UP);
                 quotesPresenter.voteQuote();
-                quotesAdapter.notifyDataSetChanged();
             }
         };
 
@@ -288,7 +287,6 @@ public class QuotesActivity extends AppCompatActivity implements QuotesView, Swi
                 quotesPresenter.setVoteQuoteId(quoteId);
                 quotesPresenter.setRequiredVoteState(Quote.VoteState.VOTED_DOWN);
                 quotesPresenter.voteQuote();
-                quotesAdapter.notifyDataSetChanged();
             }
         };
 
@@ -298,7 +296,6 @@ public class QuotesActivity extends AppCompatActivity implements QuotesView, Swi
                 quotesPresenter.setVoteQuoteId(quoteId);
                 quotesPresenter.setRequiredVoteState(Quote.VoteState.VOTED_OLD);
                 quotesPresenter.voteQuote();
-                quotesAdapter.notifyDataSetChanged();
             }
         };
     }
