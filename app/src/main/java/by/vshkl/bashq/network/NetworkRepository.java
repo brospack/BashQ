@@ -60,32 +60,33 @@ public class NetworkRepository implements Repository {
                 List<Quote> quotes = new ArrayList<>();
                 try {
                     Response response = client.newCall(request).execute();
-                    Document document = Jsoup.parse(response.body().string());
+                    try {
+                        Document document = Jsoup.parse(response.body().string());
 
-                    Elements quoteElements = document.select(".quote");
-                    if (quoteElements != null) {
-                        for (Element quoteElement : quoteElements) {
-                            Quote quote = parseQuote(quoteElement);
-                            if (quote.getId() != null) {
-                                quotes.add(parseQuote(quoteElement));
+                        Elements quoteElements = document.select(".quote");
+                        if (quoteElements != null) {
+                            for (Element quoteElement : quoteElements) {
+                                Quote quote = parseQuote(quoteElement);
+                                if (quote.getId() != null) {
+                                    quotes.add(parseQuote(quoteElement));
+                                }
                             }
                         }
-                    }
 
-                    Element nextPageElement = document.select(".arr").last();
-                    if (nextPageElement != null) {
-                        String nextLink = nextPageElement.parent().select("a").attr("href");
-                        nextUrlPart = nextLink.substring(nextLink.lastIndexOf("/") + 1);
-                    }
+                        Element nextPageElement = document.select(".arr").last();
+                        if (nextPageElement != null) {
+                            String nextLink = nextPageElement.parent().select("a").attr("href");
+                            nextUrlPart = nextLink.substring(nextLink.lastIndexOf("/") + 1);
+                        }
 
-                    Element nextRandomPageElement = document.select(".quote.more").first();
-                    if (nextRandomPageElement != null) {
-                        String nextLink = nextRandomPageElement.select("a").attr("href");
-                        nextUrlPart = nextLink.substring(nextLink.indexOf("?"));
+                        Element nextRandomPageElement = document.select(".quote.more").first();
+                        if (nextRandomPageElement != null) {
+                            String nextLink = nextRandomPageElement.select("a").attr("href");
+                            nextUrlPart = nextLink.substring(nextLink.indexOf("?"));
+                        }
+                    } finally {
+                        response.close();
                     }
-
-                    response.body().close();
-                    response.close();
 
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -136,13 +137,17 @@ public class NetworkRepository implements Repository {
                                 "quote=" + quoteId + "&act=" + action))
                         .build();
 
-                if (request != null) {
+                try {
                     Response response = client.newCall(request).execute();
-                    if (response.isSuccessful()) {
-                        Observable.just(true);
+                    try {
+                        if (response.isSuccessful()) {
+                            Observable.just(true);
+                        }
+                    } finally {
+                        response.close();
                     }
-                    response.body().close();
-                    response.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
 
                 return Observable.just(false);
