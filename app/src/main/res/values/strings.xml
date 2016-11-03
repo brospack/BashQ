@@ -12,10 +12,14 @@
     <string name="nd_new">Новые</string>
     <string name="nd_random">Случайные</string>
     <string name="nd_best">Лучшие</string>
+    <string name="nd_best_day_week">Лучшие за неделю</string>
+    <string name="nd_best_month">Лучшие за %1$s</string>
+    <string name="nd_best_year">Лучшие за  %1$s</string>
     <string name="nd_rating">По рейтингу</string>
     <string name="nd_abyss">Бездна</string>
     <string name="nd_abyss_top">Топ бездны</string>
     <string name="nd_abyss_best">Лучшее бездны</string>
+    <string name="nd_abyss_best_param">Лучшее бездны за %1$s</string>
     <string name="nd_comics">Комиксы</string>
     <string name="nd_fav_quotes">Избранные цитаты</string>
     <string name="nd_fav_comics">Избранные комиксы</string>

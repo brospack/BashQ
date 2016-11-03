@@ -9,5 +9,9 @@ public enum Subsection {
     BY_RATING,
     ABYSS,
     ABYSS_TOP,
-    ABYSS_BEST
+    ABYSS_BEST,
+    COMIC,
+    FAVOURITE_QUOTES,
+    FAVOURITE_COMICS,
+    SETTINGS
 }

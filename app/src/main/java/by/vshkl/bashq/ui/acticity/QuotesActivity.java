@@ -39,6 +39,7 @@ import by.vshkl.bashq.ui.adapter.HidingScrollListener;
 import by.vshkl.bashq.ui.adapter.QuotesAdapter;
 import by.vshkl.bashq.ui.common.DialogHelper;
 import by.vshkl.bashq.ui.common.DrawerHelper;
+import by.vshkl.bashq.ui.common.ToolbarTitleHelper;
 import by.vshkl.mvp.model.Errors;
 import by.vshkl.mvp.model.Quote;
 import by.vshkl.mvp.presenter.QuotesPresenter;
@@ -73,6 +74,7 @@ public class QuotesActivity extends AppCompatActivity implements QuotesView, Swi
     private QuotesAdapter quotesAdapter;
     private EndlessScrollListener scrollListener;
     private Subsection currentSubsection;
+    private String datePart = null;
     private QuotesAdapter.OnVoteUpClickListener onVoteUpClickListener;
     private QuotesAdapter.OnVoteDownClickListener onVoteDownClickListener;
     private QuotesAdapter.OnVoteOldClickListener onVoteOldClickListener;
@@ -148,16 +150,20 @@ public class QuotesActivity extends AppCompatActivity implements QuotesView, Swi
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
         switch (currentSubsection) {
             case BEST_MONTH:
+                datePart = (new StringBuilder().append(monthOfYear).append(".").append(year)).toString();
                 quotesPresenter.setUrlPartBest("/bestmonth/" + year + "/" + monthOfYear);
                 quotesAdapter.clearQuotes();
                 quotesPresenter.getQuotes(false);
                 break;
             case BEST_YEAR:
+                datePart = String.valueOf(year);
                 quotesPresenter.setUrlPartBest("/bestyear/" + year);
                 quotesAdapter.clearQuotes();
                 quotesPresenter.getQuotes(false);
                 break;
             case ABYSS_BEST:
+                datePart = (new StringBuilder()
+                        .append(dayOfMonth).append(".").append(monthOfYear).append(".").append(year)).toString();
                 Locale locale = Locale.getDefault();
                 quotesPresenter.setUrlPartBest(String.valueOf(year)
                         + String.format(locale, "%02d", monthOfYear) + String.format(locale, "%02d", dayOfMonth));
@@ -203,6 +209,7 @@ public class QuotesActivity extends AppCompatActivity implements QuotesView, Swi
             @Override
             public void run() {
                 addQuotes(quotes);
+                toolbar.setTitle(ToolbarTitleHelper.GetToolbarTitle(QuotesActivity.this, currentSubsection, datePart));
             }
         });
     }
