@@ -9,8 +9,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import by.vshkl.mvp.model.Comic;
 import by.vshkl.mvp.model.Quote;
@@ -57,9 +55,7 @@ public class NetworkRepository implements Repository {
                     }
                 }
 
-                System.out.println(fullUrl);
                 Request request = new Request.Builder().url(fullUrl).build();
-
 
                 List<Quote> quotes = new ArrayList<>();
                 try {
@@ -87,6 +83,9 @@ public class NetworkRepository implements Repository {
                         String nextLink = nextRandomPageElement.select("a").attr("href");
                         nextUrlPart = nextLink.substring(nextLink.indexOf("?"));
                     }
+
+                    response.body().close();
+                    response.close();
 
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -137,9 +136,13 @@ public class NetworkRepository implements Repository {
                                 "quote=" + quoteId + "&act=" + action))
                         .build();
 
-                Response response = client.newCall(request).execute();
-                if (response.isSuccessful()) {
-                    Observable.just(true);
+                if (request != null) {
+                    Response response = client.newCall(request).execute();
+                    if (response.isSuccessful()) {
+                        Observable.just(true);
+                    }
+                    response.body().close();
+                    response.close();
                 }
 
                 return Observable.just(false);
