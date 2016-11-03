@@ -13,6 +13,8 @@ import by.vshkl.bashq.R;
 import by.vshkl.mvp.model.Quote;
 import xyz.hanks.library.SmallBang;
 
+import static by.vshkl.mvp.model.Quote.VoteState.VOTED_UP;
+
 public class QuotesAdapter extends RecyclerView.Adapter<QuoteViewHolder> {
 
     public interface OnVoteUpClickListener {
@@ -32,6 +34,7 @@ public class QuotesAdapter extends RecyclerView.Adapter<QuoteViewHolder> {
     private OnVoteUpClickListener onVoteUpClickListener;
     private OnVoteDownClickListener onVoteDownClickListener;
     private OnVoteOldClickListener onVoteOldClickListener;
+    private QuoteViewHolder viewHolder;
 
     @Override
     public QuoteViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -40,8 +43,9 @@ public class QuotesAdapter extends RecyclerView.Adapter<QuoteViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(QuoteViewHolder holder, int position) {
+    public void onBindViewHolder(final QuoteViewHolder holder, int position) {
         final Quote quote = quotes.get(position);
+        final int quotePosition = position;
 
         holder.tvNumber.setText(quote.getId());
         holder.tvDate.setText(quote.getDate());
@@ -53,6 +57,9 @@ public class QuotesAdapter extends RecyclerView.Adapter<QuoteViewHolder> {
         } else {
             holder.rlVotes.setVisibility(View.VISIBLE);
             holder.vVotesDivider.setVisibility(View.VISIBLE);
+
+            updateVoteStateImage(quote.getVoteState(), holder);
+
             holder.tvRating.setText(quote.getRating());
             holder.ivVoteUp.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -61,6 +68,7 @@ public class QuotesAdapter extends RecyclerView.Adapter<QuoteViewHolder> {
                     if (onVoteUpClickListener != null) {
                         onVoteUpClickListener.onVoteUpClicked(quote.getId());
                     }
+                    updateVoteState(VOTED_UP, holder, quotePosition);
                 }
             });
             holder.ivVoteDown.setOnClickListener(new View.OnClickListener() {
@@ -70,6 +78,7 @@ public class QuotesAdapter extends RecyclerView.Adapter<QuoteViewHolder> {
                     if (onVoteDownClickListener != null) {
                         onVoteDownClickListener.onVoteDownClicked(quote.getId());
                     }
+                    updateVoteState(VOTED_UP, holder, quotePosition);
                 }
             });
             holder.ivVoteOld.setOnClickListener(new View.OnClickListener() {
@@ -79,6 +88,7 @@ public class QuotesAdapter extends RecyclerView.Adapter<QuoteViewHolder> {
                     if (onVoteOldClickListener != null) {
                         onVoteOldClickListener.onVoteOldClicked(quote.getId());
                     }
+                    updateVoteState(VOTED_UP, holder, quotePosition);
                 }
             });
         }
@@ -87,6 +97,38 @@ public class QuotesAdapter extends RecyclerView.Adapter<QuoteViewHolder> {
     @Override
     public int getItemCount() {
         return (this.quotes != null) ? this.quotes.size() : 0;
+    }
+
+    //==================================================================================================================
+
+    private void updateVoteState(Quote.VoteState voteState, QuoteViewHolder holder, int position) {
+        quotes.get(position).setVoteState(voteState);
+        updateVoteStateImage(voteState, holder);
+    }
+
+    private void updateVoteStateImage(Quote.VoteState voteState, QuoteViewHolder holder) {
+        switch (voteState) {
+            case VOTED_UP:
+                holder.ivVoteUp.setImageResource(R.drawable.ic_plus_selected);
+                holder.ivVoteDown.setImageResource(R.drawable.ic_minus);
+                holder.ivVoteOld.setImageResource(R.drawable.ic_crux);
+                break;
+            case VOTED_DOWN:
+                holder.ivVoteUp.setImageResource(R.drawable.ic_plus);
+                holder.ivVoteDown.setImageResource(R.drawable.ic_minus_selected);
+                holder.ivVoteOld.setImageResource(R.drawable.ic_crux);
+                break;
+            case VOTED_OLD:
+                holder.ivVoteUp.setImageResource(R.drawable.ic_plus);
+                holder.ivVoteDown.setImageResource(R.drawable.ic_minus);
+                holder.ivVoteOld.setImageResource(R.drawable.ic_crux_selected);
+                break;
+            default:
+                holder.ivVoteUp.setImageResource(R.drawable.ic_plus);
+                holder.ivVoteDown.setImageResource(R.drawable.ic_minus);
+                holder.ivVoteOld.setImageResource(R.drawable.ic_crux);
+                break;
+        }
     }
 
     public void addQuotes(List<Quote> quotes) {
@@ -99,7 +141,7 @@ public class QuotesAdapter extends RecyclerView.Adapter<QuoteViewHolder> {
 
     public void setSmallBang(SmallBang bang) {
         this.bang = bang;
-        bang.setColors(new int[]{0xFF757575, 0xFFFFC107});
+        bang.setColors(new int[]{0xFFFFC107, 0xFFFFC107});
         bang.setDotNumber(25);
     }
 
