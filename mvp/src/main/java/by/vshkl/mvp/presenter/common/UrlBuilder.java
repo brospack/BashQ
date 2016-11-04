@@ -17,6 +17,7 @@ public class UrlBuilder {
     private static final String ABYSS_BEST = "/abyssbest/";
 
     public static final String QUOTE = "/quote/";
+    public static final String COMIC = "/comics/";
 
     private static final String SLASH = "/";
     private static final String DEFAULT_PARAM_BY_RATING = "1";
@@ -80,6 +81,14 @@ public class UrlBuilder {
         StringBuilder sb = new StringBuilder(BASE_URL);
 
         sb.append(QUOTE).append(quoteId.substring(1));
+
+        return sb.toString();
+    }
+
+    public static String BuildComicUrl(String comicLinkPart) {
+        StringBuilder sb = new StringBuilder(BASE_URL);
+
+        sb.append(COMIC);
 
         return sb.toString();
     }
