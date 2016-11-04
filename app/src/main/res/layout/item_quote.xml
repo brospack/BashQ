@@ -7,8 +7,8 @@
     android:layout_height="wrap_content"
     android:layout_marginBottom="8dp"
     android:background="@android:color/white"
-    app:cardElevation="2dp"
     app:cardCornerRadius="0dp"
+    app:cardElevation="2dp"
     >
 
     <LinearLayout
@@ -20,39 +20,67 @@
         android:orientation="vertical"
         >
 
-        <FrameLayout
-            android:id="@+id/frame_header"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="32dp"
+            android:orientation="horizontal"
             android:paddingBottom="8dp"
             android:paddingTop="8dp"
             >
 
-            <TextView
-                android:id="@+id/number"
-                fontPath="fonts/Roboto-Regular.ttf"
-                android:layout_width="wrap_content"
-                android:layout_height="16dp"
-                android:layout_gravity="start"
-                android:textAlignment="center"
-                android:textColor="@color/colorSecondaryText"
-                android:textSize="14sp"
-                tools:text="#444444"
-                />
+            <FrameLayout
+                android:id="@+id/frame_header"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="85"
+                >
+
+                <TextView
+                    android:id="@+id/number"
+                    fontPath="fonts/Roboto-Regular.ttf"
+                    android:layout_width="wrap_content"
+                    android:layout_height="16dp"
+                    android:layout_gravity="start"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorSecondaryText"
+                    android:textSize="14sp"
+                    tools:text="#444444"
+                    />
+
+                <TextView
+                    android:id="@+id/date"
+                    fontPath="fonts/Roboto-Regular.ttf"
+                    android:layout_width="wrap_content"
+                    android:layout_height="16dp"
+                    android:layout_gravity="end"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorSecondaryText"
+                    android:textSize="14sp"
+                    tools:text="2016-07-28 13:12"
+                    />
+
+            </FrameLayout>
 
             <TextView
-                android:id="@+id/date"
+                android:id="@+id/comic"
                 fontPath="fonts/Roboto-Regular.ttf"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="16dp"
                 android:layout_gravity="end"
+                android:layout_marginStart="8dp"
+                android:layout_weight="15"
+                android:gravity="end"
+                android:shadowColor="@color/colorIcons"
+                android:shadowRadius="1"
                 android:textAlignment="center"
-                android:textColor="@color/colorSecondaryText"
+                android:textAllCaps="true"
+                android:textColor="@color/colorAccent"
                 android:textSize="14sp"
-                tools:text="2016-07-28 13:12"
+                android:visibility="gone"
+                tools:text="Comic"
                 />
 
-        </FrameLayout>
+        </LinearLayout>
 
         <View
             android:layout_width="match_parent"
