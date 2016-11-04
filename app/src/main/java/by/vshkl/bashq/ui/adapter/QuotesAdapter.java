@@ -33,12 +33,16 @@ public class QuotesAdapter extends RecyclerView.Adapter<QuoteViewHolder> {
         void onVoteOldClicked(String quoteId);
     }
 
+    public interface OnQuoteItemLongClickListener {
+        void onQuoteItemLongClicked(Quote quote);
+    }
+
     private List<Quote> quotes = new ArrayList<>();
     private SmallBang bang;
     private OnVoteUpClickListener onVoteUpClickListener;
     private OnVoteDownClickListener onVoteDownClickListener;
     private OnVoteOldClickListener onVoteOldClickListener;
-    private QuoteViewHolder viewHolder;
+    private OnQuoteItemLongClickListener onQuoteItemLongClickListener;
 
     @Override
     public QuoteViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -54,6 +58,15 @@ public class QuotesAdapter extends RecyclerView.Adapter<QuoteViewHolder> {
         holder.tvNumber.setText(quote.getId());
         holder.tvDate.setText(quote.getDate());
         holder.tvContent.setText(Html.fromHtml(quote.getContent().trim()));
+        holder.tvContent.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                if (onQuoteItemLongClickListener != null) {
+                    onQuoteItemLongClickListener.onQuoteItemLongClicked(quote);
+                }
+                return true;
+            }
+        });
 
         if (quote.getRating() == null) {
             holder.rlVotes.setVisibility(View.GONE);
@@ -177,5 +190,9 @@ public class QuotesAdapter extends RecyclerView.Adapter<QuoteViewHolder> {
 
     public void setOnVoteOldClickListener(OnVoteOldClickListener onVoteOldClickListener) {
         this.onVoteOldClickListener = onVoteOldClickListener;
+    }
+
+    public void setOnQuoteItemLongClickListener(OnQuoteItemLongClickListener onQuoteItemLongClickListener) {
+        this.onQuoteItemLongClickListener = onQuoteItemLongClickListener;
     }
 }

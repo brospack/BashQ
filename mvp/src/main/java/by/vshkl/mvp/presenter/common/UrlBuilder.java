@@ -79,7 +79,7 @@ public class UrlBuilder {
     public static String BuildQuoteUrl(String quoteId) {
         StringBuilder sb = new StringBuilder(BASE_URL);
 
-        sb.append(QUOTE).append(quoteId);
+        sb.append(QUOTE).append(quoteId.substring(1));
 
         return sb.toString();
     }
