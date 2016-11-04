@@ -1,5 +1,7 @@
 package by.vshkl.bashq.common;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.text.Html;
@@ -32,6 +34,16 @@ public class Navigator {
             shareTextIntent.setType("text/plain");
             shareTextIntent.putExtra(Intent.EXTRA_TEXT, Html.fromHtml(quoteText).toString());
             context.startActivity(Intent.createChooser(shareTextIntent, "Share quote text with..."));
+        }
+    }
+
+    //==================================================================================================================
+
+    public void copyQuoteTextToClipboard(Context context, String quoteText) {
+        if (context != null) {
+            ClipboardManager clipboardManager = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
+            ClipData clipData = ClipData.newPlainText("", Html.fromHtml(quoteText).toString());
+            clipboardManager.setPrimaryClip(clipData);
         }
     }
 }

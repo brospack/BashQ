@@ -326,6 +326,14 @@ public class QuotesActivity extends AppCompatActivity implements QuotesView, Swi
                         bottomSheetDialog.dismiss();
                     }
                 });
+                bottomSheetDialog.findViewById(R.id.bs_copy_text).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        navigator.copyQuoteTextToClipboard(QuotesActivity.this, quote.getContent());
+                        showMessage("Quote text copied to clipboard");
+                        bottomSheetDialog.dismiss();
+                    }
+                });
                 bottomSheetDialog.findViewById(R.id.bs_favourite).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {

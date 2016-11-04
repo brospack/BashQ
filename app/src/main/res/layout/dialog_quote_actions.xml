@@ -73,6 +73,33 @@
     </FrameLayout>
 
     <FrameLayout
+        android:id="@+id/bs_copy_text"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        >
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="@dimen/activity_horizontal_margin"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:src="@drawable/ic_content_copy"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="@dimen/activity_horizontal_margin"
+            android:layout_marginStart="72dp"
+            android:text="Copy quote text"
+            android:textSize="18sp"
+            />
+
+    </FrameLayout>
+
+    <FrameLayout
         android:id="@+id/bs_favourite"
         android:layout_width="match_parent"
         android:layout_height="48dp"
