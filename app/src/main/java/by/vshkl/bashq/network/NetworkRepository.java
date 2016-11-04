@@ -213,6 +213,12 @@ public class NetworkRepository implements Repository {
             quote.setRating(quoteRating.text());
         }
 
+        // Retrieving quote's comic link if there is one
+        Element quoteComic = quoteElement.select(".comics").first();
+        if (quoteComic != null) {
+            quote.setComicLink(quoteComic.attr("href"));
+        }
+
         return quote;
     }
 }
