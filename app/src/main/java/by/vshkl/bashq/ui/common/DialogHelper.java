@@ -1,18 +1,11 @@
 package by.vshkl.bashq.ui.common;
 
-import android.app.Dialog;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 import android.support.design.widget.BottomSheetDialog;
 import android.view.View;
-import android.view.Window;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
 import java.util.Calendar;
@@ -84,29 +77,5 @@ public class DialogHelper {
         });
 
         bottomSheetDialog.show();
-    }
-
-    public static void showQuoteComucImageDialog(final QuotesActivity activity, final String imageUrl) {
-        Target loadTarget = new Target() {
-            @Override
-            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                final Dialog imageDialog = new Dialog(activity);
-                imageDialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
-                imageDialog.setContentView(activity.getLayoutInflater().inflate(R.layout.dialog_image_view, null));
-                ((ImageView) imageDialog.findViewById(R.id.dialog_image)).setImageBitmap(bitmap);
-                imageDialog.show();
-            }
-
-            @Override
-            public void onBitmapFailed(Drawable errorDrawable) {
-
-            }
-
-            @Override
-            public void onPrepareLoad(Drawable placeHolderDrawable) {
-
-            }
-        };
-        Picasso.with(activity).load(imageUrl).into(loadTarget);
     }
 }

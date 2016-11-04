@@ -15,6 +15,7 @@ import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
+import com.stfalcon.frescoimageviewer.ImageViewer;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
 import java.util.List;
@@ -221,7 +222,8 @@ public class QuotesActivity extends AppCompatActivity implements QuotesView, Swi
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                DialogHelper.showQuoteComucImageDialog(QuotesActivity.this, imageUrl);
+                new ImageViewer.Builder(QuotesActivity.this, new String[] {imageUrl})
+                        .show();
             }
         });
     }
