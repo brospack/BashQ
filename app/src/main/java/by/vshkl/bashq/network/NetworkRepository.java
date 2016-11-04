@@ -156,6 +156,39 @@ public class NetworkRepository implements Repository {
     }
 
     @Override
+    public Observable<String> getComicImageUrl(final String comicUrlPart) {
+        return Observable.defer(new Callable<ObservableSource<? extends String>>() {
+            @Override
+            public ObservableSource<? extends String> call() throws Exception {
+                String comicUrl = UrlBuilder.BuildComicUrl(comicUrlPart);
+
+                Request request = new Request.Builder()
+                        .url(comicUrl)
+                        .build();
+
+                String comicImageUrl = "";
+                try {
+                    Response response = client.newCall(request).execute();
+                    try {
+                        Document document = Jsoup.parse(response.body().string());
+
+                        Element comicElement = document.select("img#cm_strip").first();
+                        if (comicElement != null) {
+                            comicImageUrl = comicElement.attr("src");
+                        }
+                    } finally {
+                        response.close();
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                return Observable.just(comicImageUrl);
+            }
+        });
+    }
+
+    @Override
     public Observable<List<Comic>> getComics() {
         return null;
     }
