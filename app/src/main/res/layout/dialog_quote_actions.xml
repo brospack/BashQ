@@ -11,10 +11,10 @@
         android:id="@+id/tv_bs_title"
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:textSize="18sp"
-        android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
         android:gravity="center_vertical"
+        android:textSize="18sp"
         />
 
     <FrameLayout
@@ -39,7 +39,7 @@
             android:layout_gravity="center_vertical"
             android:layout_marginEnd="@dimen/activity_horizontal_margin"
             android:layout_marginStart="72dp"
-            android:text="Share quote link"
+            android:text="@string/quote_action_share_link"
             android:textSize="18sp"
             />
 
@@ -66,34 +66,7 @@
             android:layout_gravity="center_vertical"
             android:layout_marginEnd="@dimen/activity_horizontal_margin"
             android:layout_marginStart="72dp"
-            android:text="Share quote text"
-            android:textSize="18sp"
-            />
-
-    </FrameLayout>
-
-    <FrameLayout
-        android:id="@+id/bs_copy_text"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        >
-
-        <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_gravity="center_vertical"
-            android:layout_marginEnd="@dimen/activity_horizontal_margin"
-            android:layout_marginStart="@dimen/activity_horizontal_margin"
-            android:src="@drawable/ic_content_copy"
-            />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginEnd="@dimen/activity_horizontal_margin"
-            android:layout_marginStart="72dp"
-            android:text="Copy quote text"
+            android:text="@string/quote_action_share_text"
             android:textSize="18sp"
             />
 
@@ -120,7 +93,7 @@
             android:layout_gravity="center_vertical"
             android:layout_marginEnd="@dimen/activity_horizontal_margin"
             android:layout_marginStart="72dp"
-            android:text="Add quote to favourite"
+            android:text="@string/quote_action_add_to_favourite"
             android:textSize="18sp"
             />
 
