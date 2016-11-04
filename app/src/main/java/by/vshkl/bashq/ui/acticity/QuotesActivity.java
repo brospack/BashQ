@@ -6,7 +6,6 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
@@ -41,6 +40,7 @@ import by.vshkl.bashq.ui.adapter.QuotesAdapter;
 import by.vshkl.bashq.ui.common.DialogHelper;
 import by.vshkl.bashq.ui.common.DrawerHelper;
 import by.vshkl.bashq.ui.common.ToolbarTitleHelper;
+import by.vshkl.bashq.ui.component.MarqueeToolbar;
 import by.vshkl.mvp.model.Errors;
 import by.vshkl.mvp.model.Quote;
 import by.vshkl.mvp.presenter.QuotesPresenter;
@@ -57,7 +57,7 @@ public class QuotesActivity extends AppCompatActivity implements QuotesView, Swi
     Navigator navigator;
 
     @BindView(R.id.toolbar)
-    Toolbar toolbar;
+    MarqueeToolbar toolbar;
     @BindView(R.id.fl_container)
     FrameLayout flContainer;
     @BindView(R.id.srl_update)
