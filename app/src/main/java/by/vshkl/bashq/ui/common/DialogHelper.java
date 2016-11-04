@@ -1,11 +1,21 @@
 package by.vshkl.bashq.ui.common;
 
+import android.content.Context;
+import android.support.design.widget.BottomSheetDialog;
+import android.view.View;
+import android.widget.FrameLayout;
+import android.widget.TextView;
+
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
 import java.util.Calendar;
 
+import by.vshkl.bashq.R;
+import by.vshkl.bashq.common.Navigator;
 import by.vshkl.bashq.ui.acticity.QuotesActivity;
+import by.vshkl.mvp.model.Quote;
 import by.vshkl.mvp.presenter.common.Subsection;
+import by.vshkl.mvp.presenter.common.UrlBuilder;
 
 public class DialogHelper {
 
@@ -32,5 +42,40 @@ public class DialogHelper {
         datePickerDialog.showYearPickerFirst(true);
 
         datePickerDialog.show(activity.getFragmentManager(), "Pick a date");
+    }
+
+    public static void showQuoteActionsBottomSheetDialog(final Context context, final Navigator navigator,
+                                                         final Quote quote) {
+        final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(context);
+        bottomSheetDialog.setContentView(R.layout.dialog_quote_actions);
+        ((TextView) bottomSheetDialog.findViewById(R.id.tv_bs_title))
+                .setText(context.getString(R.string.quote_action_title, quote.getId()));
+
+        FrameLayout bsShareLink = (FrameLayout) bottomSheetDialog.findViewById(R.id.bs_share_link);
+        bsShareLink.setVisibility(quote.getLink() != null ? View.VISIBLE : View.GONE);
+        bottomSheetDialog.findViewById(R.id.bs_share_link).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                navigator.navigateToQuoteShareLinkChooser(context, UrlBuilder.BuildQuoteUrl(quote.getId()));
+                bottomSheetDialog.dismiss();
+            }
+        });
+
+        bottomSheetDialog.findViewById(R.id.bs_share_text).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                navigator.navigateToQuoteShareTextChooser(context, quote.getContent());
+                bottomSheetDialog.dismiss();
+            }
+        });
+
+        bottomSheetDialog.findViewById(R.id.bs_favourite).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+        bottomSheetDialog.show();
     }
 }

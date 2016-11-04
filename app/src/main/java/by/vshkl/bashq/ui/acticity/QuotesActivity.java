@@ -2,7 +2,6 @@ package by.vshkl.bashq.ui.acticity;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,7 +10,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
@@ -46,7 +44,6 @@ import by.vshkl.mvp.model.Errors;
 import by.vshkl.mvp.model.Quote;
 import by.vshkl.mvp.presenter.QuotesPresenter;
 import by.vshkl.mvp.presenter.common.Subsection;
-import by.vshkl.mvp.presenter.common.UrlBuilder;
 import by.vshkl.mvp.view.QuotesView;
 import xyz.hanks.library.SmallBang;
 
@@ -306,38 +303,7 @@ public class QuotesActivity extends AppCompatActivity implements QuotesView, Swi
         onQuoteItemLongClickListener = new QuotesAdapter.OnQuoteItemLongClickListener() {
             @Override
             public void onQuoteItemLongClicked(final Quote quote) {
-                final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(QuotesActivity.this);
-                bottomSheetDialog.setContentView(R.layout.dialog_quote_actions);
-                ((TextView) bottomSheetDialog.findViewById(R.id.tv_bs_title))
-                        .setText(getString(R.string.quote_action_title, quote.getId()));
-
-                FrameLayout bsShareLink = (FrameLayout) bottomSheetDialog.findViewById(R.id.bs_share_link);
-                bsShareLink.setVisibility(quote.getLink() != null ? View.VISIBLE : View.GONE);
-                bottomSheetDialog.findViewById(R.id.bs_share_link).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        navigator.navigateToQuoteShareLinkChooser(
-                                QuotesActivity.this, UrlBuilder.BuildQuoteUrl(quote.getId()));
-                        bottomSheetDialog.dismiss();
-                    }
-                });
-
-                bottomSheetDialog.findViewById(R.id.bs_share_text).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        navigator.navigateToQuoteShareTextChooser(QuotesActivity.this, quote.getContent());
-                        bottomSheetDialog.dismiss();
-                    }
-                });
-
-                bottomSheetDialog.findViewById(R.id.bs_favourite).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-
-                    }
-                });
-
-                bottomSheetDialog.show();
+                DialogHelper.showQuoteActionsBottomSheetDialog(QuotesActivity.this, navigator, quote);
             }
         };
     }
