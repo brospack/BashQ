@@ -18,6 +18,8 @@ class QuoteViewHolder extends RecyclerView.ViewHolder {
     TextView tvDate;
     @BindView(R.id.content)
     TextView tvContent;
+    @BindView(R.id.comic)
+    TextView tvComicLabel;
     @BindView(R.id.rating)
     TextView tvRating;
     @BindView(R.id.votes)

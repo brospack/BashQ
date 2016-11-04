@@ -118,6 +118,8 @@ public class QuotesAdapter extends RecyclerView.Adapter<QuoteViewHolder> {
                 }
             });
         }
+
+        holder.tvComicLabel.setVisibility(quote.getComicLink() != null ? View.VISIBLE : View.GONE);
     }
 
     @Override

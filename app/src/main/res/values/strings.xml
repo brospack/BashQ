@@ -40,6 +40,9 @@
     <string name="quote_action_share_text">Share quote text</string>
     <string name="quote_action_add_to_favourite">Add quote to favourite</string>
 
+    <!-- Various items -->
+    <string name="quote_comic_label">Comic</string>
+
     <!-- Transitions -->
     <string name="comic_view_transition">COMIC_VIEW</string>
 </resources>
