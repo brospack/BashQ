@@ -15,6 +15,7 @@ import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
+import com.stfalcon.frescoimageviewer.ImageViewer;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
 import java.util.List;
@@ -79,6 +80,7 @@ public class QuotesActivity extends AppCompatActivity implements QuotesView, Swi
     private QuotesAdapter.OnVoteDownClickListener onVoteDownClickListener;
     private QuotesAdapter.OnVoteOldClickListener onVoteOldClickListener;
     private QuotesAdapter.OnQuoteItemLongClickListener onQuoteItemLongClickListener;
+    private QuotesAdapter.OnQuoteComicLabelClickListener onQuoteComicLabelClickListener;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -216,6 +218,17 @@ public class QuotesActivity extends AppCompatActivity implements QuotesView, Swi
     }
 
     @Override
+    public void showQuoteComicImageDialog(final String imageUrl) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                new ImageViewer.Builder(QuotesActivity.this, new String[] {imageUrl})
+                        .show();
+            }
+        });
+    }
+
+    @Override
     public void showEmpty() {
 
     }
@@ -306,6 +319,14 @@ public class QuotesActivity extends AppCompatActivity implements QuotesView, Swi
                 DialogHelper.showQuoteActionsBottomSheetDialog(QuotesActivity.this, navigator, quote);
             }
         };
+
+        onQuoteComicLabelClickListener = new QuotesAdapter.OnQuoteComicLabelClickListener() {
+            @Override
+            public void onQuoteComicLabelClicked(final String comicLinkPart) {
+                quotesPresenter.setComicUrlPart(comicLinkPart);
+                quotesPresenter.getQuoteComicImage();
+            }
+        };
     }
 
     private void initializeRecyclerView() {
@@ -353,6 +374,7 @@ public class QuotesActivity extends AppCompatActivity implements QuotesView, Swi
         quotesAdapter.setOnVoteDownClickListener(onVoteDownClickListener);
         quotesAdapter.setOnVoteOldClickListener(onVoteOldClickListener);
         quotesAdapter.setOnQuoteItemLongClickListener(onQuoteItemLongClickListener);
+        quotesAdapter.setOnQuoteComicLabelClickListener(onQuoteComicLabelClickListener);
     }
 
     private void initializeSwipeRefreshLayout() {

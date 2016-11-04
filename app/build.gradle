@@ -68,6 +68,10 @@ dependencies {
     // Fancy spark button
     compile 'hanks.xyz:smallbang-library:0.1.2'
 
+    // Image loading
+    compile 'com.facebook.fresco:fresco:0.14.1'
+    compile 'com.github.stfalcon:frescoimageviewer:0.3.1'
+
     // MVP module
     compile project(':mvp')
 }

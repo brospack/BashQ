@@ -11,6 +11,7 @@ public class Quote {
     private String link;
     private String content;
     private String rating;
+    private String comicLink;
     private VoteState voteState = VoteState.VOTED_NONE;
     private int voteCount = 0;
 
@@ -55,6 +56,14 @@ public class Quote {
 
     public void setRating(String rating) {
         this.rating = rating;
+    }
+
+    public String getComicLink() {
+        return comicLink;
+    }
+
+    public void setComicLink(String comicLink) {
+        this.comicLink = comicLink;
     }
 
     public VoteState getVoteState() {

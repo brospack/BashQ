@@ -15,6 +15,8 @@ public interface Repository {
 
     Observable<Boolean> voteQuote(String quoteId, Quote.VoteState requiredVoteStatus);
 
+    Observable<String> getComicImageUrl(String comicUrlPart);
+
     Observable<List<Comic>> getComics();
 
     Observable<Comic> getComic(String comicId);
