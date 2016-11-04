@@ -1,6 +1,7 @@
 package by.vshkl.bashq.injection.module;
 
 import by.vshkl.bashq.injection.scope.PerActivity;
+import by.vshkl.mvp.domain.FetchQuoteComicImageUsecase;
 import by.vshkl.mvp.domain.FetchQuotesUsecase;
 import by.vshkl.mvp.domain.VoteQuoteUsecase;
 import by.vshkl.mvp.presenter.QuotesPresenter;
@@ -25,8 +26,15 @@ public class QuotesModule {
 
     @PerActivity
     @Provides
+    public FetchQuoteComicImageUsecase provideQuoteComicImageUsecase(Repository repository) {
+        return new FetchQuoteComicImageUsecase(repository);
+    }
+
+    @PerActivity
+    @Provides
     public QuotesPresenter provideQuotesPresenter(FetchQuotesUsecase fetchQuotesUsecase,
-                                                  VoteQuoteUsecase voteQuoteUsecase) {
-        return new QuotesPresenter(fetchQuotesUsecase, voteQuoteUsecase);
+                                                  VoteQuoteUsecase voteQuoteUsecase,
+                                                  FetchQuoteComicImageUsecase fetchQuoteComicImageUsecase) {
+        return new QuotesPresenter(fetchQuotesUsecase, voteQuoteUsecase, fetchQuoteComicImageUsecase);
     }
 }

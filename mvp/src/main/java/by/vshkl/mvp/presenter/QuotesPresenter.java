@@ -2,6 +2,7 @@ package by.vshkl.mvp.presenter;
 
 import java.util.List;
 
+import by.vshkl.mvp.domain.FetchQuoteComicImageUsecase;
 import by.vshkl.mvp.domain.FetchQuotesUsecase;
 import by.vshkl.mvp.domain.VoteQuoteUsecase;
 import by.vshkl.mvp.model.Errors;
@@ -18,15 +19,19 @@ public class QuotesPresenter implements Presenter<QuotesView> {
     private QuotesView view;
     private FetchQuotesUsecase fetchQuotesUsecase;
     private VoteQuoteUsecase voteQuoteUsecase;
+    private FetchQuoteComicImageUsecase fetchQuoteComicImageUsecase;
     private Disposable disposable;
     private Subsection subsection;
     private String urlPartBest;
     private String voteQuoteId;
+    private String comicUrlPart;
     private Quote.VoteState requiredVoteState;
 
-    public QuotesPresenter(FetchQuotesUsecase fetchQuotesUsecase, VoteQuoteUsecase voteQuoteUsecase) {
+    public QuotesPresenter(FetchQuotesUsecase fetchQuotesUsecase, VoteQuoteUsecase voteQuoteUsecase,
+                           FetchQuoteComicImageUsecase fetchQuoteComicImageUsecase) {
         this.fetchQuotesUsecase = fetchQuotesUsecase;
         this.voteQuoteUsecase = voteQuoteUsecase;
+        this.fetchQuoteComicImageUsecase = fetchQuoteComicImageUsecase;
     }
 
     //==================================================================================================================
@@ -75,6 +80,10 @@ public class QuotesPresenter implements Presenter<QuotesView> {
 
     public void setRequiredVoteState(Quote.VoteState requiredVoteState) {
         this.requiredVoteState = requiredVoteState;
+    }
+
+    public void setComicUrlPart(String comicUrlPart) {
+        this.comicUrlPart = comicUrlPart;
     }
 
     //==================================================================================================================
@@ -128,6 +137,30 @@ public class QuotesPresenter implements Presenter<QuotesView> {
                             view.showMessage("Vote passed!");
                         } else {
                             view.showMessage("Vote failed!");
+                        }
+                    }
+                });
+    }
+
+    public void getQuoteComicImage() {
+        fetchQuoteComicImageUsecase.setComicUrlPart(comicUrlPart);
+        disposable = fetchQuoteComicImageUsecase.execute()
+                .subscribeOn(Schedulers.newThread())
+                .onErrorReturn(new Function<Throwable, String>() {
+                    @Override
+                    public String apply(Throwable throwable) throws Exception {
+                        throwable.printStackTrace();
+                        view.showError(Errors.QUOTE_COMIC_IMAGE_LOAD_FAILED);
+                        return null;
+                    }
+                })
+                .subscribe(new Consumer<String>() {
+                    @Override
+                    public void accept(String s) throws Exception {
+                        if (s != null) {
+                            view.showQuoteComicImageDialog(s);
+                        } else {
+
                         }
                     }
                 });

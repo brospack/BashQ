@@ -37,12 +37,17 @@ public class QuotesAdapter extends RecyclerView.Adapter<QuoteViewHolder> {
         void onQuoteItemLongClicked(Quote quote);
     }
 
+    public interface OnQuoteComicLabelClickListener {
+        void onQuoteComicLabelClicked(String comicLinkPart);
+    }
+
     private List<Quote> quotes = new ArrayList<>();
     private SmallBang bang;
     private OnVoteUpClickListener onVoteUpClickListener;
     private OnVoteDownClickListener onVoteDownClickListener;
     private OnVoteOldClickListener onVoteOldClickListener;
     private OnQuoteItemLongClickListener onQuoteItemLongClickListener;
+    private OnQuoteComicLabelClickListener onQuoteComicLabelClickListener;
 
     @Override
     public QuoteViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -119,7 +124,19 @@ public class QuotesAdapter extends RecyclerView.Adapter<QuoteViewHolder> {
             });
         }
 
-        holder.tvComicLabel.setVisibility(quote.getComicLink() != null ? View.VISIBLE : View.GONE);
+        if (quote.getComicLink() != null) {
+            holder.tvComicLabel.setVisibility(View.VISIBLE);
+            holder.tvComicLabel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (onQuoteComicLabelClickListener != null) {
+                        onQuoteComicLabelClickListener.onQuoteComicLabelClicked(quote.getComicLink());
+                    }
+                }
+            });
+        } else {
+            holder.tvComicLabel.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -196,5 +213,13 @@ public class QuotesAdapter extends RecyclerView.Adapter<QuoteViewHolder> {
 
     public void setOnQuoteItemLongClickListener(OnQuoteItemLongClickListener onQuoteItemLongClickListener) {
         this.onQuoteItemLongClickListener = onQuoteItemLongClickListener;
+    }
+
+    public void setOnQuoteComicLabelClickListener(OnQuoteComicLabelClickListener onQuoteComicLabelClickListener) {
+        this.onQuoteComicLabelClickListener = onQuoteComicLabelClickListener;
+    }
+
+    public void setQuotes(List<Quote> quotes) {
+        this.quotes = quotes;
     }
 }

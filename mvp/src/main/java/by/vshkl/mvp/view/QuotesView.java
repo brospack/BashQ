@@ -8,5 +8,7 @@ public interface QuotesView extends View {
 
     void showQuotes(List<Quote> quotes);
 
+    void showQuoteComicImageDialog(String imageUrl);
+
     void showMessage(String message);
 }

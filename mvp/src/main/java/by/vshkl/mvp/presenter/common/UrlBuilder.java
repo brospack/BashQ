@@ -88,7 +88,7 @@ public class UrlBuilder {
     public static String BuildComicUrl(String comicLinkPart) {
         StringBuilder sb = new StringBuilder(BASE_URL);
 
-        sb.append(COMIC);
+        sb.append(comicLinkPart);
 
         return sb.toString();
     }

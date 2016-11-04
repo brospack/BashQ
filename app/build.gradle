@@ -68,6 +68,9 @@ dependencies {
     // Fancy spark button
     compile 'hanks.xyz:smallbang-library:0.1.2'
 
+    // Image loading
+    compile 'com.squareup.picasso:picasso:2.5.2'
+
     // MVP module
     compile project(':mvp')
 }
