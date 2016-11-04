@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">BashQ</string>
+    <string name="copy_to_clipboard">Copy to clipboard</string>
 
     <!-- Actions -->
     <string name="action_settings">Settings</string>
@@ -31,6 +32,13 @@
     <string name="message_error_connection">Ошибка соединения</string>
     <string name="message_error_vote">Ошибка. Голос не учтён</string>
     <string name="message_success_vote">Ваш голос учтён</string>
+    <string name="message_copied_to_clipboard">Copied to clipboard</string>
+
+    <!-- Quote actions -->
+    <string name="quote_action_title">Quote %1$s</string>
+    <string name="quote_action_share_link">Share quote link</string>
+    <string name="quote_action_share_text">Share quote text</string>
+    <string name="quote_action_add_to_favourite">Add quote to favourite</string>
 
     <!-- Transitions -->
     <string name="comic_view_transition">COMIC_VIEW</string>

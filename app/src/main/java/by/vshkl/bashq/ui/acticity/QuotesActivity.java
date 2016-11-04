@@ -308,7 +308,9 @@ public class QuotesActivity extends AppCompatActivity implements QuotesView, Swi
             public void onQuoteItemLongClicked(final Quote quote) {
                 final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(QuotesActivity.this);
                 bottomSheetDialog.setContentView(R.layout.dialog_quote_actions);
-                ((TextView) bottomSheetDialog.findViewById(R.id.tv_bs_title)).setText("Quote " + quote.getId());
+                ((TextView) bottomSheetDialog.findViewById(R.id.tv_bs_title))
+                        .setText(getString(R.string.quote_action_title, quote.getId()));
+
                 FrameLayout bsShareLink = (FrameLayout) bottomSheetDialog.findViewById(R.id.bs_share_link);
                 bsShareLink.setVisibility(quote.getLink() != null ? View.VISIBLE : View.GONE);
                 bottomSheetDialog.findViewById(R.id.bs_share_link).setOnClickListener(new View.OnClickListener() {
@@ -319,6 +321,7 @@ public class QuotesActivity extends AppCompatActivity implements QuotesView, Swi
                         bottomSheetDialog.dismiss();
                     }
                 });
+
                 bottomSheetDialog.findViewById(R.id.bs_share_text).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -326,20 +329,14 @@ public class QuotesActivity extends AppCompatActivity implements QuotesView, Swi
                         bottomSheetDialog.dismiss();
                     }
                 });
-                bottomSheetDialog.findViewById(R.id.bs_copy_text).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        navigator.copyQuoteTextToClipboard(QuotesActivity.this, quote.getContent());
-                        showMessage("Quote text copied to clipboard");
-                        bottomSheetDialog.dismiss();
-                    }
-                });
+
                 bottomSheetDialog.findViewById(R.id.bs_favourite).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
 
                     }
                 });
+
                 bottomSheetDialog.show();
             }
         };
