@@ -222,7 +222,7 @@ public class QuotesActivity extends AppCompatActivity implements QuotesView, Swi
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                new ImageViewer.Builder(QuotesActivity.this, new String[] {imageUrl})
+                new ImageViewer.Builder(QuotesActivity.this, new String[]{imageUrl})
                         .show();
             }
         });
@@ -340,20 +340,12 @@ public class QuotesActivity extends AppCompatActivity implements QuotesView, Swi
         rvQuotes.addOnScrollListener(new HidingScrollListener() {
             @Override
             public void onHide() {
-                if (isScopeBest()) {
-                    fabCalendarMenu.hideMenuButton(true);
-                } else if (isScopeBestAbyss()) {
-                    fabCalendar.hide(true);
-                }
+                hideUiElements();
             }
 
             @Override
             public void onShow() {
-                if (isScopeBest()) {
-                    fabCalendarMenu.showMenuButton(true);
-                } else if (isScopeBestAbyss()) {
-                    fabCalendar.show(true);
-                }
+                showUiElements();
             }
         });
 
@@ -408,12 +400,14 @@ public class QuotesActivity extends AppCompatActivity implements QuotesView, Swi
     }
 
     private void handleSectionClicked(Subsection subsection, boolean next) {
+        rvQuotes.scrollToPosition(0);
         currentSubsection = subsection;
         toggleFloatingActionButton();
         quotesPresenter.setSubsection(currentSubsection);
         quotesAdapter.clearQuotes();
         scrollListener.resetState();
         quotesPresenter.getQuotes(next);
+        showUiElements();
     }
 
     private void handleUpdate() {
@@ -421,6 +415,22 @@ public class QuotesActivity extends AppCompatActivity implements QuotesView, Swi
         scrollListener.resetState();
         quotesPresenter.setUrlPartBest(null);
         quotesPresenter.getQuotes(false);
+    }
+
+    private void hideUiElements() {
+        if (isScopeBest()) {
+            fabCalendarMenu.hideMenuButton(true);
+        } else if (isScopeBestAbyss()) {
+            fabCalendar.hide(true);
+        }
+    }
+
+    private void showUiElements() {
+        if (isScopeBest()) {
+            fabCalendarMenu.showMenuButton(true);
+        } else if (isScopeBestAbyss()) {
+            fabCalendar.show(true);
+        }
     }
 
     private void addQuotes(List<Quote> quotes) {
