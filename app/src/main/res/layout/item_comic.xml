@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<by.vshkl.bashq.view.SquareImageView
+<com.facebook.drawee.view.SimpleDraweeView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/image"
-    android:layout_margin="2dp"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/img_comics_thumbnail"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:transitionName="@string/comic_view_transition"
+    fresco:actualImageScaleType="focusCrop"
+    fresco:viewAspectRatio="1"
     />

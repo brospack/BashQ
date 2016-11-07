@@ -60,7 +60,7 @@ public class ComicsPresenter implements Presenter<ComicsView> {
 
     //==================================================================================================================
 
-    private void getComics() {
+    public void getComics() {
         fetchComicsUsecase.setYear(year);
         disposable = fetchComicsUsecase.execute()
                 .subscribeOn(Schedulers.newThread())

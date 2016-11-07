@@ -137,6 +137,8 @@ public class QuotesActivity extends AppCompatActivity implements QuotesView, Swi
                 handleSectionClicked(Subsection.ABYSS_BEST, false);
                 break;
             case 8:
+                navigator.navigateToComicsActivity(QuotesActivity.this);
+                break;
             case 9:
             case 10:
             case 11:
