@@ -10,9 +10,16 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 
+import com.stfalcon.frescoimageviewer.ImageViewer;
+
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -35,7 +42,7 @@ import by.vshkl.mvp.model.Errors;
 import by.vshkl.mvp.presenter.ComicsPresenter;
 import by.vshkl.mvp.view.ComicsView;
 
-public class ComicsActivity extends AppCompatActivity implements ComicsView {
+public class ComicsActivity extends AppCompatActivity implements ComicsView, Spinner.OnItemSelectedListener {
 
     @Inject
     ComicsPresenter comicsPresenter;
@@ -44,6 +51,8 @@ public class ComicsActivity extends AppCompatActivity implements ComicsView {
 
     @BindView(R.id.toolbar)
     MarqueeToolbar toolbar;
+    @BindView(R.id.sp_years)
+    Spinner spYears;
     @BindView(R.id.fl_container)
     FrameLayout flContainer;
     @BindView(R.id.srl_update)
@@ -53,8 +62,11 @@ public class ComicsActivity extends AppCompatActivity implements ComicsView {
     @BindView(R.id.pb_progress)
     ProgressBar pbProgress;
 
+    private List<Integer> years = new ArrayList<>();
+
     private ComicsComponent comicsComponent;
     private ComicsAdapter comicsAdapter;
+    private ComicsAdapter.OnComicItemClickListener onComicItemClickListener;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -64,10 +76,12 @@ public class ComicsActivity extends AppCompatActivity implements ComicsView {
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         initializeDaggerComponent(((BashqApplication) getApplication()).getApplicationComponent());
-        initializeRecyclerView();
         initializePresenter();
+        initializeRecyclerView();
+        initializeSpinner();
     }
 
     @Override
@@ -89,6 +103,19 @@ public class ComicsActivity extends AppCompatActivity implements ComicsView {
                 onBackPressed();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    //==================================================================================================================
+
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+        comicsPresenter.setYear(years.get(i));
+        comicsPresenter.getComics();
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+
     }
 
     //==================================================================================================================
@@ -152,11 +179,35 @@ public class ComicsActivity extends AppCompatActivity implements ComicsView {
     }
 
     private void initializeRecyclerView() {
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 4);
         rvComics.setLayoutManager(gridLayoutManager);
 
+        onComicItemClickListener = new ComicsAdapter.OnComicItemClickListener() {
+            @Override
+            public void onComicItemClicked(int position) {
+                new ImageViewer.Builder(ComicsActivity.this, comicsAdapter.getComicsImageUrls())
+                        .setStartPosition(position)
+                        .show();
+            }
+        };
+
         comicsAdapter = new ComicsAdapter();
+        comicsAdapter.setOnComicItemClickListener(onComicItemClickListener);
         rvComics.setAdapter(comicsAdapter);
+    }
+
+    private void initializeSpinner() {
+        int firstYear = 2007;
+        int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+
+        for (int i = currentYear; i >= firstYear; i--) {
+            years.add(i);
+        }
+
+        ArrayAdapter<Integer> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, years);
+        adapter.setDropDownViewResource(R.layout.item_spinner);
+        spYears.setAdapter(adapter);
+        spYears.setOnItemSelectedListener(ComicsActivity.this);
     }
 
     private void setComics(List<ComicsThumbnail> comics) {

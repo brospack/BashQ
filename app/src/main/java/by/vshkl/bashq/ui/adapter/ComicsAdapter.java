@@ -13,6 +13,12 @@ import by.vshkl.mvp.model.ComicsThumbnail;
 
 public class ComicsAdapter extends RecyclerView.Adapter<ComicsViewHolder> {
 
+    public interface OnComicItemClickListener {
+        void onComicItemClicked(int position);
+    }
+
+    private OnComicItemClickListener onComicItemClickListener;
+
     private List<ComicsThumbnail> comics = new ArrayList<>();
 
     @Override
@@ -24,8 +30,17 @@ public class ComicsAdapter extends RecyclerView.Adapter<ComicsViewHolder> {
     @Override
     public void onBindViewHolder(ComicsViewHolder holder, int position) {
         final ComicsThumbnail comicsThumbnail = comics.get(position);
+        final int currentPosition = position;
 
         holder.imgThumbnail.setImageURI(comicsThumbnail.getThumbLink());
+        holder.imgThumbnail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (onComicItemClickListener != null) {
+                    onComicItemClickListener.onComicItemClicked(currentPosition);
+                }
+            }
+        });
     }
 
     @Override
@@ -35,5 +50,19 @@ public class ComicsAdapter extends RecyclerView.Adapter<ComicsViewHolder> {
 
     public void setComics(List<ComicsThumbnail> comics) {
         this.comics = comics;
+    }
+
+    public void setOnComicItemClickListener(OnComicItemClickListener onComicItemClickListener) {
+        this.onComicItemClickListener = onComicItemClickListener;
+    }
+
+    public List<String> getComicsImageUrls() {
+        List<String> images = new ArrayList<>();
+
+        for (ComicsThumbnail comicsThumbnail : comics) {
+            images.add(comicsThumbnail.getImageLink());
+        }
+
+        return images;
     }
 }

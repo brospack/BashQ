@@ -290,7 +290,7 @@ public class NetworkRepository implements Repository {
                 if (comicsElement != null) {
                     ComicsThumbnail comics = new ComicsThumbnail();
                     comics.setThumbLink(comicsElement.child(0).attr("src"));
-                    comics.setImageLink(comics.getThumbLink().replace("s.bash.im", "bash.im"));
+                    comics.setImageLink(comics.getThumbLink().replace("ts/", ""));
                     comics.setComicsLink(comicsElement.attr("href"));
 
                     comicsList.add(comics);
