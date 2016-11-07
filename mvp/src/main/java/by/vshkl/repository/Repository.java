@@ -3,6 +3,7 @@ package by.vshkl.repository;
 import java.util.List;
 
 import by.vshkl.mvp.model.Comic;
+import by.vshkl.mvp.model.ComicsThumbnail;
 import by.vshkl.mvp.model.Quote;
 import by.vshkl.mvp.presenter.common.Subsection;
 import io.reactivex.Observable;
@@ -17,7 +18,7 @@ public interface Repository {
 
     Observable<String> getComicImageUrl(String comicUrlPart);
 
-    Observable<List<Comic>> getComics();
+    Observable<List<ComicsThumbnail>> getComics(int year);
 
     Observable<Comic> getComic(String comicId);
 }

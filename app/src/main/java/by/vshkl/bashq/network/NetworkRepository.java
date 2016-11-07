@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.concurrent.Callable;
 
 import by.vshkl.mvp.model.Comic;
+import by.vshkl.mvp.model.ComicsThumbnail;
 import by.vshkl.mvp.model.Quote;
 import by.vshkl.mvp.presenter.common.Subsection;
 import by.vshkl.mvp.presenter.common.UrlBuilder;
@@ -185,12 +186,37 @@ public class NetworkRepository implements Repository {
 
                 return Observable.just(comicImageUrl);
             }
-        });
+        }).subscribeOn(Schedulers.newThread());
     }
 
     @Override
-    public Observable<List<Comic>> getComics() {
-        return null;
+    public Observable<List<ComicsThumbnail>> getComics(final int year) {
+        return Observable.defer(new Callable<ObservableSource<? extends List<ComicsThumbnail>>>() {
+            @Override
+            public ObservableSource<? extends List<ComicsThumbnail>> call() throws Exception {
+                String comicsCalendarUrl = UrlBuilder.BuildComicsCalendarUrl(year);
+
+                Request request = new Request.Builder()
+                        .url(comicsCalendarUrl)
+                        .build();
+
+                List<ComicsThumbnail> comicsList = new ArrayList<>();
+
+                try {
+                    Response response = client.newCall(request).execute();
+                    try {
+                        Document document = Jsoup.parse(response.body().string());
+                        comicsList = parseComics(document);
+                    } finally {
+                        response.close();
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                return Observable.just(comicsList);
+            }
+        }).subscribeOn(Schedulers.newThread());
     }
 
     @Override
@@ -253,5 +279,25 @@ public class NetworkRepository implements Repository {
         }
 
         return quote;
+    }
+
+    private List<ComicsThumbnail> parseComics(Document document) {
+        List<ComicsThumbnail> comicsList = new ArrayList<>();
+
+        Elements comicsCalendar = document.select("div#calendar a[href]");
+        if (comicsCalendar != null) {
+            for (Element comicsElement : comicsCalendar) {
+                if (comicsElement != null) {
+                    ComicsThumbnail comics = new ComicsThumbnail();
+                    comics.setThumbLink(comicsElement.child(0).attr("src"));
+                    comics.setImageLink(comics.getThumbLink().replace("s.bash.im", "bash.im"));
+                    comics.setComicsLink(comicsElement.attr("href"));
+
+                    comicsList.add(comics);
+                }
+            }
+        }
+
+        return comicsList;
     }
 }
