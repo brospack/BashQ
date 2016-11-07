@@ -18,6 +18,7 @@ public class UrlBuilder {
 
     public static final String QUOTE = "/quote/";
     public static final String COMIC = "/comics/";
+    public static final String COMICS_CALENDAR = "/comics-calendar/";
 
     private static final String SLASH = "/";
     private static final String DEFAULT_PARAM_BY_RATING = "1";
@@ -85,6 +86,14 @@ public class UrlBuilder {
         return sb.toString();
     }
 
+    public static String BuildComicsCalendarUrl(int year) {
+        StringBuilder sb = new StringBuilder(BASE_URL);
+
+        sb.append(COMICS_CALENDAR).append(year);
+
+        return sb.toString();
+    }
+
     public static String BuildComicUrl(String comicLinkPart) {
         StringBuilder sb = new StringBuilder(BASE_URL);
 
@@ -122,18 +131,11 @@ public class UrlBuilder {
     private static String buildBestYear() {
         StringBuilder sb = new StringBuilder(BASE_URL);
 
-//        sb.append(BEST_YEAR).append(String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
-
         return sb.toString();
     }
 
     private static String buildBestMonth() {
         StringBuilder sb = new StringBuilder(BASE_URL);
-
-//        sb.append(BEST_MONTH)
-//                .append(String.valueOf(Calendar.getInstance().get(Calendar.YEAR)))
-//                .append(SLASH)
-//                .append(String.valueOf(Calendar.getInstance().get(Calendar.MONTH)));
 
         return sb.toString();
     }
@@ -165,10 +167,6 @@ public class UrlBuilder {
     private static String buildAbyssBest() {
         StringBuilder sb = new StringBuilder(BASE_URL);
 
-//        sb.append(ABYSS_BEST)
-//                .append(String.valueOf(Calendar.getInstance().get(Calendar.YEAR)))
-//                .append(String.valueOf(Calendar.getInstance().get(Calendar.MONTH)))
-//                .append(String.valueOf(Calendar.getInstance().get(Calendar.DAY_OF_MONTH)));
         sb.append(ABYSS_BEST);
 
         return sb.toString();
