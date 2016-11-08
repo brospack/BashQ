@@ -12,7 +12,7 @@ import java.util.Calendar;
 
 import by.vshkl.bashq.R;
 import by.vshkl.bashq.common.Navigator;
-import by.vshkl.bashq.ui.acticity.QuotesActivity;
+import by.vshkl.bashq.ui.activity.QuotesActivity;
 import by.vshkl.mvp.model.Quote;
 import by.vshkl.mvp.presenter.common.Subsection;
 import by.vshkl.mvp.presenter.common.UrlBuilder;

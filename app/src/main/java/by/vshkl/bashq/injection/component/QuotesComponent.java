@@ -6,7 +6,7 @@ import by.vshkl.bashq.injection.module.ActivityModule;
 import by.vshkl.bashq.injection.module.NavigationModule;
 import by.vshkl.bashq.injection.module.QuotesModule;
 import by.vshkl.bashq.injection.scope.PerActivity;
-import by.vshkl.bashq.ui.acticity.QuotesActivity;
+import by.vshkl.bashq.ui.activity.QuotesActivity;
 import dagger.Component;
 
 @PerActivity

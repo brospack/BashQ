@@ -159,8 +159,6 @@ public class QuotesPresenter implements Presenter<QuotesView> {
                     public void accept(String s) throws Exception {
                         if (s != null) {
                             view.showQuoteComicImageDialog(s);
-                        } else {
-
                         }
                     }
                 });

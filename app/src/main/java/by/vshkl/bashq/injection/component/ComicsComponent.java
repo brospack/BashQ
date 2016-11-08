@@ -6,7 +6,7 @@ import by.vshkl.bashq.injection.module.ActivityModule;
 import by.vshkl.bashq.injection.module.ComicsModule;
 import by.vshkl.bashq.injection.module.NavigationModule;
 import by.vshkl.bashq.injection.scope.PerActivity;
-import by.vshkl.bashq.ui.acticity.ComicsActivity;
+import by.vshkl.bashq.ui.activity.ComicsActivity;
 import dagger.Component;
 
 @PerActivity

@@ -1,4 +1,4 @@
-package by.vshkl.bashq.ui.acticity;
+package by.vshkl.bashq.ui.activity;
 
 import android.Manifest;
 import android.content.Context;

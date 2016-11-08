@@ -1,4 +1,4 @@
-package by.vshkl.bashq.ui.acticity;
+package by.vshkl.bashq.ui.activity;
 
 import android.Manifest;
 import android.os.Bundle;
@@ -402,8 +402,6 @@ public class QuotesActivity extends AppCompatActivity implements QuotesView, Swi
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
                 if (isScopeCanLoadMore()) {
                     quotesPresenter.getQuotes(true);
-                } else {
-                    // TODO: show message that end of list reached and instruction about what to do with dat problem
                 }
             }
         };

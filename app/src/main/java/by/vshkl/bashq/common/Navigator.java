@@ -10,7 +10,7 @@ import android.text.Html;
 import javax.inject.Inject;
 
 import by.vshkl.bashq.injection.scope.PerActivity;
-import by.vshkl.bashq.ui.acticity.ComicsActivity;
+import by.vshkl.bashq.ui.activity.ComicsActivity;
 
 @PerActivity
 public class Navigator {
