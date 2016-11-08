@@ -45,6 +45,11 @@
     <string name="permission_write_external_storage_title">Permission needed</string>
     <string name="permission_write_external_storage_rationale">To download comics\' image app needs permission to write external storage.</string>
 
+    <!-- Shortcuts -->
+    <string name="shortcut_comics_short_label">View comics</string>
+    <string name="shortcut_comics_long_label">View comics</string>
+    <string name="shortcut_comics_message_disabled">Disabled</string>
+
     <!-- Various items -->
     <string name="quote_comic_label">Comic</string>
 

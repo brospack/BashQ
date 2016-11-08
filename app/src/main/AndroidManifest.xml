@@ -14,7 +14,7 @@
         android:theme="@style/AppTheme">
 
         <activity
-            android:name=".ui.acticity.QuotesActivity"
+            android:name=".ui.activity.QuotesActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -22,16 +22,18 @@
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
+            <meta-data android:name="android.app.shortcuts"
+                       android:resource="@xml/shortcuts" />
         </activity>
 
         <activity
-            android:name=".ui.acticity.ComicsActivity"
+            android:name=".ui.activity.ComicsActivity"
             android:label="@string/comics_name"
             android:theme="@style/AppThemeDark.NoActionBar"
             />
 
         <activity
-            android:name=".ui.acticity.CopyToClipboardActivity"
+            android:name=".ui.activity.CopyToClipboardActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter
                 android:icon="@drawable/ic_content_copy"
