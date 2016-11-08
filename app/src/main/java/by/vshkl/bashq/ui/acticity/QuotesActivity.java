@@ -1,5 +1,6 @@
 package by.vshkl.bashq.ui.acticity;
 
+import android.Manifest;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -9,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
@@ -39,7 +41,9 @@ import by.vshkl.bashq.ui.adapter.HidingScrollListener;
 import by.vshkl.bashq.ui.adapter.QuotesAdapter;
 import by.vshkl.bashq.ui.common.DialogHelper;
 import by.vshkl.bashq.ui.common.DrawerHelper;
+import by.vshkl.bashq.ui.common.PermissionHelper;
 import by.vshkl.bashq.ui.common.ToolbarTitleHelper;
+import by.vshkl.bashq.ui.component.ComicsImageOverlayView;
 import by.vshkl.bashq.ui.component.MarqueeToolbar;
 import by.vshkl.mvp.model.Errors;
 import by.vshkl.mvp.model.Quote;
@@ -71,16 +75,22 @@ public class QuotesActivity extends AppCompatActivity implements QuotesView, Swi
     @BindView(R.id.fab_calendar_single)
     FloatingActionButton fabCalendar;
 
+    private static final int REQUEST_WRITE_EXTERNAL_STORAGE = 42;
+
     private QuotesComponent quotesComponent;
     private QuotesAdapter quotesAdapter;
     private EndlessScrollListener scrollListener;
     private Subsection currentSubsection;
     private String datePart = null;
+    private String comicImageLink;
     private QuotesAdapter.OnVoteUpClickListener onVoteUpClickListener;
     private QuotesAdapter.OnVoteDownClickListener onVoteDownClickListener;
     private QuotesAdapter.OnVoteOldClickListener onVoteOldClickListener;
     private QuotesAdapter.OnQuoteItemLongClickListener onQuoteItemLongClickListener;
     private QuotesAdapter.OnQuoteComicLabelClickListener onQuoteComicLabelClickListener;
+    private ComicsImageOverlayView.OnDownloadClickListener onDownloadClickListener;
+    private ComicsImageOverlayView.OnFavouriteClickListener onFavouriteClickListener;
+    private ComicsImageOverlayView.OnShareClickListener onShareClickListener;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -224,7 +234,43 @@ public class QuotesActivity extends AppCompatActivity implements QuotesView, Swi
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                ComicsImageOverlayView overlay = new ComicsImageOverlayView(QuotesActivity.this);
+                QuotesActivity.this.comicImageLink = imageUrl;
+
+                onDownloadClickListener = new ComicsImageOverlayView.OnDownloadClickListener() {
+                    @Override
+                    public void onDownloadClicked() {
+                        PermissionHelper.requestPermission(
+                                QuotesActivity.this,
+                                navigator,
+                                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                                REQUEST_WRITE_EXTERNAL_STORAGE,
+                                getString(R.string.permission_write_external_storage_title),
+                                getString(R.string.permission_write_external_storage_rationale),
+                                comicImageLink);
+                    }
+                };
+
+                onFavouriteClickListener = new ComicsImageOverlayView.OnFavouriteClickListener() {
+                    @Override
+                    public void onFavouriteClicked() {
+                        Toast.makeText(QuotesActivity.this, "Not implemented yet", Toast.LENGTH_SHORT).show();
+                    }
+                };
+
+                onShareClickListener = new ComicsImageOverlayView.OnShareClickListener() {
+                    @Override
+                    public void onShareClicked() {
+                        navigator.navigateToComicsShareImageChooser(QuotesActivity.this, comicImageLink);
+                    }
+                };
+
+                overlay.setOnDownloadClickListener(onDownloadClickListener);
+                overlay.setOnFavouriteClickListener(onFavouriteClickListener);
+                overlay.setOnShareClickListener(onShareClickListener);
+
                 new ImageViewer.Builder(QuotesActivity.this, new String[]{imageUrl})
+                        .setOverlayView(overlay)
                         .show();
             }
         });
