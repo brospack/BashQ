@@ -14,7 +14,7 @@ import by.vshkl.mvp.model.ComicsThumbnail;
 public class ComicsAdapter extends RecyclerView.Adapter<ComicsViewHolder> {
 
     public interface OnComicItemClickListener {
-        void onComicItemClicked(int position);
+        void onComicItemClicked(int position, String comicsLink);
     }
 
     private OnComicItemClickListener onComicItemClickListener;
@@ -37,7 +37,7 @@ public class ComicsAdapter extends RecyclerView.Adapter<ComicsViewHolder> {
             @Override
             public void onClick(View view) {
                 if (onComicItemClickListener != null) {
-                    onComicItemClickListener.onComicItemClicked(currentPosition);
+                    onComicItemClickListener.onComicItemClicked(currentPosition, comicsThumbnail.getComicsLink());
                 }
             }
         });

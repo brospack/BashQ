@@ -7,12 +7,12 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import by.vshkl.bashq.R;
+import by.vshkl.bashq.common.Navigator;
 
 public class ComicsImageOverlayView extends RelativeLayout {
 
-    private ImageView imgDownload;
-    private ImageView imgFavourite;
-    private ImageView imgShare;
+    private Navigator navigator;
+    private String comicsLink;
 
     public ComicsImageOverlayView(Context context) {
         super(context);
@@ -34,13 +34,20 @@ public class ComicsImageOverlayView extends RelativeLayout {
         initialize();
     }
 
+    public void setNavigator(Navigator navigator) {
+        this.navigator = navigator;
+    }
+
+    public void setComicsLink(String comicsLink) {
+        this.comicsLink = comicsLink;
+    }
 
     private void initialize() {
         View view = inflate(getContext(), R.layout.overlay_comics, this);
 
-        imgDownload = (ImageView) view.findViewById(R.id.img_comics_overlay_action_download);
-        imgFavourite = (ImageView) view.findViewById(R.id.img_comics_overlay_action_favourite);
-        imgShare = (ImageView) view.findViewById(R.id.img_comics_overlay_action_share);
+        ImageView imgDownload = (ImageView) view.findViewById(R.id.img_comics_overlay_action_download);
+        ImageView imgFavourite = (ImageView) view.findViewById(R.id.img_comics_overlay_action_favourite);
+        ImageView imgShare = (ImageView) view.findViewById(R.id.img_comics_overlay_action_share);
 
         imgDownload.setOnClickListener(new OnClickListener() {
             @Override

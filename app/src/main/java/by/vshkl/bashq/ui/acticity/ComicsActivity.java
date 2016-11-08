@@ -185,10 +185,14 @@ public class ComicsActivity extends AppCompatActivity implements ComicsView, Spi
 
         onComicItemClickListener = new ComicsAdapter.OnComicItemClickListener() {
             @Override
-            public void onComicItemClicked(int position) {
+            public void onComicItemClicked(int position, String comicsLink) {
+                ComicsImageOverlayView overlay = new ComicsImageOverlayView(ComicsActivity.this);
+                overlay.setNavigator(navigator);
+                overlay.setComicsLink(comicsLink);
+
                 new ImageViewer.Builder(ComicsActivity.this, comicsAdapter.getComicsImageUrls())
                         .setStartPosition(position)
-                        .setOverlayView(new ComicsImageOverlayView(ComicsActivity.this))
+                        .setOverlayView(overlay)
                         .show();
             }
         };
