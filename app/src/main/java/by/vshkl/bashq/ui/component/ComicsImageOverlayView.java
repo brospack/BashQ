@@ -58,7 +58,7 @@ public class ComicsImageOverlayView extends RelativeLayout {
         imgDownload.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getContext(), "Not implemented yet", Toast.LENGTH_SHORT).show();
+                navigator.navigateToComicsDownloadImage(getContext(), comicImageLink);
             }
         });
 

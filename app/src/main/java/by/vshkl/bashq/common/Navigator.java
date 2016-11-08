@@ -1,7 +1,10 @@
 package by.vshkl.bashq.common;
 
+import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
+import android.os.Environment;
 import android.text.Html;
 
 import javax.inject.Inject;
@@ -49,6 +52,23 @@ public class Navigator {
             shareTextIntent.setType("text/plain");
             shareTextIntent.putExtra(Intent.EXTRA_TEXT, comicsImageLink);
             context.startActivity(Intent.createChooser(shareTextIntent, "Share comics with..."));
+        }
+    }
+
+    public void navigateToComicsDownloadImage(Context context, String comicsImageLink) {
+        if (context != null) {
+            Uri uri = Uri.parse(comicsImageLink);
+
+            DownloadManager downloadManager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
+
+            DownloadManager.Request request = new DownloadManager.Request(uri);
+            request.setDescription("Comics image download");
+            request.setTitle("Comics");
+            request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS,
+                    comicsImageLink.substring(comicsImageLink.lastIndexOf("/")));
+            request.setVisibleInDownloadsUi(true);
+
+            downloadManager.enqueue(request);
         }
     }
 }
