@@ -36,6 +36,7 @@ import by.vshkl.bashq.injection.module.ActivityModule;
 import by.vshkl.bashq.injection.module.ComicsModule;
 import by.vshkl.bashq.injection.module.NavigationModule;
 import by.vshkl.bashq.ui.adapter.ComicsAdapter;
+import by.vshkl.bashq.ui.component.ComicsImageOverlayView;
 import by.vshkl.bashq.ui.component.MarqueeToolbar;
 import by.vshkl.mvp.model.ComicsThumbnail;
 import by.vshkl.mvp.model.Errors;
@@ -187,6 +188,7 @@ public class ComicsActivity extends AppCompatActivity implements ComicsView, Spi
             public void onComicItemClicked(int position) {
                 new ImageViewer.Builder(ComicsActivity.this, comicsAdapter.getComicsImageUrls())
                         .setStartPosition(position)
+                        .setOverlayView(new ComicsImageOverlayView(ComicsActivity.this))
                         .show();
             }
         };
