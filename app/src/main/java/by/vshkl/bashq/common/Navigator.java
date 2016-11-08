@@ -41,5 +41,14 @@ public class Navigator {
             context.startActivity(Intent.createChooser(shareTextIntent, "Share quote text with..."));
         }
     }
-    
+
+    public void navigateToComicsShareImageChooser(Context context, String comicsImageLink) {
+        if (context != null) {
+            Intent shareTextIntent = new Intent();
+            shareTextIntent.setAction(Intent.ACTION_SEND);
+            shareTextIntent.setType("text/plain");
+            shareTextIntent.putExtra(Intent.EXTRA_TEXT, comicsImageLink);
+            context.startActivity(Intent.createChooser(shareTextIntent, "Share comics with..."));
+        }
+    }
 }

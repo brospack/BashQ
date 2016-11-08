@@ -5,6 +5,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import by.vshkl.bashq.R;
 import by.vshkl.bashq.common.Navigator;
@@ -13,6 +14,7 @@ public class ComicsImageOverlayView extends RelativeLayout {
 
     private Navigator navigator;
     private String comicsLink;
+    private String comicImageLink;
 
     public ComicsImageOverlayView(Context context) {
         super(context);
@@ -42,6 +44,10 @@ public class ComicsImageOverlayView extends RelativeLayout {
         this.comicsLink = comicsLink;
     }
 
+    public void setComicImageLink(String comicImageLink) {
+        this.comicImageLink = comicImageLink;
+    }
+
     private void initialize() {
         View view = inflate(getContext(), R.layout.overlay_comics, this);
 
@@ -52,21 +58,21 @@ public class ComicsImageOverlayView extends RelativeLayout {
         imgDownload.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Toast.makeText(getContext(), "Not implemented yet", Toast.LENGTH_SHORT).show();
             }
         });
 
         imgFavourite.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Toast.makeText(getContext(), "Not implemented yet", Toast.LENGTH_SHORT).show();
             }
         });
 
         imgShare.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                navigator.navigateToComicsShareImageChooser(getContext(), comicImageLink);
             }
         });
     }
