@@ -66,6 +66,7 @@ public class Navigator {
             request.setTitle("Comics");
             request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS,
                     comicsImageLink.substring(comicsImageLink.lastIndexOf("/")));
+            request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
             request.setVisibleInDownloadsUi(true);
 
             downloadManager.enqueue(request);
