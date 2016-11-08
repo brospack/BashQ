@@ -1,8 +1,11 @@
 package by.vshkl.bashq.ui.acticity;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -15,6 +18,7 @@ import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.stfalcon.frescoimageviewer.ImageViewer;
 
@@ -36,6 +40,7 @@ import by.vshkl.bashq.injection.module.ActivityModule;
 import by.vshkl.bashq.injection.module.ComicsModule;
 import by.vshkl.bashq.injection.module.NavigationModule;
 import by.vshkl.bashq.ui.adapter.ComicsAdapter;
+import by.vshkl.bashq.ui.common.PermissionHelper;
 import by.vshkl.bashq.ui.component.ComicsImageOverlayView;
 import by.vshkl.bashq.ui.component.MarqueeToolbar;
 import by.vshkl.mvp.model.ComicsThumbnail;
@@ -63,11 +68,16 @@ public class ComicsActivity extends AppCompatActivity implements ComicsView, Spi
     @BindView(R.id.pb_progress)
     ProgressBar pbProgress;
 
-    private List<Integer> years = new ArrayList<>();
+    private static final int REQUEST_WRITE_EXTERNAL_STORAGE = 42;
 
+    private List<Integer> years = new ArrayList<>();
     private ComicsComponent comicsComponent;
     private ComicsAdapter comicsAdapter;
+    private String comicImageLink;
     private ComicsAdapter.OnComicItemClickListener onComicItemClickListener;
+    private ComicsImageOverlayView.OnDownloadClickListener onDownloadClickListener;
+    private ComicsImageOverlayView.OnFavouriteClickListener onFavouriteClickListener;
+    private ComicsImageOverlayView.OnShareClickListener onShareClickListener;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -104,6 +114,16 @@ public class ComicsActivity extends AppCompatActivity implements ComicsView, Spi
                 onBackPressed();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case REQUEST_WRITE_EXTERNAL_STORAGE:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    navigator.navigateToComicsDownloadImage(ComicsActivity.this, comicImageLink);
+                }
+        }
     }
 
     //==================================================================================================================
@@ -185,11 +205,41 @@ public class ComicsActivity extends AppCompatActivity implements ComicsView, Spi
 
         onComicItemClickListener = new ComicsAdapter.OnComicItemClickListener() {
             @Override
-            public void onComicItemClicked(int position, String comicsLink, String comicImageLink) {
+            public void onComicItemClicked(int position, String comicsLink, final String comicImageLink) {
                 ComicsImageOverlayView overlay = new ComicsImageOverlayView(ComicsActivity.this);
-                overlay.setNavigator(navigator);
-                overlay.setComicsLink(comicsLink);
-                overlay.setComicImageLink(comicImageLink);
+                ComicsActivity.this.comicImageLink = comicImageLink;
+
+                onDownloadClickListener = new ComicsImageOverlayView.OnDownloadClickListener() {
+                    @Override
+                    public void onDownloadClicked() {
+                        PermissionHelper.requestPermission(
+                                ComicsActivity.this,
+                                navigator,
+                                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                                REQUEST_WRITE_EXTERNAL_STORAGE,
+                                getString(R.string.permission_write_external_storage_title),
+                                getString(R.string.permission_write_external_storage_rationale),
+                                comicImageLink);
+                    }
+                };
+
+                onFavouriteClickListener = new ComicsImageOverlayView.OnFavouriteClickListener() {
+                    @Override
+                    public void onFavouriteClicked() {
+                        Toast.makeText(ComicsActivity.this, "Not implemented yet", Toast.LENGTH_SHORT).show();
+                    }
+                };
+
+                onShareClickListener = new ComicsImageOverlayView.OnShareClickListener() {
+                    @Override
+                    public void onShareClicked() {
+                        navigator.navigateToComicsShareImageChooser(ComicsActivity.this, comicImageLink);
+                    }
+                };
+
+                overlay.setOnDownloadClickListener(onDownloadClickListener);
+                overlay.setOnFavouriteClickListener(onFavouriteClickListener);
+                overlay.setOnShareClickListener(onShareClickListener);
 
                 new ImageViewer.Builder(ComicsActivity.this, comicsAdapter.getComicsImageUrls())
                         .setStartPosition(position)

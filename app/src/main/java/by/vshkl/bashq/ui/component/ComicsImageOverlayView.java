@@ -5,16 +5,26 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import by.vshkl.bashq.R;
-import by.vshkl.bashq.common.Navigator;
 
 public class ComicsImageOverlayView extends RelativeLayout {
 
-    private Navigator navigator;
-    private String comicsLink;
-    private String comicImageLink;
+    public OnDownloadClickListener onDownloadClickListener;
+    public OnFavouriteClickListener onFavouriteClickListener;
+    public OnShareClickListener onShareClickListener;
+
+    public interface OnDownloadClickListener {
+        void onDownloadClicked();
+    }
+
+    public interface OnFavouriteClickListener {
+        void onFavouriteClicked();
+    }
+
+    public interface OnShareClickListener {
+        void onShareClicked();
+    }
 
     public ComicsImageOverlayView(Context context) {
         super(context);
@@ -36,16 +46,16 @@ public class ComicsImageOverlayView extends RelativeLayout {
         initialize();
     }
 
-    public void setNavigator(Navigator navigator) {
-        this.navigator = navigator;
+    public void setOnDownloadClickListener(OnDownloadClickListener onDownloadClickListener) {
+        this.onDownloadClickListener = onDownloadClickListener;
     }
 
-    public void setComicsLink(String comicsLink) {
-        this.comicsLink = comicsLink;
+    public void setOnFavouriteClickListener(OnFavouriteClickListener onFavouriteClickListener) {
+        this.onFavouriteClickListener = onFavouriteClickListener;
     }
 
-    public void setComicImageLink(String comicImageLink) {
-        this.comicImageLink = comicImageLink;
+    public void setOnShareClickListener(OnShareClickListener onShareClickListener) {
+        this.onShareClickListener = onShareClickListener;
     }
 
     private void initialize() {
@@ -58,21 +68,27 @@ public class ComicsImageOverlayView extends RelativeLayout {
         imgDownload.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                navigator.navigateToComicsDownloadImage(getContext(), comicImageLink);
+                if (onDownloadClickListener != null) {
+                    onDownloadClickListener.onDownloadClicked();
+                }
             }
         });
 
         imgFavourite.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getContext(), "Not implemented yet", Toast.LENGTH_SHORT).show();
+                if (onFavouriteClickListener != null) {
+                    onFavouriteClickListener.onFavouriteClicked();
+                }
             }
         });
 
         imgShare.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                navigator.navigateToComicsShareImageChooser(getContext(), comicImageLink);
+                if (onShareClickListener != null) {
+                    onShareClickListener.onShareClicked();
+                }
             }
         });
     }
