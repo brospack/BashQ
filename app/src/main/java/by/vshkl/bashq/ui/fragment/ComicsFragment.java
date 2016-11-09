@@ -16,18 +16,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemSelectedListener;
-import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.stfalcon.frescoimageviewer.ImageViewer;
 
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -55,12 +49,11 @@ import by.vshkl.mvp.presenter.ComicsPresenter;
 import by.vshkl.mvp.view.ComicsView;
 
 public class ComicsFragment extends Fragment implements ComicsView, OnComicItemClickListener, OnRefreshListener,
-        OnDownloadClickListener, OnFavouriteClickListener, OnShareClickListener, OnItemSelectedListener {
+        OnDownloadClickListener, OnFavouriteClickListener, OnShareClickListener {
 
     @Inject
     ComicsPresenter comicsPresenter;
 
-    Spinner spYears;
     @BindView(R.id.fl_container)
     FrameLayout flContainer;
     @BindView(R.id.srl_update)
@@ -71,13 +64,23 @@ public class ComicsFragment extends Fragment implements ComicsView, OnComicItemC
     ProgressBar pbProgress;
 
     private static final int REQUEST_WRITE_EXTERNAL_STORAGE = 42;
+    private static final String KEY_YEAR = "year";
 
     private MainActivity parentActivity;
     private ComicsComponent comicsComponent;
     private ComicsAdapter comicsAdapter;
     private String comicImageLink;
-    private List<Integer> years = new ArrayList<>();
     private Unbinder unbinder;
+
+    public static ComicsFragment newInstance(int year) {
+        Bundle args = new Bundle();
+        args.putInt(KEY_YEAR, year);
+
+        ComicsFragment fragment = new ComicsFragment();
+        fragment.setArguments(args);
+
+        return fragment;
+    }
 
     @Override
     public void onAttach(Context context) {
@@ -99,6 +102,10 @@ public class ComicsFragment extends Fragment implements ComicsView, OnComicItemC
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_comics, container, false);
         unbinder = ButterKnife.bind(ComicsFragment.this, view);
+
+        int year = getArguments().getInt(KEY_YEAR);
+        getComicsForYear(year);
+
         return view;
     }
 
@@ -107,8 +114,6 @@ public class ComicsFragment extends Fragment implements ComicsView, OnComicItemC
         super.onViewCreated(view, savedInstanceState);
         initializeSwipeRefreshLayout();
         initializeRecyclerView();
-        initializeSpinner();
-        addSpinner();
     }
 
     @Override
@@ -126,7 +131,6 @@ public class ComicsFragment extends Fragment implements ComicsView, OnComicItemC
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        removeSpinner();
         unbinder.unbind();
     }
 
@@ -206,17 +210,6 @@ public class ComicsFragment extends Fragment implements ComicsView, OnComicItemC
     }
 
     @Override
-    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-        comicsPresenter.setYear(years.get(i));
-        comicsPresenter.getComics();
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> adapterView) {
-
-    }
-
-    @Override
     public void onComicItemClicked(int position, String comicsLink, String comicImageLink) {
         ComicsFragment.this.comicImageLink = comicImageLink;
         ComicsImageOverlayView overlay = new ComicsImageOverlayView(getContext());
@@ -288,30 +281,6 @@ public class ComicsFragment extends Fragment implements ComicsView, OnComicItemC
         srlRefresh.setColorSchemeResources(R.color.colorAccent);
     }
 
-    private void initializeSpinner() {
-        spYears = new Spinner(parentActivity);
-
-        int firstYear = 2007;
-        int currentYear = Calendar.getInstance().get(Calendar.YEAR);
-
-        for (int i = currentYear; i >= firstYear; i--) {
-            years.add(i);
-        }
-
-        ArrayAdapter<Integer> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, years);
-        adapter.setDropDownViewResource(R.layout.item_spinner);
-        spYears.setAdapter(adapter);
-        spYears.setOnItemSelectedListener(ComicsFragment.this);
-    }
-
-    private void addSpinner() {
-        parentActivity.addSpinnerToToolbar(spYears);
-    }
-
-    private void removeSpinner() {
-        parentActivity.removeSpinnerFromToolbar(spYears);
-    }
-
     private void handleUpdate() {
         comicsAdapter.clearComics();
         comicsPresenter.getComics();
@@ -320,5 +289,10 @@ public class ComicsFragment extends Fragment implements ComicsView, OnComicItemC
     private void setComics(List<ComicsThumbnail> comics) {
         comicsAdapter.setComics(comics);
         comicsAdapter.notifyDataSetChanged();
+    }
+
+    private void getComicsForYear(int year) {
+        comicsPresenter.setYear(year);
+        comicsPresenter.getComics();
     }
 }

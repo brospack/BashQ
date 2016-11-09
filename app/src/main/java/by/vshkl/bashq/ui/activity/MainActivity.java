@@ -1,10 +1,12 @@
 package by.vshkl.bashq.ui.activity;
 
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.Spinner;
 
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
@@ -23,19 +25,22 @@ import by.vshkl.bashq.injection.module.ActivityModule;
 import by.vshkl.bashq.injection.module.NavigationModule;
 import by.vshkl.bashq.ui.common.DrawerHelper;
 import by.vshkl.bashq.ui.component.MarqueeToolbar;
-import by.vshkl.bashq.ui.fragment.ComicsFragment;
+import by.vshkl.bashq.ui.fragment.ComicsPagerFragment;
 import by.vshkl.bashq.ui.fragment.QuotesFragment;
 import by.vshkl.mvp.presenter.common.Subsection;
 
 public class MainActivity extends AppCompatActivity implements Drawer.OnDrawerItemClickListener {
 
-    private static final String CURRENT_SUBSECTION = "by.vshkl.bashq.ui.activity.CURRENT_SUBSECTION";
+    private static final String CURRENT_SUBSECTION = "by.vshkl.bashq.ui.activity.MainActivity.CURRENT_SUBSECTION";
+    private static final String FRAGMENT_TAG = "by.vshkl.bashq.ui.activity.MainActivity.FRAGMENT_TAG";
 
     @Inject
     Navigator navigator;
 
     @BindView(R.id.toolbar)
     MarqueeToolbar toolbar;
+    @BindView(R.id.tabs)
+    TabLayout tabLayout;
 
     private MainActivityComponent mainActivityComponent;
     private Subsection currentSubsection;
@@ -53,7 +58,10 @@ public class MainActivity extends AppCompatActivity implements Drawer.OnDrawerIt
 
         if (savedInstanceState != null) {
             currentSubsection = (Subsection) savedInstanceState.getSerializable(CURRENT_SUBSECTION);
-            handleDrawerSectionClick(currentSubsection);
+            Fragment fragment = getSupportFragmentManager().findFragmentByTag(FRAGMENT_TAG);
+            if (fragment == null || fragment instanceof QuotesFragment) {
+                handleDrawerSectionClick(currentSubsection);
+            }
         } else {
             handleDrawerSectionClick(Subsection.INDEX);
         }
@@ -117,12 +125,16 @@ public class MainActivity extends AppCompatActivity implements Drawer.OnDrawerIt
         toolbar.setTitle(toolbarTitle);
     }
 
-    public void addSpinnerToToolbar(Spinner spinner) {
-        toolbar.addView(spinner);
+    public void setTabLayoutWithViewPager(ViewPager viewPager) {
+        tabLayout.setupWithViewPager(viewPager);
     }
 
-    public void removeSpinnerFromToolbar(Spinner spinner) {
-        toolbar.removeView(spinner);
+    public void showTabLayout() {
+        tabLayout.setVisibility(View.VISIBLE);
+    }
+
+    public void hideTabLayout() {
+        tabLayout.setVisibility(View.GONE);
     }
 
     //==================================================================================================================
@@ -146,7 +158,7 @@ public class MainActivity extends AppCompatActivity implements Drawer.OnDrawerIt
             FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
             switch (currentSubsection) {
                 case COMICS:
-                    fragmentTransaction.replace(R.id.fragment_placeholder, new ComicsFragment());
+                    fragmentTransaction.replace(R.id.fragment_placeholder, new ComicsPagerFragment(), FRAGMENT_TAG);
                     break;
                 case FAVOURITE_QUOTES:
                     break;
@@ -155,7 +167,7 @@ public class MainActivity extends AppCompatActivity implements Drawer.OnDrawerIt
                 case SETTINGS:
                     break;
                 default:
-                    fragmentTransaction.replace(R.id.fragment_placeholder, new QuotesFragment());
+                    fragmentTransaction.replace(R.id.fragment_placeholder, new QuotesFragment(), FRAGMENT_TAG);
                     break;
             }
             fragmentTransaction.commit();
