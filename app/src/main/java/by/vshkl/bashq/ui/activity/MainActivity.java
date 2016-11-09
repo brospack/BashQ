@@ -29,6 +29,8 @@ import by.vshkl.mvp.presenter.common.Subsection;
 
 public class MainActivity extends AppCompatActivity implements Drawer.OnDrawerItemClickListener {
 
+    private static final String CURRENT_SUBSECTION = "by.vshkl.bashq.ui.activity.CURRENT_SUBSECTION";
+
     @Inject
     Navigator navigator;
 
@@ -48,7 +50,19 @@ public class MainActivity extends AppCompatActivity implements Drawer.OnDrawerIt
 
         DrawerHelper.initializeDrawer(MainActivity.this, toolbar, savedInstanceState, MainActivity.this);
         initializeDaggerComponent(((BashqApplication) getApplication()).getApplicationComponent());
-        handleDrawerSectionClick(Subsection.INDEX);
+
+        if (savedInstanceState != null) {
+            currentSubsection = (Subsection) savedInstanceState.getSerializable(CURRENT_SUBSECTION);
+            handleDrawerSectionClick(currentSubsection);
+        } else {
+            handleDrawerSectionClick(Subsection.INDEX);
+        }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putSerializable(CURRENT_SUBSECTION, currentSubsection);
+        super.onSaveInstanceState(outState);
     }
 
     @Override
