@@ -70,6 +70,7 @@ public class ComicsFragment extends Fragment implements ComicsView, OnComicItemC
     private ComicsComponent comicsComponent;
     private ComicsAdapter comicsAdapter;
     private String comicImageLink;
+    private Unbinder unbinder;
 
     public static ComicsFragment newInstance(int year) {
         Bundle args = new Bundle();
@@ -80,8 +81,6 @@ public class ComicsFragment extends Fragment implements ComicsView, OnComicItemC
 
         return fragment;
     }
-
-    private Unbinder unbinder;
 
     @Override
     public void onAttach(Context context) {

@@ -2,6 +2,7 @@ package by.vshkl.bashq.ui.activity;
 
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -30,7 +31,8 @@ import by.vshkl.mvp.presenter.common.Subsection;
 
 public class MainActivity extends AppCompatActivity implements Drawer.OnDrawerItemClickListener {
 
-    private static final String CURRENT_SUBSECTION = "by.vshkl.bashq.ui.activity.CURRENT_SUBSECTION";
+    private static final String CURRENT_SUBSECTION = "by.vshkl.bashq.ui.activity.MainActivity.CURRENT_SUBSECTION";
+    private static final String FRAGMENT_TAG = "by.vshkl.bashq.ui.activity.MainActivity.FRAGMENT_TAG";
 
     @Inject
     Navigator navigator;
@@ -56,7 +58,10 @@ public class MainActivity extends AppCompatActivity implements Drawer.OnDrawerIt
 
         if (savedInstanceState != null) {
             currentSubsection = (Subsection) savedInstanceState.getSerializable(CURRENT_SUBSECTION);
-            handleDrawerSectionClick(currentSubsection);
+            Fragment fragment = getSupportFragmentManager().findFragmentByTag(FRAGMENT_TAG);
+            if (fragment == null || fragment instanceof QuotesFragment) {
+                handleDrawerSectionClick(currentSubsection);
+            }
         } else {
             handleDrawerSectionClick(Subsection.INDEX);
         }
@@ -153,7 +158,7 @@ public class MainActivity extends AppCompatActivity implements Drawer.OnDrawerIt
             FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
             switch (currentSubsection) {
                 case COMICS:
-                    fragmentTransaction.replace(R.id.fragment_placeholder, new ComicsPagerFragment());
+                    fragmentTransaction.replace(R.id.fragment_placeholder, new ComicsPagerFragment(), FRAGMENT_TAG);
                     break;
                 case FAVOURITE_QUOTES:
                     break;
@@ -162,7 +167,7 @@ public class MainActivity extends AppCompatActivity implements Drawer.OnDrawerIt
                 case SETTINGS:
                     break;
                 default:
-                    fragmentTransaction.replace(R.id.fragment_placeholder, new QuotesFragment());
+                    fragmentTransaction.replace(R.id.fragment_placeholder, new QuotesFragment(), FRAGMENT_TAG);
                     break;
             }
             fragmentTransaction.commit();
