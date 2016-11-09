@@ -2,7 +2,9 @@ package by.vshkl.bashq.ui.fragment;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -144,6 +146,16 @@ public class QuotesFragment extends Fragment implements QuotesView, OnQuoteItemL
         this.parentActivity = null;
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case REQUEST_WRITE_EXTERNAL_STORAGE:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    parentActivity.getNavigator().navigateToComicsDownloadImage(getContext(), comicImageLink);
+                }
+        }
+    }
+
     //==================================================================================================================
 
     @OnClick(R.id.fab_calendar_multiple_month)
@@ -201,8 +213,13 @@ public class QuotesFragment extends Fragment implements QuotesView, OnQuoteItemL
     }
 
     @Override
-    public void showMessage(String message) {
-        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+    public void showMessage(final String message) {
+        parentActivity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override
@@ -235,7 +252,12 @@ public class QuotesFragment extends Fragment implements QuotesView, OnQuoteItemL
 
     @Override
     public void showError(Errors errorType) {
-        Toast.makeText(getContext(), "Error occurred", Toast.LENGTH_SHORT).show();
+        parentActivity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(getContext(), "Error occurred", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     //==================================================================================================================
