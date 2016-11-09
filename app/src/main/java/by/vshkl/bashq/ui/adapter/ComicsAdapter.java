@@ -57,6 +57,10 @@ public class ComicsAdapter extends RecyclerView.Adapter<ComicsViewHolder> {
         this.onComicItemClickListener = onComicItemClickListener;
     }
 
+    public void clearComics() {
+        this.comics.clear();
+    }
+
     public List<String> getComicsImageUrls() {
         List<String> images = new ArrayList<>();
 

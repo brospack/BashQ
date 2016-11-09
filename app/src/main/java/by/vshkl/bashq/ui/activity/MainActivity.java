@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.Spinner;
 
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
@@ -100,6 +101,14 @@ public class MainActivity extends AppCompatActivity implements Drawer.OnDrawerIt
 
     public void setToolbarTitle(String toolbarTitle) {
         toolbar.setTitle(toolbarTitle);
+    }
+
+    public void addSpinnerToToolbar(Spinner spinner) {
+        toolbar.addView(spinner);
+    }
+
+    public void removeSpinnerFromToolbar(Spinner spinner) {
+        toolbar.removeView(spinner);
     }
 
     //==================================================================================================================

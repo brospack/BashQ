@@ -25,11 +25,6 @@
         </activity>
 
         <activity
-            android:name=".ui.activity.ComicsActivity"
-            android:label="@string/comics_name"
-            android:theme="@style/AppThemeDark.NoActionBar"/>
-
-        <activity
             android:name=".ui.activity.CopyToClipboardActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter
