@@ -153,8 +153,10 @@ public class ComicsFragment extends Fragment implements ComicsView, OnComicItemC
             @Override
             public void run() {
                 setComics(comics);
+                parentActivity.setToolbarTitle(getString(R.string.comics_title));
             }
         });
+
     }
 
     @Override
