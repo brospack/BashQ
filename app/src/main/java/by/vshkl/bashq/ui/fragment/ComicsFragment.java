@@ -3,6 +3,7 @@ package by.vshkl.bashq.ui.fragment;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -266,7 +267,16 @@ public class ComicsFragment extends Fragment implements ComicsView, OnComicItemC
     }
 
     private void initializeRecyclerView() {
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 4);
+        GridLayoutManager gridLayoutManager = null;
+        switch (parentActivity.getResources().getConfiguration().orientation) {
+            case Configuration.ORIENTATION_PORTRAIT:
+                gridLayoutManager = new GridLayoutManager(getContext(), 4);
+                break;
+            case Configuration.ORIENTATION_LANDSCAPE:
+                gridLayoutManager = new GridLayoutManager(getContext(), 6);
+                break;
+        }
+
         rvComics.setLayoutManager(gridLayoutManager);
         comicsAdapter = new ComicsAdapter();
         comicsAdapter.setOnComicItemClickListener(ComicsFragment.this);
