@@ -1,20 +1,14 @@
 package by.vshkl.bashq.injection.component;
 
-import android.content.Context;
-
-import by.vshkl.bashq.injection.module.ActivityModule;
-import by.vshkl.bashq.injection.module.NavigationModule;
 import by.vshkl.bashq.injection.module.QuotesModule;
 import by.vshkl.bashq.injection.scope.PerActivity;
-import by.vshkl.bashq.ui.activity.QuotesActivity;
+import by.vshkl.bashq.ui.fragment.QuotesFragment;
 import dagger.Component;
 
 @PerActivity
 @Component(dependencies = ApplicationComponent.class,
-        modules = {ActivityModule.class, QuotesModule.class, NavigationModule.class})
+        modules = {QuotesModule.class})
 public interface QuotesComponent {
 
-    void inject(QuotesActivity quotesActivity);
-
-    Context context();
+    void inject(QuotesFragment quotesFragment);
 }

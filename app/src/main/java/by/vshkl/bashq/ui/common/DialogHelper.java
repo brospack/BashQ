@@ -2,6 +2,7 @@ package by.vshkl.bashq.ui.common;
 
 import android.content.Context;
 import android.support.design.widget.BottomSheetDialog;
+import android.support.v4.app.FragmentManager;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
@@ -12,17 +13,17 @@ import java.util.Calendar;
 
 import by.vshkl.bashq.R;
 import by.vshkl.bashq.common.Navigator;
-import by.vshkl.bashq.ui.activity.QuotesActivity;
 import by.vshkl.mvp.model.Quote;
 import by.vshkl.mvp.presenter.common.Subsection;
 import by.vshkl.mvp.presenter.common.UrlBuilder;
 
 public class DialogHelper {
 
-    public static void showDatePickerDialog(QuotesActivity activity, Subsection currentSubsection) {
+    public static void showDatePickerDialog(DatePickerDialog.OnDateSetListener listener, FragmentManager manager,
+                                            Subsection currentSubsection) {
         Calendar calendarMaxDate = Calendar.getInstance();
         DatePickerDialog datePickerDialog = DatePickerDialog.newInstance(
-                activity,
+                listener,
                 calendarMaxDate.get(Calendar.YEAR),
                 calendarMaxDate.get(Calendar.MONTH),
                 calendarMaxDate.get(Calendar.DAY_OF_MONTH)
@@ -41,7 +42,7 @@ public class DialogHelper {
 
         datePickerDialog.showYearPickerFirst(true);
 
-        datePickerDialog.show(activity.getFragmentManager(), "Pick a date");
+//        datePickerDialog.show(manager, "Pick a date");
     }
 
     public static void showQuoteActionsBottomSheetDialog(final Context context, final Navigator navigator,
