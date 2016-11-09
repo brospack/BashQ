@@ -31,7 +31,7 @@ public class ToolbarTitleHelper {
                 } else {
                     return context.getString(R.string.nd_abyss_best_param, parameter);
                 }
-            case COMIC:
+            case COMICS:
                 return context.getString(R.string.nd_comics);
             case FAVOURITE_QUOTES:
                 return context.getString(R.string.nd_fav_quotes);
