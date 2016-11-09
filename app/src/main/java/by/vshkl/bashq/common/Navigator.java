@@ -10,19 +10,12 @@ import android.text.Html;
 import javax.inject.Inject;
 
 import by.vshkl.bashq.injection.scope.PerActivity;
-import by.vshkl.bashq.ui.activity.ComicsActivity;
 
 @PerActivity
 public class Navigator {
 
     @Inject
     public Navigator() {
-    }
-
-    public void navigateToComicsActivity(Context context) {
-        if (context != null) {
-            context.startActivity(ComicsActivity.getCallingIntent(context));
-        }
     }
 
     public void navigateToQuoteShareLinkChooser(Context context, String quoteLink) {

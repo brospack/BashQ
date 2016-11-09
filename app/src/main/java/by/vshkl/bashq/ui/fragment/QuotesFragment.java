@@ -115,8 +115,8 @@ public class QuotesFragment extends Fragment implements QuotesView, OnQuoteItemL
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        initializeRecyclerView();
         initializeSwipeRefreshLayout();
+        initializeRecyclerView();
         initializeFloatingActionButtons();
     }
 
