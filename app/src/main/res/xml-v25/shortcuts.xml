@@ -3,7 +3,7 @@
     <shortcut
         android:shortcutId="view_comics"
         android:enabled="true"
-        android:icon="@drawable/ic_comics"
+        android:icon="@drawable/ic_comics_selected"
         android:shortcutShortLabel="@string/shortcut_comics_short_label"
         android:shortcutLongLabel="@string/shortcut_comics_long_label"
         android:shortcutDisabledMessage="@string/shortcut_comics_message_disabled">

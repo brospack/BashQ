@@ -40,7 +40,7 @@
     <string name="quote_action_share_link">Share quote link</string>
     <string name="quote_action_share_text">Share quote text</string>
     <string name="quote_action_add_to_favourite">Add quote to favourite</string>
-    
+
     <!-- Permissions -->
     <string name="permission_write_external_storage_title">Permission needed</string>
     <string name="permission_write_external_storage_rationale">To download comics\' image app needs permission to write external storage.</string>
