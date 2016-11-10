@@ -55,7 +55,7 @@ public class DialogHelper {
         bsShareLink.setVisibility(quote.getLink() != null ? View.VISIBLE : View.GONE);
 
         FrameLayout bsAddToFavourite = (FrameLayout) bottomSheetDialog.findViewById(R.id.bs_favourite);
-        bsAddToFavourite.setVisibility(quote.getRating() != null ? View.VISIBLE : View.GONE);
+        bsAddToFavourite.setVisibility(quote.getVoteCount() != -1 ? View.VISIBLE : View.GONE);
 
         bottomSheetDialog.findViewById(R.id.bs_share_link).setOnClickListener(new View.OnClickListener() {
             @Override

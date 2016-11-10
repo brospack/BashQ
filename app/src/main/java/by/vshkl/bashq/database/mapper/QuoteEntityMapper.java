@@ -17,6 +17,7 @@ public class QuoteEntityMapper {
             quote.setDate(quoteEntity.getDate());
             quote.setLink(quoteEntity.getLink());
             quote.setContent(quoteEntity.getContent());
+            quote.setVoteCount(-1);
         }
 
         return quote;
