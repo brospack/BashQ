@@ -11,4 +11,6 @@ public interface QuotesView extends View {
     void showQuoteComicImageDialog(String imageUrl);
 
     void showMessage(String message);
+
+    void notifyDataSetChanged();
 }

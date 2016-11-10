@@ -261,6 +261,12 @@ public class QuotesFragment extends Fragment implements QuotesView, OnQuoteItemL
         });
     }
 
+    @Override
+    public void notifyDataSetChanged() {
+        quotesAdapter.notifyItemRemoved(0);
+        quotesAdapter.notifyDataSetChanged();
+    }
+
     //==================================================================================================================
 
     @Override
