@@ -1,9 +1,13 @@
 package by.vshkl.bashq.network;
 
+import android.support.annotation.NonNull;
+
 import com.raizlabs.android.dbflow.config.DatabaseDefinition;
 import com.raizlabs.android.dbflow.config.FlowManager;
+import com.raizlabs.android.dbflow.sql.language.CursorResult;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.raizlabs.android.dbflow.structure.database.transaction.ProcessModelTransaction;
+import com.raizlabs.android.dbflow.structure.database.transaction.QueryTransaction;
 import com.raizlabs.android.dbflow.structure.database.transaction.Transaction;
 
 import org.jsoup.Jsoup;
@@ -273,11 +277,22 @@ public class NetworkRepository implements Repository {
     }
 
     private Observable<List<Quote>> getQuotesFromDatabase() {
-        List<QuoteEntity> quoteEntities;
-
-        quoteEntities = SQLite.select().from(QuoteEntity.class).queryList();
-
-        return Observable.just(QuoteEntityMapper.transform(quoteEntities));
+        return Observable.create(new ObservableOnSubscribe<List<Quote>>() {
+            @Override
+            public void subscribe(final ObservableEmitter<List<Quote>> emitter) throws Exception {
+                SQLite.select()
+                        .from(QuoteEntity.class)
+                        .async()
+                        .queryResultCallback(new QueryTransaction.QueryResultCallback<QuoteEntity>() {
+                            @Override
+                            public void onQueryResult(QueryTransaction transaction,
+                                                      @NonNull CursorResult<QuoteEntity> tResult) {
+                                emitter.onNext(QuoteEntityMapper.transform(tResult.toList()));
+                            }
+                        })
+                        .execute();
+            }
+        });
     }
 
     private Observable<List<Quote>> getQuotesFromNetwork(Subsection subsection, boolean next, String urlPartBest) {
