@@ -14,6 +14,8 @@ public interface Repository {
 
     Observable<Boolean> saveQuote(Quote quote);
 
+    Observable<Boolean> deleteQuote(Quote quote);
+
     Observable<Boolean> voteQuote(String quoteId, Quote.VoteState requiredVoteStatus);
 
     Observable<String> getComicImageUrl(String comicUrlPart);

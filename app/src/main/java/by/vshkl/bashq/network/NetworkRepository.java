@@ -99,6 +99,45 @@ public class NetworkRepository implements Repository {
     }
 
     @Override
+    public Observable<Boolean> deleteQuote(Quote quote) {
+        final QuoteEntity quoteEntity = QuoteMapper.transform(quote);
+
+        final ProcessModelTransaction<QuoteEntity> processModelTransaction = new ProcessModelTransaction.Builder<>(
+                new ProcessModelTransaction.ProcessModel<QuoteEntity>() {
+                    @Override
+                    public void processModel(QuoteEntity quoteEntity) {
+                        quoteEntity.delete();
+                    }
+                })
+                .add(quoteEntity)
+                .build();
+
+        final DatabaseDefinition database = FlowManager.getDatabase(AppDatabase.class);
+
+        return Observable.create(new ObservableOnSubscribe<Boolean>() {
+            @Override
+            public void subscribe(final ObservableEmitter<Boolean> emitter) throws Exception {
+                database.beginTransactionAsync(processModelTransaction)
+                        .success(new Transaction.Success() {
+                            @Override
+                            public void onSuccess(Transaction transaction) {
+                                emitter.onNext(true);
+                            }
+                        })
+                        .error(new Transaction.Error() {
+                            @Override
+                            public void onError(Transaction transaction, Throwable error) {
+                                emitter.onError(error);
+                                emitter.onComplete();
+                            }
+                        })
+                        .build()
+                        .execute();
+            }
+        });
+    }
+
+    @Override
     public Observable<Boolean> voteQuote(final String quoteId, final Quote.VoteState requiredVoteStatus) {
         String voteUrl = UrlBuilder.BuildVoteUrl(requiredVoteStatus, quoteId);
 
