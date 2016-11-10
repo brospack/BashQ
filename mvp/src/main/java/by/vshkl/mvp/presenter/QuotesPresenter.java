@@ -4,6 +4,7 @@ import java.util.List;
 
 import by.vshkl.mvp.domain.FetchQuoteComicImageUsecase;
 import by.vshkl.mvp.domain.FetchQuotesUsecase;
+import by.vshkl.mvp.domain.SaveQuoteUsecase;
 import by.vshkl.mvp.domain.VoteQuoteUsecase;
 import by.vshkl.mvp.model.Errors;
 import by.vshkl.mvp.model.Quote;
@@ -16,22 +17,32 @@ import io.reactivex.schedulers.Schedulers;
 
 public class QuotesPresenter implements Presenter<QuotesView> {
 
+    public enum RepositoryType {
+        NETWORK,
+        DATABASE
+    }
+
     private QuotesView view;
     private FetchQuotesUsecase fetchQuotesUsecase;
     private VoteQuoteUsecase voteQuoteUsecase;
     private FetchQuoteComicImageUsecase fetchQuoteComicImageUsecase;
+    private SaveQuoteUsecase saveQuoteUsecase;
     private Disposable disposable;
     private Subsection subsection;
     private String urlPartBest;
     private String voteQuoteId;
     private String comicUrlPart;
     private Quote.VoteState requiredVoteState;
+    private RepositoryType repositoryType;
 
-    public QuotesPresenter(FetchQuotesUsecase fetchQuotesUsecase, VoteQuoteUsecase voteQuoteUsecase,
-                           FetchQuoteComicImageUsecase fetchQuoteComicImageUsecase) {
+    public QuotesPresenter(FetchQuotesUsecase fetchQuotesUsecase,
+                           VoteQuoteUsecase voteQuoteUsecase,
+                           FetchQuoteComicImageUsecase fetchQuoteComicImageUsecase,
+                           SaveQuoteUsecase saveQuoteUsecase) {
         this.fetchQuotesUsecase = fetchQuotesUsecase;
         this.voteQuoteUsecase = voteQuoteUsecase;
         this.fetchQuoteComicImageUsecase = fetchQuoteComicImageUsecase;
+        this.saveQuoteUsecase = saveQuoteUsecase;
     }
 
     //==================================================================================================================
@@ -86,6 +97,10 @@ public class QuotesPresenter implements Presenter<QuotesView> {
         this.comicUrlPart = comicUrlPart;
     }
 
+    public void setRepositoryType(RepositoryType repositoryType) {
+        this.repositoryType = repositoryType;
+    }
+
     //==================================================================================================================
 
     public void getQuotes(boolean next) {
@@ -115,6 +130,7 @@ public class QuotesPresenter implements Presenter<QuotesView> {
                         }
                     }
                 });
+
     }
 
     public void voteQuote() {
@@ -159,6 +175,30 @@ public class QuotesPresenter implements Presenter<QuotesView> {
                     public void accept(String s) throws Exception {
                         if (s != null) {
                             view.showQuoteComicImageDialog(s);
+                        }
+                    }
+                });
+    }
+
+    public void saveQuote(Quote quote) {
+        saveQuoteUsecase.setQuote(quote);
+        disposable = saveQuoteUsecase.execute()
+                .subscribeOn(Schedulers.newThread())
+                .onErrorReturn(new Function<Throwable, Boolean>() {
+                    @Override
+                    public Boolean apply(Throwable throwable) throws Exception {
+                        throwable.printStackTrace();
+                        view.showError(Errors.QUOTES_FAVOURITE_ADD_FAILED);
+                        return null;
+                    }
+                })
+                .subscribe(new Consumer<Boolean>() {
+                    @Override
+                    public void accept(Boolean aBoolean) throws Exception {
+                        if (aBoolean) {
+                            view.showMessage("Quote added to favourites");
+                        } else {
+                            view.showError(Errors.QUOTES_FAVOURITE_ADD_FAILED);
                         }
                     }
                 });
