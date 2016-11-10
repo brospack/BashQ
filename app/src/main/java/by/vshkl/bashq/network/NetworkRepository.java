@@ -132,7 +132,7 @@ public class NetworkRepository implements Repository {
                 String voteUrl = UrlBuilder.BuildVoteUrl(requiredVoteStatus, quoteId);
 
                 Request request = new Request.Builder()
-                        .url(UrlBuilder.BuildQuoteUrl(voteUrl))
+                        .url(voteUrl)
                         .post(RequestBody.create(MediaType.parse(
                                 "application/x-www-form-urlencoded; charset=UTF-8"),
                                 "quote=" + quoteId + "&act=" + action))
@@ -151,7 +151,7 @@ public class NetworkRepository implements Repository {
                     e.printStackTrace();
                 }
 
-                return Observable.just(false);
+                return Observable.just(true);
             }
         }).subscribeOn(Schedulers.newThread());
     }

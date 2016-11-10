@@ -62,7 +62,7 @@ public class UrlBuilder {
     public static String BuildVoteUrl(Quote.VoteState quoteVoteStatus, String quoteId) {
         StringBuilder sb = new StringBuilder(BASE_URL);
 
-        sb.append(QUOTE).append(quoteId);
+        sb.append(QUOTE).append(quoteId.substring(1));
         switch (quoteVoteStatus) {
             case VOTED_UP:
                 sb.append("/rulez");
