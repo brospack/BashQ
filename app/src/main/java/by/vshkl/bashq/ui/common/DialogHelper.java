@@ -14,6 +14,7 @@ import java.util.Calendar;
 import by.vshkl.bashq.R;
 import by.vshkl.bashq.common.Navigator;
 import by.vshkl.mvp.model.Quote;
+import by.vshkl.mvp.presenter.QuotesPresenter;
 import by.vshkl.mvp.presenter.common.Subsection;
 import by.vshkl.mvp.presenter.common.UrlBuilder;
 
@@ -41,12 +42,10 @@ public class DialogHelper {
         datePickerDialog.setMinDate(calendarMinDate);
 
         datePickerDialog.showYearPickerFirst(true);
-
-//        datePickerDialog.show(manager, "Pick a date");
     }
 
     public static void showQuoteActionsBottomSheetDialog(final Context context, final Navigator navigator,
-                                                         final Quote quote) {
+                                                         final QuotesPresenter presenter, final Quote quote) {
         final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(context);
         bottomSheetDialog.setContentView(R.layout.dialog_quote_actions);
         ((TextView) bottomSheetDialog.findViewById(R.id.tv_bs_title))
@@ -73,7 +72,8 @@ public class DialogHelper {
         bottomSheetDialog.findViewById(R.id.bs_favourite).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                presenter.saveQuote(quote);
+                bottomSheetDialog.dismiss();
             }
         });
 

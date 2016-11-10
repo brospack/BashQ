@@ -21,3 +21,4 @@
 -keep class **$$State
 -keep class **$$ViewStateClassNameProvider
 -keepnames class * extends com.arellomobile.mvp.*
+-keep class * extends com.raizlabs.android.dbflow.config.DatabaseHolder { *; }

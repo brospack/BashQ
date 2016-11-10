@@ -101,8 +101,9 @@ public class MainActivity extends AppCompatActivity implements Drawer.OnDrawerIt
                 handleDrawerSectionClick(Subsection.COMICS);
                 break;
             case 9:
+                handleDrawerSectionClick(Subsection.FAVOURITE_QUOTES);
+                break;
             case 10:
-            case 11:
         }
         return false;
     }
@@ -161,8 +162,7 @@ public class MainActivity extends AppCompatActivity implements Drawer.OnDrawerIt
                     fragmentTransaction.replace(R.id.fragment_placeholder, new ComicsPagerFragment(), FRAGMENT_TAG);
                     break;
                 case FAVOURITE_QUOTES:
-                    break;
-                case FAVOURITE_COMICS:
+                    fragmentTransaction.replace(R.id.fragment_placeholder, new QuotesFragment(), FRAGMENT_TAG);
                     break;
                 case SETTINGS:
                     break;

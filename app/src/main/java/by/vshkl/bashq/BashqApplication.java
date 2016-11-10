@@ -3,6 +3,8 @@ package by.vshkl.bashq;
 import android.app.Application;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
+import com.raizlabs.android.dbflow.config.FlowConfig;
+import com.raizlabs.android.dbflow.config.FlowManager;
 
 import by.vshkl.bashq.injection.component.ApplicationComponent;
 import by.vshkl.bashq.injection.component.DaggerApplicationComponent;
@@ -17,6 +19,7 @@ public class BashqApplication extends Application {
         super.onCreate();
         setupInjector();
         Fresco.initialize(this);
+        FlowManager.init(new FlowConfig.Builder(this).build());
     }
 
     public ApplicationComponent getApplicationComponent() {
