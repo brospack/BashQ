@@ -186,7 +186,11 @@ public class QuotesAdapter extends RecyclerView.Adapter<QuoteViewHolder> {
     }
 
     public void addQuotes(List<Quote> quotes) {
-        this.quotes.addAll(quotes);
+        for (Quote quote : quotes) {
+            if (!this.quotes.contains(quote)) {
+                this.quotes.add(quote);
+            }
+        }
     }
 
     public void clearQuotes() {
@@ -217,9 +221,5 @@ public class QuotesAdapter extends RecyclerView.Adapter<QuoteViewHolder> {
 
     public void setOnQuoteComicLabelClickListener(OnQuoteComicLabelClickListener onQuoteComicLabelClickListener) {
         this.onQuoteComicLabelClickListener = onQuoteComicLabelClickListener;
-    }
-
-    public void setQuotes(List<Quote> quotes) {
-        this.quotes = quotes;
     }
 }

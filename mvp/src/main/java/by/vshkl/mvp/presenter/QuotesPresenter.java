@@ -72,7 +72,9 @@ public class QuotesPresenter implements Presenter<QuotesView> {
     //==================================================================================================================
 
     public void setSubsection(Subsection subsection) {
-        this.subsection = subsection;
+        if (subsection != null) {
+            this.subsection = subsection;
+        }
     }
 
     public void setUrlPartBest(String urlPartBest) {
