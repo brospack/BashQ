@@ -14,7 +14,6 @@ import org.jsoup.select.Elements;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Callable;
 
 import by.vshkl.bashq.database.AppDatabase;
 import by.vshkl.bashq.database.mapper.QuoteEntityMapper;
@@ -29,8 +28,6 @@ import by.vshkl.repository.Repository;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
-import io.reactivex.ObservableSource;
-import io.reactivex.schedulers.Schedulers;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -50,72 +47,12 @@ public class NetworkRepository implements Repository {
 
     @Override
     public Observable<List<Quote>> getQuotes(final Subsection subsection, final boolean next, final String urlPartBest) {
-        return Observable.defer(new Callable<ObservableSource<? extends List<Quote>>>() {
-            @Override
-            public ObservableSource<? extends List<Quote>> call() throws Exception {
-                List<Quote> quotes = new ArrayList<>();
-                System.out.println(subsection);
-
-                if (subsection.equals(Subsection.FAVOURITE_QUOTES)) {
-                    List<QuoteEntity> quoteEntities;
-
-                    quoteEntities = SQLite.select().from(QuoteEntity.class).queryList();
-
-                    quotes = QuoteEntityMapper.transform(quoteEntities);
-                } else {
-
-                    String fullUrl = UrlBuilder.BuildMainUrl(subsection);
-                    if (next) {
-                        fullUrl += nextUrlPart;
-                    }
-
-                    if (urlPartBest != null) {
-                        if (subsection == Subsection.BEST_MONTH || subsection == Subsection.BEST_YEAR
-                                || subsection == Subsection.ABYSS_BEST) {
-                            fullUrl = UrlBuilder.BuildMainUrl(subsection);
-                            fullUrl += urlPartBest;
-                        }
-                    }
-
-                    Request request = new Request.Builder().url(fullUrl).build();
-
-                    try {
-                        Response response = client.newCall(request).execute();
-                        try {
-                            Document document = Jsoup.parse(response.body().string());
-
-                            Elements quoteElements = document.select(".quote");
-                            if (quoteElements != null) {
-                                for (Element quoteElement : quoteElements) {
-                                    Quote quote = parseQuote(quoteElement);
-                                    if (quote.getId() != null) {
-                                        quotes.add(parseQuote(quoteElement));
-                                    }
-                                }
-                            }
-
-                            Element nextPageElement = document.select(".arr").last();
-                            if (nextPageElement != null) {
-                                String nextLink = nextPageElement.parent().select("a").attr("href");
-                                nextUrlPart = nextLink.substring(nextLink.lastIndexOf("/") + 1);
-                            }
-
-                            Element nextRandomPageElement = document.select(".quote.more").first();
-                            if (nextRandomPageElement != null) {
-                                String nextLink = nextRandomPageElement.select("a").attr("href");
-                                nextUrlPart = nextLink.substring(nextLink.indexOf("?"));
-                            }
-                        } finally {
-                            response.close();
-                        }
-
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-                return Observable.just(quotes);
-            }
-        }).subscribeOn(Schedulers.newThread());
+        switch (subsection) {
+            case FAVOURITE_QUOTES:
+                return getQuotesFromDatabase();
+            default:
+                return getQuotesFromNetwork(subsection, next, urlPartBest);
+        }
     }
 
     @Override
@@ -159,48 +96,49 @@ public class NetworkRepository implements Repository {
 
     @Override
     public Observable<Boolean> voteQuote(final String quoteId, final Quote.VoteState requiredVoteStatus) {
-        return Observable.defer(new Callable<ObservableSource<? extends Boolean>>() {
+        String voteUrl = UrlBuilder.BuildVoteUrl(requiredVoteStatus, quoteId);
+
+        final Request request = new Request.Builder()
+                .url(voteUrl)
+                .post(RequestBody.create(MediaType.parse(
+                        "application/x-www-form-urlencoded; charset=UTF-8"),
+                        "quote=" + quoteId + "&act=" + action))
+                .build();
+
+        return Observable.create(new ObservableOnSubscribe<Boolean>() {
             @Override
-            public ObservableSource<? extends Boolean> call() throws Exception {
-                String voteUrl = UrlBuilder.BuildVoteUrl(requiredVoteStatus, quoteId);
-
-                Request request = new Request.Builder()
-                        .url(voteUrl)
-                        .post(RequestBody.create(MediaType.parse(
-                                "application/x-www-form-urlencoded; charset=UTF-8"),
-                                "quote=" + quoteId + "&act=" + action))
-                        .build();
-
+            public void subscribe(ObservableEmitter<Boolean> emitter) throws Exception {
                 try {
                     Response response = client.newCall(request).execute();
                     try {
                         if (response.isSuccessful()) {
-                            Observable.just(true);
+                            emitter.onNext(true);
+                        } else {
+                            emitter.onNext(null);
                         }
                     } finally {
                         response.close();
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
+                    emitter.onError(e);
+                    emitter.onComplete();
                 }
-
-                return Observable.just(true);
             }
-        }).subscribeOn(Schedulers.newThread());
+        });
     }
 
     @Override
     public Observable<String> getComicImageUrl(final String comicUrlPart) {
-        return Observable.defer(new Callable<ObservableSource<? extends String>>() {
+        String comicUrl = UrlBuilder.BuildComicUrl(comicUrlPart);
+
+        final Request request = new Request.Builder()
+                .url(comicUrl)
+                .build();
+
+        return Observable.create(new ObservableOnSubscribe<String>() {
             @Override
-            public ObservableSource<? extends String> call() throws Exception {
-                String comicUrl = UrlBuilder.BuildComicUrl(comicUrlPart);
-
-                Request request = new Request.Builder()
-                        .url(comicUrl)
-                        .build();
-
-                String comicImageUrl = "";
+            public void subscribe(ObservableEmitter<String> emitter) throws Exception {
                 try {
                     Response response = client.newCall(request).execute();
                     try {
@@ -208,48 +146,48 @@ public class NetworkRepository implements Repository {
 
                         Element comicElement = document.select("img#cm_strip").first();
                         if (comicElement != null) {
-                            comicImageUrl = comicElement.attr("src");
+                            emitter.onNext(comicElement.attr("src"));
+                        } else {
+                            emitter.onNext(null);
                         }
                     } finally {
                         response.close();
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
+                    emitter.onError(e);
+                    emitter.onComplete();
                 }
-
-                return Observable.just(comicImageUrl);
             }
-        }).subscribeOn(Schedulers.newThread());
+        });
     }
 
     @Override
     public Observable<List<ComicsThumbnail>> getComics(final int year) {
-        return Observable.defer(new Callable<ObservableSource<? extends List<ComicsThumbnail>>>() {
+        String comicsCalendarUrl = UrlBuilder.BuildComicsCalendarUrl(year);
+
+        final Request request = new Request.Builder()
+                .url(comicsCalendarUrl)
+                .build();
+
+        return Observable.create(new ObservableOnSubscribe<List<ComicsThumbnail>>() {
             @Override
-            public ObservableSource<? extends List<ComicsThumbnail>> call() throws Exception {
-                String comicsCalendarUrl = UrlBuilder.BuildComicsCalendarUrl(year);
-
-                Request request = new Request.Builder()
-                        .url(comicsCalendarUrl)
-                        .build();
-
-                List<ComicsThumbnail> comicsList = new ArrayList<>();
-
+            public void subscribe(ObservableEmitter<List<ComicsThumbnail>> emitter) throws Exception {
                 try {
                     Response response = client.newCall(request).execute();
                     try {
                         Document document = Jsoup.parse(response.body().string());
-                        comicsList = parseComics(document);
+                        emitter.onNext(parseComics(document));
                     } finally {
                         response.close();
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
+                    emitter.onError(e);
+                    emitter.onComplete();
                 }
-
-                return Observable.just(comicsList);
             }
-        }).subscribeOn(Schedulers.newThread());
+        });
     }
 
     @Override
@@ -332,5 +270,75 @@ public class NetworkRepository implements Repository {
         }
 
         return comicsList;
+    }
+
+    private Observable<List<Quote>> getQuotesFromDatabase() {
+        List<QuoteEntity> quoteEntities;
+
+        quoteEntities = SQLite.select().from(QuoteEntity.class).queryList();
+
+        return Observable.just(QuoteEntityMapper.transform(quoteEntities));
+    }
+
+    private Observable<List<Quote>> getQuotesFromNetwork(Subsection subsection, boolean next, String urlPartBest) {
+        String fullUrl = UrlBuilder.BuildMainUrl(subsection);
+        if (next) {
+            fullUrl += nextUrlPart;
+        }
+
+        if (urlPartBest != null) {
+            if (subsection == Subsection.BEST_MONTH || subsection == Subsection.BEST_YEAR
+                    || subsection == Subsection.ABYSS_BEST) {
+                fullUrl = UrlBuilder.BuildMainUrl(subsection);
+                fullUrl += urlPartBest;
+            }
+        }
+
+        final Request request = new Request.Builder().url(fullUrl).build();
+
+        return Observable.create(new ObservableOnSubscribe<List<Quote>>() {
+            @Override
+            public void subscribe(ObservableEmitter<List<Quote>> emitter) throws Exception {
+                List<Quote> quotes = new ArrayList<>();
+
+                try {
+                    Response response = client.newCall(request).execute();
+                    try {
+                        Document document = Jsoup.parse(response.body().string());
+
+                        Elements quoteElements = document.select(".quote");
+                        if (quoteElements != null) {
+                            for (Element quoteElement : quoteElements) {
+                                Quote quote = parseQuote(quoteElement);
+                                if (quote.getId() != null) {
+                                    quotes.add(parseQuote(quoteElement));
+                                }
+                            }
+                        }
+
+                        Element nextPageElement = document.select(".arr").last();
+                        if (nextPageElement != null) {
+                            String nextLink = nextPageElement.parent().select("a").attr("href");
+                            nextUrlPart = nextLink.substring(nextLink.lastIndexOf("/") + 1);
+                        }
+
+                        Element nextRandomPageElement = document.select(".quote.more").first();
+                        if (nextRandomPageElement != null) {
+                            String nextLink = nextRandomPageElement.select("a").attr("href");
+                            nextUrlPart = nextLink.substring(nextLink.indexOf("?"));
+                        }
+
+                        emitter.onNext(quotes);
+                    } finally {
+                        response.close();
+                    }
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    emitter.onError(e);
+                    emitter.onComplete();
+                }
+            }
+        });
     }
 }

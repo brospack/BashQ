@@ -17,11 +17,6 @@ import io.reactivex.schedulers.Schedulers;
 
 public class QuotesPresenter implements Presenter<QuotesView> {
 
-    public enum RepositoryType {
-        NETWORK,
-        DATABASE
-    }
-
     private QuotesView view;
     private FetchQuotesUsecase fetchQuotesUsecase;
     private VoteQuoteUsecase voteQuoteUsecase;
@@ -33,7 +28,6 @@ public class QuotesPresenter implements Presenter<QuotesView> {
     private String voteQuoteId;
     private String comicUrlPart;
     private Quote.VoteState requiredVoteState;
-    private RepositoryType repositoryType;
 
     public QuotesPresenter(FetchQuotesUsecase fetchQuotesUsecase,
                            VoteQuoteUsecase voteQuoteUsecase,
@@ -95,10 +89,6 @@ public class QuotesPresenter implements Presenter<QuotesView> {
 
     public void setComicUrlPart(String comicUrlPart) {
         this.comicUrlPart = comicUrlPart;
-    }
-
-    public void setRepositoryType(RepositoryType repositoryType) {
-        this.repositoryType = repositoryType;
     }
 
     //==================================================================================================================
