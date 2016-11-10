@@ -1,5 +1,11 @@
 package by.vshkl.bashq.network;
 
+import com.raizlabs.android.dbflow.config.DatabaseDefinition;
+import com.raizlabs.android.dbflow.config.FlowManager;
+import com.raizlabs.android.dbflow.sql.language.SQLite;
+import com.raizlabs.android.dbflow.structure.database.transaction.ProcessModelTransaction;
+import com.raizlabs.android.dbflow.structure.database.transaction.Transaction;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -10,6 +16,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
 
+import by.vshkl.bashq.database.AppDatabase;
+import by.vshkl.bashq.database.mapper.QuoteEntityMapper;
+import by.vshkl.bashq.database.mapper.QuoteMapper;
+import by.vshkl.bashq.database.model.QuoteEntity;
 import by.vshkl.mvp.model.Comic;
 import by.vshkl.mvp.model.ComicsThumbnail;
 import by.vshkl.mvp.model.Quote;
@@ -17,10 +27,10 @@ import by.vshkl.mvp.presenter.common.Subsection;
 import by.vshkl.mvp.presenter.common.UrlBuilder;
 import by.vshkl.repository.Repository;
 import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.ObservableSource;
 import io.reactivex.schedulers.Schedulers;
-import okhttp3.Call;
-import okhttp3.Callback;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -43,85 +53,108 @@ public class NetworkRepository implements Repository {
         return Observable.defer(new Callable<ObservableSource<? extends List<Quote>>>() {
             @Override
             public ObservableSource<? extends List<Quote>> call() throws Exception {
-                String fullUrl = UrlBuilder.BuildMainUrl(subsection);
-                if (next) {
-                    fullUrl += nextUrlPart;
-                }
-
-                if (urlPartBest != null) {
-                    if (subsection == Subsection.BEST_MONTH || subsection == Subsection.BEST_YEAR
-                            || subsection == Subsection.ABYSS_BEST) {
-                        fullUrl = UrlBuilder.BuildMainUrl(subsection);
-                        fullUrl += urlPartBest;
-                    }
-                }
-
-                Request request = new Request.Builder().url(fullUrl).build();
-
                 List<Quote> quotes = new ArrayList<>();
-                try {
-                    Response response = client.newCall(request).execute();
-                    try {
-                        Document document = Jsoup.parse(response.body().string());
+                System.out.println(subsection);
 
-                        Elements quoteElements = document.select(".quote");
-                        if (quoteElements != null) {
-                            for (Element quoteElement : quoteElements) {
-                                Quote quote = parseQuote(quoteElement);
-                                if (quote.getId() != null) {
-                                    quotes.add(parseQuote(quoteElement));
+                if (subsection.equals(Subsection.FAVOURITE_QUOTES)) {
+                    List<QuoteEntity> quoteEntities;
+
+                    quoteEntities = SQLite.select().from(QuoteEntity.class).queryList();
+
+                    quotes = QuoteEntityMapper.transform(quoteEntities);
+                } else {
+
+                    String fullUrl = UrlBuilder.BuildMainUrl(subsection);
+                    if (next) {
+                        fullUrl += nextUrlPart;
+                    }
+
+                    if (urlPartBest != null) {
+                        if (subsection == Subsection.BEST_MONTH || subsection == Subsection.BEST_YEAR
+                                || subsection == Subsection.ABYSS_BEST) {
+                            fullUrl = UrlBuilder.BuildMainUrl(subsection);
+                            fullUrl += urlPartBest;
+                        }
+                    }
+
+                    Request request = new Request.Builder().url(fullUrl).build();
+
+                    try {
+                        Response response = client.newCall(request).execute();
+                        try {
+                            Document document = Jsoup.parse(response.body().string());
+
+                            Elements quoteElements = document.select(".quote");
+                            if (quoteElements != null) {
+                                for (Element quoteElement : quoteElements) {
+                                    Quote quote = parseQuote(quoteElement);
+                                    if (quote.getId() != null) {
+                                        quotes.add(parseQuote(quoteElement));
+                                    }
                                 }
                             }
+
+                            Element nextPageElement = document.select(".arr").last();
+                            if (nextPageElement != null) {
+                                String nextLink = nextPageElement.parent().select("a").attr("href");
+                                nextUrlPart = nextLink.substring(nextLink.lastIndexOf("/") + 1);
+                            }
+
+                            Element nextRandomPageElement = document.select(".quote.more").first();
+                            if (nextRandomPageElement != null) {
+                                String nextLink = nextRandomPageElement.select("a").attr("href");
+                                nextUrlPart = nextLink.substring(nextLink.indexOf("?"));
+                            }
+                        } finally {
+                            response.close();
                         }
 
-                        Element nextPageElement = document.select(".arr").last();
-                        if (nextPageElement != null) {
-                            String nextLink = nextPageElement.parent().select("a").attr("href");
-                            nextUrlPart = nextLink.substring(nextLink.lastIndexOf("/") + 1);
-                        }
-
-                        Element nextRandomPageElement = document.select(".quote.more").first();
-                        if (nextRandomPageElement != null) {
-                            String nextLink = nextRandomPageElement.select("a").attr("href");
-                            nextUrlPart = nextLink.substring(nextLink.indexOf("?"));
-                        }
-                    } finally {
-                        response.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
-
-                } catch (IOException e) {
-                    e.printStackTrace();
                 }
-
                 return Observable.just(quotes);
             }
         }).subscribeOn(Schedulers.newThread());
     }
 
     @Override
-    public Observable<Quote> getQuote(String quoteId) {
-        final Quote[] quote = new Quote[1];
+    public Observable<Boolean> saveQuote(final Quote quote) {
+        final QuoteEntity quoteEntity = QuoteMapper.transform(quote);
 
-        Request request = new Request.Builder()
-                .url(UrlBuilder.BuildQuoteUrl(quoteId))
+        final ProcessModelTransaction<QuoteEntity> processModelTransaction = new ProcessModelTransaction.Builder<>(
+                new ProcessModelTransaction.ProcessModel<QuoteEntity>() {
+                    @Override
+                    public void processModel(QuoteEntity quoteEntity) {
+                        quoteEntity.insert();
+                    }
+                })
+                .add(quoteEntity)
                 .build();
 
-        client.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                e.printStackTrace();
-            }
+        final DatabaseDefinition database = FlowManager.getDatabase(AppDatabase.class);
 
+        return Observable.create(new ObservableOnSubscribe<Boolean>() {
             @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                Element quoteElement = Jsoup.parse(response.body().toString()).select(".quote").first();
-                if (quoteElement != null) {
-                    quote[0] = parseQuote(quoteElement);
-                }
+            public void subscribe(final ObservableEmitter<Boolean> emitter) throws Exception {
+                database.beginTransactionAsync(processModelTransaction)
+                        .success(new Transaction.Success() {
+                            @Override
+                            public void onSuccess(Transaction transaction) {
+                                emitter.onNext(true);
+                            }
+                        })
+                        .error(new Transaction.Error() {
+                            @Override
+                            public void onError(Transaction transaction, Throwable error) {
+                                emitter.onError(error);
+                                emitter.onComplete();
+                            }
+                        })
+                        .build()
+                        .execute();
             }
         });
-
-        return Observable.just(quote[0]);
     }
 
     @Override

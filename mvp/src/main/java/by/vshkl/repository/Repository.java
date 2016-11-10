@@ -12,7 +12,7 @@ public interface Repository {
 
     Observable<List<Quote>> getQuotes(Subsection subsection, boolean next, String urlPartBest);
 
-    Observable<Quote> getQuote(String quoteId);
+    Observable<Boolean> saveQuote(Quote quote);
 
     Observable<Boolean> voteQuote(String quoteId, Quote.VoteState requiredVoteStatus);
 
