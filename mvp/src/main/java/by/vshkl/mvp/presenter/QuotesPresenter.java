@@ -200,7 +200,7 @@ public class QuotesPresenter implements Presenter<QuotesView> {
                 });
     }
 
-    public void deleteQuote(Quote quote) {
+    public void deleteQuote(Quote quote, final int position) {
         deleteQuoteUsecase.setQuote(quote);
         disposable = deleteQuoteUsecase.execute()
                 .subscribeOn(Schedulers.newThread())
@@ -217,7 +217,7 @@ public class QuotesPresenter implements Presenter<QuotesView> {
                     public void accept(Boolean aBoolean) throws Exception {
                         if (aBoolean) {
                             view.showMessage("Quote deleted from favourites");
-                            view.notifyDataSetChanged();
+                            view.notifyDataSetChanged(position);
                         } else {
                             view.showError(Errors.QUOTES_FAVOURITE_DELETE_FAILED);
                         }

@@ -34,7 +34,7 @@ public class QuotesAdapter extends RecyclerView.Adapter<QuoteViewHolder> {
     }
 
     public interface OnQuoteItemLongClickListener {
-        void onQuoteItemLongClicked(Quote quote);
+        void onQuoteItemLongClicked(Quote quote, int position);
     }
 
     public interface OnQuoteComicLabelClickListener {
@@ -67,7 +67,7 @@ public class QuotesAdapter extends RecyclerView.Adapter<QuoteViewHolder> {
             @Override
             public boolean onLongClick(View view) {
                 if (onQuoteItemLongClickListener != null) {
-                    onQuoteItemLongClickListener.onQuoteItemLongClicked(quote);
+                    onQuoteItemLongClickListener.onQuoteItemLongClicked(quote, holder.getAdapterPosition());
                 }
                 return true;
             }
@@ -191,6 +191,10 @@ public class QuotesAdapter extends RecyclerView.Adapter<QuoteViewHolder> {
                 this.quotes.add(quote);
             }
         }
+    }
+
+    public void deleteQuote(int position) {
+        quotes.remove(position);
     }
 
     public void clearQuotes() {

@@ -45,7 +45,8 @@ public class DialogHelper {
     }
 
     public static void showQuoteActionsBottomSheetDialog(final Context context, final Navigator navigator,
-                                                         final QuotesPresenter presenter, final Quote quote) {
+                                                         final QuotesPresenter presenter, final Quote quote,
+                                                         final int quotePosition) {
         final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(context);
         bottomSheetDialog.setContentView(R.layout.dialog_quote_actions);
         ((TextView) bottomSheetDialog.findViewById(R.id.tv_bs_title))
@@ -87,7 +88,7 @@ public class DialogHelper {
         bottomSheetDialog.findViewById(R.id.bs_favourite_remove).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                presenter.deleteQuote(quote);
+                presenter.deleteQuote(quote, quotePosition);
                 bottomSheetDialog.dismiss();
             }
         });

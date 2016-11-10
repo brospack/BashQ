@@ -262,9 +262,9 @@ public class QuotesFragment extends Fragment implements QuotesView, OnQuoteItemL
     }
 
     @Override
-    public void notifyDataSetChanged() {
-        quotesAdapter.notifyItemRemoved(0);
-        quotesAdapter.notifyDataSetChanged();
+    public void notifyDataSetChanged(int position) {
+        quotesAdapter.deleteQuote(position);
+        quotesAdapter.notifyItemRemoved(position);
     }
 
     //==================================================================================================================
@@ -275,9 +275,9 @@ public class QuotesFragment extends Fragment implements QuotesView, OnQuoteItemL
     }
 
     @Override
-    public void onQuoteItemLongClicked(Quote quote) {
+    public void onQuoteItemLongClicked(Quote quote, int position) {
         DialogHelper.showQuoteActionsBottomSheetDialog(
-                getContext(), parentActivity.getNavigator(), quotesPresenter, quote);
+                getContext(), parentActivity.getNavigator(), quotesPresenter, quote, position);
     }
 
     @Override

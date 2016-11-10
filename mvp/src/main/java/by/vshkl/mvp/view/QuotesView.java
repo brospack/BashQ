@@ -12,5 +12,5 @@ public interface QuotesView extends View {
 
     void showMessage(String message);
 
-    void notifyDataSetChanged();
+    void notifyDataSetChanged(int position);
 }
