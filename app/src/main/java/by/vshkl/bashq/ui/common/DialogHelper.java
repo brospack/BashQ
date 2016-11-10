@@ -54,8 +54,11 @@ public class DialogHelper {
         FrameLayout bsShareLink = (FrameLayout) bottomSheetDialog.findViewById(R.id.bs_share_link);
         bsShareLink.setVisibility(quote.getLink() != null ? View.VISIBLE : View.GONE);
 
-        FrameLayout bsAddToFavourite = (FrameLayout) bottomSheetDialog.findViewById(R.id.bs_favourite);
+        FrameLayout bsAddToFavourite = (FrameLayout) bottomSheetDialog.findViewById(R.id.bs_favourite_add);
         bsAddToFavourite.setVisibility(quote.getVoteCount() != -1 ? View.VISIBLE : View.GONE);
+
+        FrameLayout bsRemoveFromFavourite = (FrameLayout) bottomSheetDialog.findViewById(R.id.bs_favourite_remove);
+        bsRemoveFromFavourite.setVisibility(quote.getVoteCount() != -1 ? View.GONE : View.VISIBLE);
 
         bottomSheetDialog.findViewById(R.id.bs_share_link).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,10 +76,18 @@ public class DialogHelper {
             }
         });
 
-        bottomSheetDialog.findViewById(R.id.bs_favourite).setOnClickListener(new View.OnClickListener() {
+        bottomSheetDialog.findViewById(R.id.bs_favourite_add).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 presenter.saveQuote(quote);
+                bottomSheetDialog.dismiss();
+            }
+        });
+
+        bottomSheetDialog.findViewById(R.id.bs_favourite_remove).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                presenter.deleteQuote(quote);
                 bottomSheetDialog.dismiss();
             }
         });
