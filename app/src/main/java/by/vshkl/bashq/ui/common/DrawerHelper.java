@@ -67,18 +67,13 @@ public class DrawerHelper {
                                 .withIcon(R.drawable.ic_favourite)
                                 .withSelectedIcon(R.drawable.ic_favourite_selected)
                                 .withIdentifier(9),
-                        new PrimaryDrawerItem()
-                                .withName(R.string.nd_fav_comics)
-                                .withIcon(R.drawable.ic_favourite)
-                                .withSelectedIcon(R.drawable.ic_favourite_selected)
-                                .withIdentifier(10),
                         new SectionDrawerItem()
                                 .withName(R.string.nd_other),
                         new PrimaryDrawerItem()
                                 .withName(R.string.nd_settings)
                                 .withIcon(R.drawable.ic_settings)
                                 .withSelectedIcon(R.drawable.ic_settings_selected)
-                                .withIdentifier(11)
+                                .withIdentifier(10)
                 )
                 .withOnDrawerItemClickListener(listener)
                 .build();

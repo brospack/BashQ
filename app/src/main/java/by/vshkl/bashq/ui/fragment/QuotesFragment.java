@@ -83,6 +83,7 @@ public class QuotesFragment extends Fragment implements QuotesView, OnQuoteItemL
     FloatingActionButton fabCalendar;
 
     private static final int REQUEST_WRITE_EXTERNAL_STORAGE = 42;
+    private static final String KEY_REPOSITORY = "repository";
 
     private MainActivity parentActivity;
     private QuotesComponent quotesComponent;
@@ -269,7 +270,8 @@ public class QuotesFragment extends Fragment implements QuotesView, OnQuoteItemL
 
     @Override
     public void onQuoteItemLongClicked(Quote quote) {
-        DialogHelper.showQuoteActionsBottomSheetDialog(getContext(), parentActivity.getNavigator(), quote);
+        DialogHelper.showQuoteActionsBottomSheetDialog(
+                getContext(), parentActivity.getNavigator(), quotesPresenter, quote);
     }
 
     @Override
