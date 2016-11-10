@@ -2,6 +2,7 @@ package by.vshkl.mvp.presenter;
 
 import java.util.List;
 
+import by.vshkl.mvp.domain.DeleteQuoteUsecase;
 import by.vshkl.mvp.domain.FetchQuoteComicImageUsecase;
 import by.vshkl.mvp.domain.FetchQuotesUsecase;
 import by.vshkl.mvp.domain.SaveQuoteUsecase;
@@ -22,6 +23,7 @@ public class QuotesPresenter implements Presenter<QuotesView> {
     private VoteQuoteUsecase voteQuoteUsecase;
     private FetchQuoteComicImageUsecase fetchQuoteComicImageUsecase;
     private SaveQuoteUsecase saveQuoteUsecase;
+    private DeleteQuoteUsecase deleteQuoteUsecase;
     private Disposable disposable;
     private Subsection subsection;
     private String urlPartBest;
@@ -32,11 +34,13 @@ public class QuotesPresenter implements Presenter<QuotesView> {
     public QuotesPresenter(FetchQuotesUsecase fetchQuotesUsecase,
                            VoteQuoteUsecase voteQuoteUsecase,
                            FetchQuoteComicImageUsecase fetchQuoteComicImageUsecase,
-                           SaveQuoteUsecase saveQuoteUsecase) {
+                           SaveQuoteUsecase saveQuoteUsecase,
+                           DeleteQuoteUsecase deleteQuoteUsecase) {
         this.fetchQuotesUsecase = fetchQuotesUsecase;
         this.voteQuoteUsecase = voteQuoteUsecase;
         this.fetchQuoteComicImageUsecase = fetchQuoteComicImageUsecase;
         this.saveQuoteUsecase = saveQuoteUsecase;
+        this.deleteQuoteUsecase = deleteQuoteUsecase;
     }
 
     //==================================================================================================================
@@ -191,6 +195,31 @@ public class QuotesPresenter implements Presenter<QuotesView> {
                             view.showMessage("Quote added to favourites");
                         } else {
                             view.showError(Errors.QUOTES_FAVOURITE_ADD_FAILED);
+                        }
+                    }
+                });
+    }
+
+    public void deleteQuote(Quote quote) {
+        deleteQuoteUsecase.setQuote(quote);
+        disposable = deleteQuoteUsecase.execute()
+                .subscribeOn(Schedulers.newThread())
+                .onErrorReturn(new Function<Throwable, Boolean>() {
+                    @Override
+                    public Boolean apply(Throwable throwable) throws Exception {
+                        throwable.printStackTrace();
+                        view.showError(Errors.QUOTES_FAVOURITE_DELETE_FAILED);
+                        return null;
+                    }
+                })
+                .subscribe(new Consumer<Boolean>() {
+                    @Override
+                    public void accept(Boolean aBoolean) throws Exception {
+                        if (aBoolean) {
+                            view.showMessage("Quote deleted from favourites");
+                            view.notifyDataSetChanged();
+                        } else {
+                            view.showError(Errors.QUOTES_FAVOURITE_DELETE_FAILED);
                         }
                     }
                 });
