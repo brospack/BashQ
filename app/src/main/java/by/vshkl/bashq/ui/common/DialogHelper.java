@@ -3,11 +3,14 @@ package by.vshkl.bashq.ui.common;
 import android.content.Context;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.app.FragmentManager;
+import android.text.format.DateUtils;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
-import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
+import com.jzxiang.pickerview.TimePickerDialog;
+import com.jzxiang.pickerview.data.Type;
+import com.jzxiang.pickerview.listener.OnDateSetListener;
 
 import java.util.Calendar;
 
@@ -15,33 +18,76 @@ import by.vshkl.bashq.R;
 import by.vshkl.bashq.common.Navigator;
 import by.vshkl.mvp.model.Quote;
 import by.vshkl.mvp.presenter.QuotesPresenter;
-import by.vshkl.mvp.presenter.common.Subsection;
 import by.vshkl.mvp.presenter.common.UrlBuilder;
 
 public class DialogHelper {
 
-    public static void showDatePickerDialog(DatePickerDialog.OnDateSetListener listener, FragmentManager manager,
-                                            Subsection currentSubsection) {
-        Calendar calendarMaxDate = Calendar.getInstance();
-        DatePickerDialog datePickerDialog = DatePickerDialog.newInstance(
-                listener,
-                calendarMaxDate.get(Calendar.YEAR),
-                calendarMaxDate.get(Calendar.MONTH),
-                calendarMaxDate.get(Calendar.DAY_OF_MONTH)
-        );
-        datePickerDialog.setMaxDate(calendarMaxDate);
+    public enum DateTypes {
+        YEAR,
+        YEAR_MONTH,
+        YEAR_MONTH_DAY
+    }
 
-        Calendar calendarMinDate = Calendar.getInstance();
-        if (currentSubsection == Subsection.ABYSS_BEST) {
-            calendarMinDate.set(Calendar.YEAR, calendarMaxDate.get(Calendar.YEAR) - 1);
-        } else {
-            calendarMinDate.set(Calendar.YEAR, 2004);
-            calendarMinDate.set(Calendar.MONTH, 8);
-            calendarMinDate.set(Calendar.DAY_OF_MONTH, 1);
+    public static void showDatePickerDialog(DateTypes dateTypes, Context context, OnDateSetListener listener,
+                                            FragmentManager fragmentManager, String tag) {
+        Calendar calendar = Calendar.getInstance();
+
+        switch (dateTypes) {
+            case YEAR:
+                calendar.set(Calendar.YEAR, 2004);
+                new TimePickerDialog.Builder()
+                        .setCallBack(listener)
+                        .setCancelStringId(context.getString(android.R.string.cancel))
+                        .setSureStringId(context.getString(android.R.string.ok))
+                        .setTitleStringId(context.getString(R.string.date_picker_title_month))
+                        .setType(Type.YEAR)
+                        .setYearText(context.getString(R.string.date_picker_ext_year))
+                        .setThemeColor(context.getResources().getColor(R.color.colorAccent))
+                        .setMinMillseconds(calendar.getTimeInMillis())
+                        .setMaxMillseconds(System.currentTimeMillis())
+                        .setWheelItemTextSize(16)
+                        .setCyclic(false)
+                        .build()
+                        .show(fragmentManager, tag);
+                break;
+            case YEAR_MONTH:
+                calendar.set(Calendar.YEAR, 2004);
+                calendar.set(Calendar.MONTH, 8);
+                new TimePickerDialog.Builder()
+                        .setCallBack(listener)
+                        .setCancelStringId(context.getString(android.R.string.cancel))
+                        .setSureStringId(context.getString(android.R.string.ok))
+                        .setTitleStringId(context.getString(R.string.date_picker_title_month))
+                        .setType(Type.YEAR_MONTH)
+                        .setYearText(context.getString(R.string.date_picker_ext_year))
+                        .setMonthText(context.getString(R.string.date_picker_ext_month))
+                        .setThemeColor(context.getResources().getColor(R.color.colorAccent))
+                        .setMinMillseconds(calendar.getTimeInMillis())
+                        .setMaxMillseconds(System.currentTimeMillis())
+                        .setWheelItemTextSize(16)
+                        .setCyclic(false)
+                        .build()
+                        .show(fragmentManager, tag);
+                break;
+            case YEAR_MONTH_DAY:
+                new TimePickerDialog.Builder()
+                        .setCallBack(listener)
+                        .setCancelStringId(context.getString(android.R.string.cancel))
+                        .setSureStringId(context.getString(android.R.string.ok))
+                        .setTitleStringId(context.getString(R.string.date_picker_title_abyss))
+                        .setType(Type.YEAR_MONTH_DAY)
+                        .setYearText(context.getString(R.string.date_picker_ext_year))
+                        .setMonthText(context.getString(R.string.date_picker_ext_month))
+                        .setDayText(context.getString(R.string.date_picker_ext_day))
+                        .setThemeColor(context.getResources().getColor(R.color.colorAccent))
+                        .setMinMillseconds(System.currentTimeMillis() - DateUtils.YEAR_IN_MILLIS)
+                        .setMaxMillseconds(System.currentTimeMillis())
+                        .setWheelItemTextSize(16)
+                        .setCyclic(false)
+                        .build()
+                        .show(fragmentManager, tag);
+                break;
         }
-        datePickerDialog.setMinDate(calendarMinDate);
-
-        datePickerDialog.showYearPickerFirst(true);
     }
 
     public static void showQuoteActionsBottomSheetDialog(final Context context, final Navigator navigator,

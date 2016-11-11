@@ -16,9 +16,17 @@ public class ToolbarTitleHelper {
             case BEST:
                 return context.getString(R.string.nd_best_day_week);
             case BEST_YEAR:
-                return context.getString(R.string.nd_best_year, parameter);
+                if (parameter == null) {
+                    return context.getString(R.string.nd_best_day_week);
+                } else {
+                    return context.getString(R.string.nd_best_year, parameter);
+                }
             case BEST_MONTH:
-                return context.getString(R.string.nd_best_month, parameter);
+                if (parameter == null) {
+                    return context.getString(R.string.nd_best_day_week);
+                } else {
+                    return context.getString(R.string.nd_best_month, parameter);
+                }
             case BY_RATING:
                 return context.getString(R.string.nd_rating);
             case ABYSS:

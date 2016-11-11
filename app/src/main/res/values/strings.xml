@@ -42,6 +42,14 @@
     <string name="quote_action_add_to_favourite">Add quote to favourite</string>
     <string name="quote_action_remove_from_favourite">Remove quote from favourite</string>
 
+    <!-- Date picker dialog -->
+    <string name="date_picker_title_month">Pick year and month</string>
+    <string name="date_picker_title_year">Pick year</string>
+    <string name="date_picker_title_abyss">Pick year, month and day</string>
+    <string name="date_picker_ext_year"> year</string>
+    <string name="date_picker_ext_month"> month</string>
+    <string name="date_picker_ext_day"> day</string>
+
     <!-- Permissions -->
     <string name="permission_write_external_storage_title">Permission needed</string>
     <string name="permission_write_external_storage_rationale">To download comics\' image app needs permission to write external storage.</string>

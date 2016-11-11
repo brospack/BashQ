@@ -21,11 +21,13 @@ import android.widget.Toast;
 
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
+import com.jzxiang.pickerview.TimePickerDialog;
+import com.jzxiang.pickerview.listener.OnDateSetListener;
 import com.stfalcon.frescoimageviewer.ImageViewer;
-import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
-import com.wdullaer.materialdatetimepicker.date.DatePickerDialog.OnDateSetListener;
 
+import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 import javax.inject.Inject;
 
@@ -83,7 +85,7 @@ public class QuotesFragment extends Fragment implements QuotesView, OnQuoteItemL
     FloatingActionButton fabCalendar;
 
     private static final int REQUEST_WRITE_EXTERNAL_STORAGE = 42;
-    private static final String KEY_REPOSITORY = "repository";
+    private static final String TAG_CALENDAR_PICKER = "CALENDAR_PICKER";
 
     private MainActivity parentActivity;
     private QuotesComponent quotesComponent;
@@ -163,7 +165,8 @@ public class QuotesFragment extends Fragment implements QuotesView, OnQuoteItemL
     void onFabCalendarMultipleMonthClicked() {
         parentActivity.setCurrentSubsection(Subsection.BEST_MONTH);
         quotesPresenter.setSubsection(parentActivity.getCurrentSubsection());
-        showDatePickerDialog();
+        DialogHelper.showDatePickerDialog(
+                DialogHelper.DateTypes.YEAR_MONTH, getContext(), this, getFragmentManager(), TAG_CALENDAR_PICKER);
         fabCalendarMenu.close(true);
     }
 
@@ -171,13 +174,15 @@ public class QuotesFragment extends Fragment implements QuotesView, OnQuoteItemL
     void onFabCalendarMultipleYearClicked() {
         parentActivity.setCurrentSubsection(Subsection.BEST_YEAR);
         quotesPresenter.setSubsection(parentActivity.getCurrentSubsection());
-        showDatePickerDialog();
+        DialogHelper.showDatePickerDialog(
+                DialogHelper.DateTypes.YEAR, getContext(), this, getFragmentManager(), TAG_CALENDAR_PICKER);
         fabCalendarMenu.close(true);
     }
 
     @OnClick(R.id.fab_calendar_single)
     void onFabCalendarSingleClicked() {
-        showDatePickerDialog();
+        DialogHelper.showDatePickerDialog(
+                DialogHelper.DateTypes.YEAR_MONTH_DAY, getContext(), this, getFragmentManager(), TAG_CALENDAR_PICKER);
     }
 
     //==================================================================================================================
@@ -330,8 +335,50 @@ public class QuotesFragment extends Fragment implements QuotesView, OnQuoteItemL
     }
 
     @Override
-    public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
+    public void onDateSet(TimePickerDialog timePickerView, long millseconds) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(millseconds);
+        Locale locale = Locale.getDefault();
 
+        switch (parentActivity.getCurrentSubsection()) {
+            case BEST_MONTH:
+                datePart = (new StringBuilder()
+                        .append(String.format(locale, "%02d", (calendar.get(Calendar.MONTH) + 1)))
+                        .append(".")
+                        .append(calendar.get(Calendar.YEAR)))
+                        .toString();
+                quotesAdapter.clearQuotes();
+                quotesPresenter.setUrlPartBest(new StringBuilder("/bestmonth/")
+                        .append(calendar.get(Calendar.YEAR))
+                        .append("/")
+                        .append(calendar.get(Calendar.MONTH) + 1)
+                        .toString());
+                quotesPresenter.getQuotes(false);
+                break;
+            case BEST_YEAR:
+                datePart = String.valueOf(calendar.get(Calendar.YEAR));
+                quotesAdapter.clearQuotes();
+                quotesPresenter.setUrlPartBest(new StringBuilder("/bestyear/")
+                        .append(calendar.get(Calendar.YEAR))
+                        .toString());
+                quotesPresenter.getQuotes(false);
+                break;
+            case ABYSS_BEST:
+                datePart = (new StringBuilder()
+                        .append(String.format(locale, "%02d", calendar.get(Calendar.DAY_OF_MONTH)))
+                        .append(".")
+                        .append(String.format(locale, "%02d", (calendar.get(Calendar.MONTH) + 1)))
+                        .append(".")
+                        .append(calendar.get(Calendar.YEAR)))
+                        .toString();
+                quotesAdapter.clearQuotes();
+                quotesPresenter.setUrlPartBest(new StringBuilder(String.valueOf(calendar.get(Calendar.YEAR)))
+                        .append(String.format(locale, "%02d", (calendar.get(Calendar.MONTH) + 1)))
+                        .append(String.format(locale, "%02d", calendar.get(Calendar.DAY_OF_MONTH)))
+                        .toString());
+                quotesPresenter.getQuotes(false);
+                break;
+        }
     }
 
     //==================================================================================================================
@@ -412,12 +459,8 @@ public class QuotesFragment extends Fragment implements QuotesView, OnQuoteItemL
         }
     }
 
-    private void showDatePickerDialog() {
-        DialogHelper.showDatePickerDialog(
-                QuotesFragment.this, getFragmentManager(), parentActivity.getCurrentSubsection());
-    }
-
     private void handleUpdate() {
+        datePart = null;
         quotesAdapter.clearQuotes();
         scrollListener.resetState();
         quotesPresenter.setUrlPartBest(null);
