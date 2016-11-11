@@ -11,15 +11,10 @@ import by.vshkl.bashq.R;
 public class ComicsImageOverlayView extends RelativeLayout {
 
     public OnDownloadClickListener onDownloadClickListener;
-    public OnFavouriteClickListener onFavouriteClickListener;
     public OnShareClickListener onShareClickListener;
 
     public interface OnDownloadClickListener {
         void onDownloadClicked();
-    }
-
-    public interface OnFavouriteClickListener {
-        void onFavouriteClicked();
     }
 
     public interface OnShareClickListener {
@@ -50,10 +45,6 @@ public class ComicsImageOverlayView extends RelativeLayout {
         this.onDownloadClickListener = onDownloadClickListener;
     }
 
-    public void setOnFavouriteClickListener(OnFavouriteClickListener onFavouriteClickListener) {
-        this.onFavouriteClickListener = onFavouriteClickListener;
-    }
-
     public void setOnShareClickListener(OnShareClickListener onShareClickListener) {
         this.onShareClickListener = onShareClickListener;
     }
@@ -62,7 +53,6 @@ public class ComicsImageOverlayView extends RelativeLayout {
         View view = inflate(getContext(), R.layout.overlay_comics, this);
 
         ImageView imgDownload = (ImageView) view.findViewById(R.id.img_comics_overlay_action_download);
-        ImageView imgFavourite = (ImageView) view.findViewById(R.id.img_comics_overlay_action_favourite);
         ImageView imgShare = (ImageView) view.findViewById(R.id.img_comics_overlay_action_share);
 
         imgDownload.setOnClickListener(new OnClickListener() {
@@ -70,15 +60,6 @@ public class ComicsImageOverlayView extends RelativeLayout {
             public void onClick(View view) {
                 if (onDownloadClickListener != null) {
                     onDownloadClickListener.onDownloadClicked();
-                }
-            }
-        });
-
-        imgFavourite.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (onFavouriteClickListener != null) {
-                    onFavouriteClickListener.onFavouriteClicked();
                 }
             }
         });

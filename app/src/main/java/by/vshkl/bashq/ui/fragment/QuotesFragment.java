@@ -55,7 +55,6 @@ import by.vshkl.bashq.ui.common.PermissionHelper;
 import by.vshkl.bashq.ui.common.ToolbarTitleHelper;
 import by.vshkl.bashq.ui.component.ComicsImageOverlayView;
 import by.vshkl.bashq.ui.component.ComicsImageOverlayView.OnDownloadClickListener;
-import by.vshkl.bashq.ui.component.ComicsImageOverlayView.OnFavouriteClickListener;
 import by.vshkl.bashq.ui.component.ComicsImageOverlayView.OnShareClickListener;
 import by.vshkl.mvp.model.Errors;
 import by.vshkl.mvp.model.Quote;
@@ -66,7 +65,7 @@ import xyz.hanks.library.SmallBang;
 
 public class QuotesFragment extends Fragment implements QuotesView, OnQuoteItemLongClickListener,
         OnVoteUpClickListener, OnVoteDownClickListener, OnVoteOldClickListener, OnQuoteComicLabelClickListener,
-        OnDownloadClickListener, OnFavouriteClickListener, OnShareClickListener, OnRefreshListener, OnDateSetListener {
+        OnDownloadClickListener, OnShareClickListener, OnRefreshListener, OnDateSetListener {
 
     @Inject
     QuotesPresenter quotesPresenter;
@@ -208,7 +207,6 @@ public class QuotesFragment extends Fragment implements QuotesView, OnQuoteItemL
 
                 ComicsImageOverlayView overlay = new ComicsImageOverlayView(getContext());
                 overlay.setOnDownloadClickListener(QuotesFragment.this);
-                overlay.setOnFavouriteClickListener(QuotesFragment.this);
                 overlay.setOnShareClickListener(QuotesFragment.this);
 
                 new ImageViewer.Builder(getContext(), new String[]{imageUrl})
@@ -322,11 +320,6 @@ public class QuotesFragment extends Fragment implements QuotesView, OnQuoteItemL
                 getString(R.string.permission_write_external_storage_title),
                 getString(R.string.permission_write_external_storage_rationale),
                 comicImageLink);
-    }
-
-    @Override
-    public void onFavouriteClicked() {
-        Toast.makeText(getContext(), "Not implemented yet", Toast.LENGTH_SHORT).show();
     }
 
     @Override

@@ -41,7 +41,6 @@ import by.vshkl.bashq.ui.adapter.ComicsAdapter.OnComicItemClickListener;
 import by.vshkl.bashq.ui.common.PermissionHelper;
 import by.vshkl.bashq.ui.component.ComicsImageOverlayView;
 import by.vshkl.bashq.ui.component.ComicsImageOverlayView.OnDownloadClickListener;
-import by.vshkl.bashq.ui.component.ComicsImageOverlayView.OnFavouriteClickListener;
 import by.vshkl.bashq.ui.component.ComicsImageOverlayView.OnShareClickListener;
 import by.vshkl.mvp.model.ComicsThumbnail;
 import by.vshkl.mvp.model.Errors;
@@ -49,7 +48,7 @@ import by.vshkl.mvp.presenter.ComicsPresenter;
 import by.vshkl.mvp.view.ComicsView;
 
 public class ComicsFragment extends Fragment implements ComicsView, OnComicItemClickListener, OnRefreshListener,
-        OnDownloadClickListener, OnFavouriteClickListener, OnShareClickListener {
+        OnDownloadClickListener, OnShareClickListener {
 
     @Inject
     ComicsPresenter comicsPresenter;
@@ -214,7 +213,6 @@ public class ComicsFragment extends Fragment implements ComicsView, OnComicItemC
         ComicsFragment.this.comicImageLink = comicImageLink;
         ComicsImageOverlayView overlay = new ComicsImageOverlayView(getContext());
         overlay.setOnDownloadClickListener(ComicsFragment.this);
-        overlay.setOnFavouriteClickListener(ComicsFragment.this);
         overlay.setOnShareClickListener(ComicsFragment.this);
 
         new ImageViewer.Builder(getContext(), comicsAdapter.getComicsImageUrls())
@@ -233,11 +231,6 @@ public class ComicsFragment extends Fragment implements ComicsView, OnComicItemC
                 getString(R.string.permission_write_external_storage_title),
                 getString(R.string.permission_write_external_storage_rationale),
                 comicImageLink);
-    }
-
-    @Override
-    public void onFavouriteClicked() {
-        Toast.makeText(getContext(), "Not implemented yet", Toast.LENGTH_SHORT).show();
     }
 
     @Override
