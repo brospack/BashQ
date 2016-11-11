@@ -60,7 +60,7 @@ dependencies {
     compile 'uk.co.chrisjenx:calligraphy:2.2.0'
 
     // Date picker
-    compile 'com.wdullaer:materialdatetimepicker:2.5.0'
+    compile 'com.jzxiang.pickerview:TimePickerDialog:1.0.1'
 
     // Floating action button menu
     compile 'com.github.clans:fab:1.6.4'
