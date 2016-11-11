@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.Toast;
 
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
@@ -104,6 +105,7 @@ public class MainActivity extends AppCompatActivity implements Drawer.OnDrawerIt
                 handleDrawerSectionClick(Subsection.FAVOURITE_QUOTES);
                 break;
             case 10:
+                Toast.makeText(this, "¯\\_(ツ)_/¯", Toast.LENGTH_SHORT).show();
         }
         return false;
     }
