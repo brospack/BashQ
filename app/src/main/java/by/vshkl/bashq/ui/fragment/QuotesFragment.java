@@ -51,6 +51,7 @@ import by.vshkl.bashq.ui.adapter.QuotesAdapter.OnVoteDownClickListener;
 import by.vshkl.bashq.ui.adapter.QuotesAdapter.OnVoteOldClickListener;
 import by.vshkl.bashq.ui.adapter.QuotesAdapter.OnVoteUpClickListener;
 import by.vshkl.bashq.ui.common.DialogHelper;
+import by.vshkl.bashq.ui.common.NetworkStateHelper;
 import by.vshkl.bashq.ui.common.PermissionHelper;
 import by.vshkl.bashq.ui.common.ToolbarTitleHelper;
 import by.vshkl.bashq.ui.component.ComicsImageOverlayView;
@@ -127,7 +128,11 @@ public class QuotesFragment extends Fragment implements QuotesView, OnQuoteItemL
     @Override
     public void onStart() {
         super.onStart();
-        quotesPresenter.onStart();
+        if (NetworkStateHelper.isConnected(getContext()) || parentActivity.getCurrentSubsection().equals(Subsection.FAVOURITE_QUOTES)) {
+            quotesPresenter.onStart();
+        } else {
+            handleNoConnection();
+        }
     }
 
     @Override
@@ -453,11 +458,15 @@ public class QuotesFragment extends Fragment implements QuotesView, OnQuoteItemL
     }
 
     private void handleUpdate() {
-        datePart = null;
-        quotesAdapter.clearQuotes();
-        scrollListener.resetState();
-        quotesPresenter.setUrlPartBest(null);
-        quotesPresenter.getQuotes(false);
+        if (NetworkStateHelper.isConnected(getContext())) {
+            datePart = null;
+            quotesAdapter.clearQuotes();
+            scrollListener.resetState();
+            quotesPresenter.setUrlPartBest(null);
+            quotesPresenter.getQuotes(false);
+        } else {
+            handleNoConnection();
+        }
     }
 
     private void hideUiElements() {
@@ -479,6 +488,12 @@ public class QuotesFragment extends Fragment implements QuotesView, OnQuoteItemL
     private void addQuotes(List<Quote> quotes) {
         quotesAdapter.addQuotes(quotes);
         quotesAdapter.notifyDataSetChanged();
+    }
+
+    private void handleNoConnection() {
+        showMessage(getString(R.string.message_network_connection_required));
+        hideLoading();
+        showEmpty();
     }
 
     //==================================================================================================================

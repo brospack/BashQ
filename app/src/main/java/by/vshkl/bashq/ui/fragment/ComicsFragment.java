@@ -38,6 +38,7 @@ import by.vshkl.bashq.injection.module.ComicsModule;
 import by.vshkl.bashq.ui.activity.MainActivity;
 import by.vshkl.bashq.ui.adapter.ComicsAdapter;
 import by.vshkl.bashq.ui.adapter.ComicsAdapter.OnComicItemClickListener;
+import by.vshkl.bashq.ui.common.NetworkStateHelper;
 import by.vshkl.bashq.ui.common.PermissionHelper;
 import by.vshkl.bashq.ui.component.ComicsImageOverlayView;
 import by.vshkl.bashq.ui.component.ComicsImageOverlayView.OnDownloadClickListener;
@@ -103,7 +104,11 @@ public class ComicsFragment extends Fragment implements ComicsView, OnComicItemC
         unbinder = ButterKnife.bind(ComicsFragment.this, view);
 
         int year = getArguments().getInt(KEY_YEAR);
-        getComicsForYear(year);
+        if (NetworkStateHelper.isConnected(getContext())) {
+            getComicsForYear(year);
+        } else {
+            handleNoConnection();
+        }
 
         return view;
     }
@@ -118,7 +123,11 @@ public class ComicsFragment extends Fragment implements ComicsView, OnComicItemC
     @Override
     public void onStart() {
         super.onStart();
-        comicsPresenter.onStart();
+        if (NetworkStateHelper.isConnected(getContext())) {
+            comicsPresenter.onStart();
+        } else {
+            handleNoConnection();
+        }
     }
 
     @Override
@@ -201,6 +210,11 @@ public class ComicsFragment extends Fragment implements ComicsView, OnComicItemC
         });
     }
 
+    @Override
+    public void showMessage(String message) {
+        Toast.makeText(parentActivity, message, Toast.LENGTH_SHORT).show();
+    }
+
     //==================================================================================================================
 
     @Override
@@ -275,8 +289,12 @@ public class ComicsFragment extends Fragment implements ComicsView, OnComicItemC
     }
 
     private void handleUpdate() {
-        comicsAdapter.clearComics();
-        comicsPresenter.getComics();
+        if (NetworkStateHelper.isConnected(getContext())) {
+            comicsAdapter.clearComics();
+            comicsPresenter.getComics();
+        } else {
+            handleNoConnection();
+        }
     }
 
     private void setComics(List<ComicsThumbnail> comics) {
@@ -287,5 +305,11 @@ public class ComicsFragment extends Fragment implements ComicsView, OnComicItemC
     private void getComicsForYear(int year) {
         comicsPresenter.setYear(year);
         comicsPresenter.getComics();
+    }
+
+    private void handleNoConnection() {
+        showMessage(getString(R.string.message_network_connection_required));
+        hideLoading();
+        showEmpty();
     }
 }

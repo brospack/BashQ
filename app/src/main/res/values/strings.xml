@@ -34,6 +34,7 @@
     <string name="message_error_vote">Ошибка. Голос не учтён</string>
     <string name="message_success_vote">Ваш голос учтён</string>
     <string name="message_copied_to_clipboard">Copied to clipboard</string>
+    <string name="message_network_connection_required">Network connection required</string>
 
     <!-- Quote actions -->
     <string name="quote_action_title">Quote %1$s</string>

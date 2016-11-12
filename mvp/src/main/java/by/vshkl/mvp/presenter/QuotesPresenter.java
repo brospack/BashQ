@@ -145,9 +145,7 @@ public class QuotesPresenter implements Presenter<QuotesView> {
                 .subscribe(new Consumer<Boolean>() {
                     @Override
                     public void accept(Boolean aBoolean) throws Exception {
-                        if (aBoolean) {
-                            view.showMessage("Vote passed!");
-                        } else {
+                        if (!aBoolean) {
                             view.showMessage("Vote failed!");
                         }
                     }

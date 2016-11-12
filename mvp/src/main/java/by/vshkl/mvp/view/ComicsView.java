@@ -7,4 +7,6 @@ import by.vshkl.mvp.model.ComicsThumbnail;
 public interface ComicsView extends View {
 
     void showComics(List<ComicsThumbnail> comics);
+
+    void showMessage(String message);
 }
