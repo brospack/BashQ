@@ -1,10 +1,10 @@
 # BashQ #
 
-## Description ###
+### Description ###
 
 Mobile app for reading quotes and viewing comics from [bash.im](http://bash.im).
 
-## Key features ##
+### Key features ###
 
 * View quotes by sections
 * Vote for quotes
