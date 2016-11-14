@@ -2,7 +2,7 @@
 
 ### Description ###
 
-Mobile app for reading quotes and viewing comics from [bash.im](http://bash.im).
+Android app for reading quotes and viewing comics from [bash.im](http://bash.im).
 
 ### Key features ###
 
