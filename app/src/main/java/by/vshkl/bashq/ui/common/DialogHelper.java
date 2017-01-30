@@ -37,7 +37,6 @@ public class DialogHelper {
                 .setCallBack(listener)
                 .setCancelStringId(context.getString(android.R.string.cancel))
                 .setSureStringId(context.getString(android.R.string.ok))
-                .setTitleStringId(context.getString(R.string.date_picker_title_month))
                 .setThemeColor(ContextCompat.getColor(context, R.color.colorAccent))
                 .setWheelItemTextSize(16)
                 .setCyclic(false);
@@ -47,6 +46,7 @@ public class DialogHelper {
                 calendar.set(Calendar.YEAR, 2004);
                 builder.setType(Type.YEAR)
                         .setYearText("")
+                        .setTitleStringId(context.getString(R.string.date_picker_title_year))
                         .setMinMillseconds(calendar.getTimeInMillis())
                         .setMaxMillseconds(System.currentTimeMillis())
                         .build()
@@ -56,6 +56,7 @@ public class DialogHelper {
                 calendar.set(Calendar.YEAR, 2004);
                 calendar.set(Calendar.MONTH, 8);
                 builder.setType(Type.YEAR_MONTH)
+                        .setTitleStringId(context.getString(R.string.date_picker_title_month))
                         .setYearText("")
                         .setMonthText("")
                         .setMinMillseconds(calendar.getTimeInMillis())
@@ -65,6 +66,7 @@ public class DialogHelper {
                 break;
             case YEAR_MONTH_DAY:
                 builder.setType(Type.YEAR_MONTH_DAY)
+                        .setTitleStringId(context.getString(R.string.date_picker_title_abyss))
                         .setYearText("")
                         .setMonthText("")
                         .setDayText("")
