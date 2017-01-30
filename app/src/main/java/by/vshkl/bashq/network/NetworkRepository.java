@@ -6,6 +6,7 @@ import com.raizlabs.android.dbflow.config.DatabaseDefinition;
 import com.raizlabs.android.dbflow.config.FlowManager;
 import com.raizlabs.android.dbflow.sql.language.CursorResult;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
+import com.raizlabs.android.dbflow.structure.database.DatabaseWrapper;
 import com.raizlabs.android.dbflow.structure.database.transaction.ProcessModelTransaction;
 import com.raizlabs.android.dbflow.structure.database.transaction.QueryTransaction;
 import com.raizlabs.android.dbflow.structure.database.transaction.Transaction;
@@ -66,7 +67,7 @@ public class NetworkRepository implements Repository {
         final ProcessModelTransaction<QuoteEntity> processModelTransaction = new ProcessModelTransaction.Builder<>(
                 new ProcessModelTransaction.ProcessModel<QuoteEntity>() {
                     @Override
-                    public void processModel(QuoteEntity quoteEntity) {
+                    public void processModel(QuoteEntity quoteEntity, DatabaseWrapper wrapper) {
                         quoteEntity.insert();
                     }
                 })
@@ -105,7 +106,7 @@ public class NetworkRepository implements Repository {
         final ProcessModelTransaction<QuoteEntity> processModelTransaction = new ProcessModelTransaction.Builder<>(
                 new ProcessModelTransaction.ProcessModel<QuoteEntity>() {
                     @Override
-                    public void processModel(QuoteEntity quoteEntity) {
+                    public void processModel(QuoteEntity quoteEntity, DatabaseWrapper wrapper) {
                         quoteEntity.delete();
                     }
                 })
@@ -324,10 +325,11 @@ public class NetworkRepository implements Repository {
                         .async()
                         .queryResultCallback(new QueryTransaction.QueryResultCallback<QuoteEntity>() {
                             @Override
-                            public void onQueryResult(QueryTransaction transaction,
+                            public void onQueryResult(QueryTransaction<QuoteEntity> transaction,
                                                       @NonNull CursorResult<QuoteEntity> tResult) {
                                 emitter.onNext(QuoteEntityMapper.transform(tResult.toList()));
                             }
+
                         })
                         .execute();
             }
