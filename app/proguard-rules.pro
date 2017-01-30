@@ -16,9 +16,35 @@
 #   public *;
 #}
 
-# Moxy stuff
--keep class **$$PresentersBinder
--keep class **$$State
--keep class **$$ViewStateClassNameProvider
--keepnames class * extends com.arellomobile.mvp.*
+-keep class by.vshkl.** { *; }
+-dontobfuscate
+
+# Jsoup ----------------------------------------------------------------------------------------------------------------
+-keeppackagenames org.jsoup.nodes
+
+# OkHttp3 --------------------------------------------------------------------------------------------------------------
+-keepattributes Signature
+-keepattributes *Annotation*
+-keep class okhttp3.** { *; }
+-keep interface okhttp3.** { *; }
+-dontwarn okhttp3.**
+
+# Caligraphy -----------------------------------------------------------------------------------------------------------
+-keep class uk.co.chrisjenx.calligraphy.* { *; }
+-keep class uk.co.chrisjenx.calligraphy.*$* { *; }
+
+# Fresco ---------------------------------------------------------------------------------------------------------------
+-keep,allowobfuscation @interface com.facebook.common.internal.DoNotStrip
+-keep @com.facebook.common.internal.DoNotStrip class *
+-keepclassmembers class * {
+    @com.facebook.common.internal.DoNotStrip *;
+}
+-keepclassmembers class * {
+    native <methods>;
+}
+-dontwarn okio.**
+-dontwarn javax.annotation.**
+-dontwarn com.android.volley.toolbox.**
+
+# DbFlow ---------------------------------------------------------------------------------------------------------------
 -keep class * extends com.raizlabs.android.dbflow.config.DatabaseHolder { *; }
