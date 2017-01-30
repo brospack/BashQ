@@ -1,68 +1,64 @@
 <resources>
-    <string name="app_name">BashQ</string>
-    <string name="settings">Настройки</string>
-    <string name="comics_title">Комиксы</string>
-    <string name="copy_to_clipboard">Copy to clipboard</string>
+    <string name="app_name" translatable="false">BashQ</string>
+    <string name="settings" translatable="true">Settings</string>
+    <string name="comics_title" translatable="true">Comics</string>
+    <string name="copy_to_clipboard" translatable="true">Copy to clipboard</string>
 
     <!-- Actions -->
-    <string name="action_settings">Settings</string>
-    <string name="action_comic_share">Share comic</string>
-    <string name="action_comic_share_pic">Share picture</string>
-    <string name="action_comic_download_pic">Download pic</string>
-    <string name="action_vote_old">[:||||:]</string>
+    <string name="action_settings" translatable="true">Settings</string>
+    <string name="action_comic_share" translatable="true">Share comic</string>
+    <string name="action_comic_share_pic" translatable="true">Share picture</string>
+    <string name="action_comic_download_pic" translatable="true">Download picture</string>
+    <string name="action_vote_old" translatable="false">[:||||:]</string>
 
     <!-- Drawer items -->
-    <string name="nd_new">Новые</string>
-    <string name="nd_random">Случайные</string>
-    <string name="nd_best">Лучшие</string>
-    <string name="nd_best_day_week">Лучшие за неделю</string>
-    <string name="nd_best_month">Лучшие за %1$s</string>
-    <string name="nd_best_year">Лучшие за  %1$s</string>
-    <string name="nd_rating">По рейтингу</string>
-    <string name="nd_abyss">Бездна</string>
-    <string name="nd_abyss_top">Топ бездны</string>
-    <string name="nd_abyss_best">Лучшее бездны</string>
-    <string name="nd_abyss_best_param">Лучшее бездны за %1$s</string>
-    <string name="nd_comics">Комиксы</string>
-    <string name="nd_fav_quotes">Избранные цитаты</string>
-    <string name="nd_fav_comics">Избранные комиксы</string>
-    <string name="nd_settings">Настройки</string>
-    <string name="nd_fav">Избранное</string>
-    <string name="nd_other">Прочее</string>
+    <string name="nd_new" translatable="true">New</string>
+    <string name="nd_random" translatable="true">Random</string>
+    <string name="nd_best" translatable="true">Best</string>
+    <string name="nd_best_day_week" translatable="true">Fest for a week</string>
+    <string name="nd_best_month" translatable="true">Best for %1$s</string>
+    <string name="nd_best_year" translatable="true">Best fot %1$s</string>
+    <string name="nd_rating" translatable="true">By rating</string>
+    <string name="nd_abyss" translatable="true">Abyss</string>
+    <string name="nd_abyss_top" translatable="true">Abyss top</string>
+    <string name="nd_abyss_best" translatable="true">Abyss best</string>
+    <string name="nd_abyss_best_param" translatable="true">Abyss best for %1$s</string>
+    <string name="nd_comics" translatable="true">Comics</string>
+    <string name="nd_fav_quotes" translatable="true">Favourite quotes</string>
+    <string name="nd_settings" translatable="true">Settings</string>
+    <string name="nd_fav" translatable="true">Favourite</string>
+    <string name="nd_other" translatable="true">Other</string>
 
     <!-- Messages -->
-    <string name="message_error_connection">Ошибка соединения</string>
-    <string name="message_error_vote">Ошибка. Голос не учтён</string>
-    <string name="message_success_vote">Ваш голос учтён</string>
-    <string name="message_copied_to_clipboard">Copied to clipboard</string>
-    <string name="message_network_connection_required">Network connection required</string>
+    <string name="message_error_connection" translatable="true">Network error</string>
+    <string name="message_error_vote" translatable="true">Error. Vote hasn\'t been saved.</string>
+    <string name="message_success_vote" translatable="true">Vote has been saved.</string>
+    <string name="message_copied_to_clipboard" translatable="true">Copied to clipboard</string>
+    <string name="message_network_connection_required" translatable="true">Network connection required</string>
 
     <!-- Quote actions -->
-    <string name="quote_action_title">Quote %1$s</string>
-    <string name="quote_action_share_link">Share quote link</string>
-    <string name="quote_action_share_text">Share quote text</string>
-    <string name="quote_action_add_to_favourite">Add quote to favourite</string>
-    <string name="quote_action_remove_from_favourite">Remove quote from favourite</string>
+    <string name="quote_action_title" translatable="true">Quote %1$s</string>
+    <string name="quote_action_share_link" translatable="true">Share quote link</string>
+    <string name="quote_action_share_text" translatable="true">Share quote text</string>
+    <string name="quote_action_add_to_favourite" translatable="true">Add quote to favourite</string>
+    <string name="quote_action_remove_from_favourite" translatable="true">Remove quote from favourite</string>
 
     <!-- Date picker dialog -->
-    <string name="date_picker_title_month">Pick year and month</string>
-    <string name="date_picker_title_year">Pick year</string>
-    <string name="date_picker_title_abyss">Pick year, month and day</string>
-    <string name="date_picker_ext_year"> year</string>
-    <string name="date_picker_ext_month"> month</string>
-    <string name="date_picker_ext_day"> day</string>
+    <string name="date_picker_title_month" translatable="true">Pick year and month</string>
+    <string name="date_picker_title_year" translatable="true">Pick year</string>
+    <string name="date_picker_title_abyss" translatable="true">Pick year, month and day</string>
 
     <!-- Permissions -->
-    <string name="permission_write_external_storage_title">Permission needed</string>
-    <string name="permission_write_external_storage_rationale">To download comics\' image app needs permission to write external storage.</string>
+    <string name="permission_write_external_storage_title" translatable="true">Permission needed</string>
+    <string name="permission_write_external_storage_rationale" translatable="true">To download comics\' image app needs permission to write external storage.</string>
 
     <!-- Shortcuts -->
-    <string name="shortcut_quotes_fav_short_label">Favourite quotes</string>
-    <string name="shortcut_quotes_fav_long_label">View favourite quotes</string>
-    <string name="shortcut_quotes_fav_message_disabled">Disabled</string>
-    <string name="shortcut_comics_short_label">Comics</string>
-    <string name="shortcut_comics_long_label">View comics</string>
-    <string name="shortcut_comics_message_disabled">Disabled</string>
+    <string name="shortcut_quotes_fav_short_label" translatable="true">Favourite quotes</string>
+    <string name="shortcut_quotes_fav_long_label" translatable="true">View favourite quotes</string>
+    <string name="shortcut_quotes_fav_message_disabled" translatable="true">Disabled</string>
+    <string name="shortcut_comics_short_label" translatable="true">Comics</string>
+    <string name="shortcut_comics_long_label" translatable="true">View comics</string>
+    <string name="shortcut_comics_message_disabled" translatable="true">Disabled</string>
 
     <!-- Various items -->
     <string name="quote_comic_label">Comic</string>
