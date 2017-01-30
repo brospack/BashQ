@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
+import by.vshkl.bashq.BashqApplication;
 import by.vshkl.bashq.R;
 
 public class CopyToClipboardActivity extends AppCompatActivity {
@@ -27,5 +28,11 @@ public class CopyToClipboardActivity extends AppCompatActivity {
 
             Toast.makeText(this, R.string.message_copied_to_clipboard, Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        BashqApplication.getRefWatcher(this).watch(this);
     }
 }

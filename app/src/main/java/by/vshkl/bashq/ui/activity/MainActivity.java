@@ -69,6 +69,12 @@ public class MainActivity extends AppCompatActivity implements Drawer.OnDrawerIt
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        BashqApplication.getRefWatcher(this).watch(this);
+    }
+
+    @Override
     protected void onSaveInstanceState(Bundle outState) {
         outState.putSerializable(CURRENT_SUBSECTION, currentSubsection);
         super.onSaveInstanceState(outState);

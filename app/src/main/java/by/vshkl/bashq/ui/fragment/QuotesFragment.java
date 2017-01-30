@@ -145,6 +145,7 @@ public class QuotesFragment extends Fragment implements QuotesView, OnQuoteItemL
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+        BashqApplication.getRefWatcher(getActivity()).watch(this);
     }
 
     @Override

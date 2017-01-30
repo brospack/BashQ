@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import by.vshkl.bashq.BashqApplication;
 import by.vshkl.bashq.R;
 import by.vshkl.bashq.ui.activity.MainActivity;
 import by.vshkl.bashq.ui.adapter.ComicsPagerAdapter;
@@ -54,6 +55,7 @@ public class ComicsPagerFragment extends Fragment {
         super.onDestroyView();
         hideTabLayout();
         unbinder.unbind();
+        BashqApplication.getRefWatcher(getActivity()).watch(this);
     }
 
     @Override

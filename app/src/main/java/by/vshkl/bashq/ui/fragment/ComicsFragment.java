@@ -140,6 +140,7 @@ public class ComicsFragment extends Fragment implements ComicsView, OnComicItemC
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+        BashqApplication.getRefWatcher(getActivity()).watch(this);
     }
 
     @Override
