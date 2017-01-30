@@ -13,6 +13,7 @@ Android app for reading quotes and viewing comics from [bash.im](http://bash.im)
 * View comics
 * Share comics link
 * Download comics image
+* App shortcuts
 
 ### Screenshots ###
 
