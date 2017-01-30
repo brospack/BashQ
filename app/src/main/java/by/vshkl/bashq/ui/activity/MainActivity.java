@@ -35,6 +35,8 @@ import by.vshkl.mvp.presenter.common.Subsection;
 public class MainActivity extends AppCompatActivity implements Drawer.OnDrawerItemClickListener,
         SharedPreferences.OnSharedPreferenceChangeListener {
 
+    private static final String ACTION_VIEW_FAVOURITE_QUOTES = "by.vshkl.bashq.ACTION_VIEW_FAVOURITE_QUOTES";
+    private static final String ACTION_VIEW_COMICS = "by.vshkl.bashq.ACTION_VIEW_COMICS";
     private static final String CURRENT_SUBSECTION = "by.vshkl.bashq.ui.activity.MainActivity.CURRENT_SUBSECTION";
     private static final String FRAGMENT_TAG = "by.vshkl.bashq.ui.activity.MainActivity.FRAGMENT_TAG";
 
@@ -66,7 +68,7 @@ public class MainActivity extends AppCompatActivity implements Drawer.OnDrawerIt
                 handleDrawerSectionClick(currentSubsection);
             }
         } else {
-            handleDrawerSectionClick(Subsection.INDEX);
+            dispatchViewActions();
         }
     }
 
@@ -188,6 +190,23 @@ public class MainActivity extends AppCompatActivity implements Drawer.OnDrawerIt
                     break;
             }
             fragmentTransaction.commitAllowingStateLoss();
+        }
+    }
+
+    private void dispatchViewActions() {
+        Intent intent = getIntent();
+        if (intent != null) {
+            switch (intent.getAction()) {
+                case ACTION_VIEW_FAVOURITE_QUOTES:
+                    handleDrawerSectionClick(Subsection.FAVOURITE_QUOTES);
+                    break;
+                case ACTION_VIEW_COMICS:
+                    handleDrawerSectionClick(Subsection.COMICS);
+                    break;
+                default:
+                    handleDrawerSectionClick(Subsection.INDEX);
+                    break;
+            }
         }
     }
 }

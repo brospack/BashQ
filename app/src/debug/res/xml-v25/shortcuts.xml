@@ -11,11 +11,11 @@
         <intent
             android:action="android.intent.action.MAIN"
             android:targetClass="by.vshkl.bashq.ui.activity.MainActivity"
-            android:targetPackage="by.vshkl.bashq" />
+            android:targetPackage="by.vshkl.bashq.debug" />
         <intent
             android:action="by.vshkl.bashq.ACTION_VIEW_FAVOURITE_QUOTES"
             android:targetClass="by.vshkl.bashq.ui.activity.MainActivity"
-            android:targetPackage="by.vshkl.bashq"/>
+            android:targetPackage="by.vshkl.bashq.debug"/>
         <categories
             android:name="android.shortcut.conversation"/>
     </shortcut>
@@ -30,11 +30,11 @@
         <intent
             android:action="android.intent.action.MAIN"
             android:targetClass="by.vshkl.bashq.ui.activity.MainActivity"
-            android:targetPackage="by.vshkl.bashq" />
+            android:targetPackage="by.vshkl.bashq.debug" />
         <intent
             android:action="by.vshkl.bashq.ACTION_VIEW_COMICS"
             android:targetClass="by.vshkl.bashq.ui.activity.MainActivity"
-            android:targetPackage="by.vshkl.bashq"/>
+            android:targetPackage="by.vshkl.bashq.debug"/>
         <categories
             android:name="android.shortcut.conversation"/>
     </shortcut>
