@@ -3,6 +3,7 @@ package by.vshkl.bashq.ui.common;
 import android.content.Context;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.ContextCompat;
 import android.text.format.DateUtils;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -28,62 +29,47 @@ public class DialogHelper {
         YEAR_MONTH_DAY
     }
 
-    public static void showDatePickerDialog(DateTypes dateTypes, Context context, OnDateSetListener listener,
-                                            FragmentManager fragmentManager, String tag) {
+    public static void showDatePickerDialog(final DateTypes dateTypes, final Context context,
+                                            final OnDateSetListener listener,
+                                            final FragmentManager fragmentManager, final String tag) {
         Calendar calendar = Calendar.getInstance();
+        TimePickerDialog.Builder builder = new TimePickerDialog.Builder()
+                .setCallBack(listener)
+                .setCancelStringId(context.getString(android.R.string.cancel))
+                .setSureStringId(context.getString(android.R.string.ok))
+                .setTitleStringId(context.getString(R.string.date_picker_title_month))
+                .setThemeColor(ContextCompat.getColor(context, R.color.colorAccent))
+                .setWheelItemTextSize(16)
+                .setCyclic(false);
 
         switch (dateTypes) {
             case YEAR:
                 calendar.set(Calendar.YEAR, 2004);
-                new TimePickerDialog.Builder()
-                        .setCallBack(listener)
-                        .setCancelStringId(context.getString(android.R.string.cancel))
-                        .setSureStringId(context.getString(android.R.string.ok))
-                        .setTitleStringId(context.getString(R.string.date_picker_title_month))
-                        .setType(Type.YEAR)
-                        .setYearText(context.getString(R.string.date_picker_ext_year))
-                        .setThemeColor(context.getResources().getColor(R.color.colorAccent))
+                builder.setType(Type.YEAR)
+                        .setYearText("")
                         .setMinMillseconds(calendar.getTimeInMillis())
                         .setMaxMillseconds(System.currentTimeMillis())
-                        .setWheelItemTextSize(16)
-                        .setCyclic(false)
                         .build()
                         .show(fragmentManager, tag);
                 break;
             case YEAR_MONTH:
                 calendar.set(Calendar.YEAR, 2004);
                 calendar.set(Calendar.MONTH, 8);
-                new TimePickerDialog.Builder()
-                        .setCallBack(listener)
-                        .setCancelStringId(context.getString(android.R.string.cancel))
-                        .setSureStringId(context.getString(android.R.string.ok))
-                        .setTitleStringId(context.getString(R.string.date_picker_title_month))
-                        .setType(Type.YEAR_MONTH)
-                        .setYearText(context.getString(R.string.date_picker_ext_year))
-                        .setMonthText(context.getString(R.string.date_picker_ext_month))
-                        .setThemeColor(context.getResources().getColor(R.color.colorAccent))
+                builder.setType(Type.YEAR_MONTH)
+                        .setYearText("")
+                        .setMonthText("")
                         .setMinMillseconds(calendar.getTimeInMillis())
                         .setMaxMillseconds(System.currentTimeMillis())
-                        .setWheelItemTextSize(16)
-                        .setCyclic(false)
                         .build()
                         .show(fragmentManager, tag);
                 break;
             case YEAR_MONTH_DAY:
-                new TimePickerDialog.Builder()
-                        .setCallBack(listener)
-                        .setCancelStringId(context.getString(android.R.string.cancel))
-                        .setSureStringId(context.getString(android.R.string.ok))
-                        .setTitleStringId(context.getString(R.string.date_picker_title_abyss))
-                        .setType(Type.YEAR_MONTH_DAY)
-                        .setYearText(context.getString(R.string.date_picker_ext_year))
-                        .setMonthText(context.getString(R.string.date_picker_ext_month))
-                        .setDayText(context.getString(R.string.date_picker_ext_day))
-                        .setThemeColor(context.getResources().getColor(R.color.colorAccent))
+                builder.setType(Type.YEAR_MONTH_DAY)
+                        .setYearText("")
+                        .setMonthText("")
+                        .setDayText("")
                         .setMinMillseconds(System.currentTimeMillis() - DateUtils.YEAR_IN_MILLIS)
                         .setMaxMillseconds(System.currentTimeMillis())
-                        .setWheelItemTextSize(16)
-                        .setCyclic(false)
                         .build()
                         .show(fragmentManager, tag);
                 break;
