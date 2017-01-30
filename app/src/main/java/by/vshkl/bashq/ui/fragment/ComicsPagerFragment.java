@@ -20,8 +20,7 @@ import by.vshkl.bashq.ui.adapter.ComicsPagerAdapter;
 
 public class ComicsPagerFragment extends Fragment {
 
-    @BindView(R.id.vp_container)
-    ViewPager vpContainer;
+    @BindView(R.id.vp_container) ViewPager vpContainer;
 
     private MainActivity parentActivity;
     private Unbinder unbinder;

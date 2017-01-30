@@ -51,17 +51,12 @@ import by.vshkl.mvp.view.ComicsView;
 public class ComicsFragment extends Fragment implements ComicsView, OnComicItemClickListener, OnRefreshListener,
         OnDownloadClickListener, OnShareClickListener {
 
-    @Inject
-    ComicsPresenter comicsPresenter;
+    @Inject ComicsPresenter comicsPresenter;
 
-    @BindView(R.id.fl_container)
-    FrameLayout flContainer;
-    @BindView(R.id.srl_update)
-    SwipeRefreshLayout srlRefresh;
-    @BindView(R.id.rv_comics)
-    RecyclerView rvComics;
-    @BindView(R.id.pb_progress)
-    ProgressBar pbProgress;
+    @BindView(R.id.fl_container) FrameLayout flContainer;
+    @BindView(R.id.srl_update) SwipeRefreshLayout srlRefresh;
+    @BindView(R.id.rv_comics) RecyclerView rvComics;
+    @BindView(R.id.pb_progress) ProgressBar pbProgress;
 
     private static final int REQUEST_WRITE_EXTERNAL_STORAGE = 42;
     private static final String KEY_YEAR = "year";

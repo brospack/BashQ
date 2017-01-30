@@ -43,8 +43,6 @@ public class ToolbarTitleHelper {
                 return context.getString(R.string.nd_comics);
             case FAVOURITE_QUOTES:
                 return context.getString(R.string.nd_fav_quotes);
-            case SETTINGS:
-                return context.getString(R.string.nd_settings);
             default:
                 return context.getString(R.string.app_name);
         }

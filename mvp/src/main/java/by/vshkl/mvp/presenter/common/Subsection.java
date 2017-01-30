@@ -11,6 +11,5 @@ public enum Subsection {
     ABYSS_TOP,
     ABYSS_BEST,
     COMICS,
-    FAVOURITE_QUOTES,
-    SETTINGS
+    FAVOURITE_QUOTES
 }

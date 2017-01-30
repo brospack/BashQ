@@ -53,6 +53,7 @@ import by.vshkl.bashq.ui.adapter.QuotesAdapter.OnVoteUpClickListener;
 import by.vshkl.bashq.ui.common.DialogHelper;
 import by.vshkl.bashq.ui.common.NetworkStateHelper;
 import by.vshkl.bashq.ui.common.PermissionHelper;
+import by.vshkl.bashq.ui.common.PrefHelper;
 import by.vshkl.bashq.ui.common.ToolbarTitleHelper;
 import by.vshkl.bashq.ui.component.ComicsImageOverlayView;
 import by.vshkl.bashq.ui.component.ComicsImageOverlayView.OnDownloadClickListener;
@@ -68,21 +69,14 @@ public class QuotesFragment extends Fragment implements QuotesView, OnQuoteItemL
         OnVoteUpClickListener, OnVoteDownClickListener, OnVoteOldClickListener, OnQuoteComicLabelClickListener,
         OnDownloadClickListener, OnShareClickListener, OnRefreshListener, OnDateSetListener {
 
-    @Inject
-    QuotesPresenter quotesPresenter;
+    @Inject QuotesPresenter quotesPresenter;
 
-    @BindView(R.id.fl_container)
-    FrameLayout flContainer;
-    @BindView(R.id.srl_update)
-    SwipeRefreshLayout srlRefresh;
-    @BindView(R.id.rv_quotes)
-    RecyclerView rvQuotes;
-    @BindView(R.id.pb_progress)
-    ProgressBar pbProgress;
-    @BindView(R.id.fab_calendar_multiple)
-    FloatingActionMenu fabCalendarMenu;
-    @BindView(R.id.fab_calendar_single)
-    FloatingActionButton fabCalendar;
+    @BindView(R.id.fl_container) FrameLayout flContainer;
+    @BindView(R.id.srl_update) SwipeRefreshLayout srlRefresh;
+    @BindView(R.id.rv_quotes) RecyclerView rvQuotes;
+    @BindView(R.id.pb_progress) ProgressBar pbProgress;
+    @BindView(R.id.fab_calendar_multiple) FloatingActionMenu fabCalendarMenu;
+    @BindView(R.id.fab_calendar_single) FloatingActionButton fabCalendar;
 
     private static final int REQUEST_WRITE_EXTERNAL_STORAGE = 42;
     private static final String TAG_CALENDAR_PICKER = "CALENDAR_PICKER";
@@ -399,7 +393,7 @@ public class QuotesFragment extends Fragment implements QuotesView, OnQuoteItemL
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         rvQuotes.setLayoutManager(linearLayoutManager);
 
-        quotesAdapter = new QuotesAdapter();
+        quotesAdapter = new QuotesAdapter(PrefHelper.getQuoteFontSize(parentActivity));
         quotesAdapter.setSmallBang(SmallBang.attach2Window(parentActivity));
         rvQuotes.setAdapter(quotesAdapter);
 

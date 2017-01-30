@@ -1,13 +1,15 @@
 package by.vshkl.bashq.ui.activity;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.Toast;
 
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
@@ -30,18 +32,16 @@ import by.vshkl.bashq.ui.fragment.ComicsPagerFragment;
 import by.vshkl.bashq.ui.fragment.QuotesFragment;
 import by.vshkl.mvp.presenter.common.Subsection;
 
-public class MainActivity extends AppCompatActivity implements Drawer.OnDrawerItemClickListener {
+public class MainActivity extends AppCompatActivity implements Drawer.OnDrawerItemClickListener,
+        SharedPreferences.OnSharedPreferenceChangeListener {
 
     private static final String CURRENT_SUBSECTION = "by.vshkl.bashq.ui.activity.MainActivity.CURRENT_SUBSECTION";
     private static final String FRAGMENT_TAG = "by.vshkl.bashq.ui.activity.MainActivity.FRAGMENT_TAG";
 
-    @Inject
-    Navigator navigator;
+    @Inject Navigator navigator;
 
-    @BindView(R.id.toolbar)
-    MarqueeToolbar toolbar;
-    @BindView(R.id.tabs)
-    TabLayout tabLayout;
+    @BindView(R.id.toolbar) MarqueeToolbar toolbar;
+    @BindView(R.id.tabs) TabLayout tabLayout;
 
     private MainActivityComponent mainActivityComponent;
     private Subsection currentSubsection;
@@ -53,6 +53,8 @@ public class MainActivity extends AppCompatActivity implements Drawer.OnDrawerIt
         ButterKnife.bind(MainActivity.this);
 
         setSupportActionBar(toolbar);
+
+        PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(this);
 
         DrawerHelper.initializeDrawer(MainActivity.this, toolbar, savedInstanceState, MainActivity.this);
         initializeDaggerComponent(((BashqApplication) getApplication()).getApplicationComponent());
@@ -70,6 +72,7 @@ public class MainActivity extends AppCompatActivity implements Drawer.OnDrawerIt
 
     @Override
     protected void onDestroy() {
+        PreferenceManager.getDefaultSharedPreferences(this).unregisterOnSharedPreferenceChangeListener(this);
         super.onDestroy();
         BashqApplication.getRefWatcher(this).watch(this);
     }
@@ -111,9 +114,17 @@ public class MainActivity extends AppCompatActivity implements Drawer.OnDrawerIt
                 handleDrawerSectionClick(Subsection.FAVOURITE_QUOTES);
                 break;
             case 10:
-                Toast.makeText(this, "¯\\_(ツ)_/¯", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(this, SettingsActivity.class));
+                break;
         }
         return false;
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        if (key.equals(getString(R.string.pref_font_size_key))) {
+            dispatchFragments();
+        }
     }
 
     //==================================================================================================================
@@ -172,13 +183,11 @@ public class MainActivity extends AppCompatActivity implements Drawer.OnDrawerIt
                 case FAVOURITE_QUOTES:
                     fragmentTransaction.replace(R.id.fragment_placeholder, new QuotesFragment(), FRAGMENT_TAG);
                     break;
-                case SETTINGS:
-                    break;
                 default:
                     fragmentTransaction.replace(R.id.fragment_placeholder, new QuotesFragment(), FRAGMENT_TAG);
                     break;
             }
-            fragmentTransaction.commit();
+            fragmentTransaction.commitAllowingStateLoss();
         }
     }
 }

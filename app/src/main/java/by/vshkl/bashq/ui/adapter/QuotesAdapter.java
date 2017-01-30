@@ -41,6 +41,7 @@ public class QuotesAdapter extends RecyclerView.Adapter<QuoteViewHolder> {
         void onQuoteComicLabelClicked(String comicLinkPart);
     }
 
+    private int quoteTextSize;
     private List<Quote> quotes = new ArrayList<>();
     private SmallBang bang;
     private OnVoteUpClickListener onVoteUpClickListener;
@@ -48,6 +49,10 @@ public class QuotesAdapter extends RecyclerView.Adapter<QuoteViewHolder> {
     private OnVoteOldClickListener onVoteOldClickListener;
     private OnQuoteItemLongClickListener onQuoteItemLongClickListener;
     private OnQuoteComicLabelClickListener onQuoteComicLabelClickListener;
+
+    public QuotesAdapter(int quoteTextSize) {
+        this.quoteTextSize = quoteTextSize;
+    }
 
     @Override
     public QuoteViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -62,6 +67,7 @@ public class QuotesAdapter extends RecyclerView.Adapter<QuoteViewHolder> {
 
         holder.tvNumber.setText(quote.getId());
         holder.tvDate.setText(quote.getDate());
+        holder.tvContent.setTextSize(quoteTextSize);
         holder.tvContent.setText(Html.fromHtml(quote.getContent().trim()));
         holder.tvContent.setOnLongClickListener(new View.OnLongClickListener() {
             @Override

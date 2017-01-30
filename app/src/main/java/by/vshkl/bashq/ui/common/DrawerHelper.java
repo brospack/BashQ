@@ -73,6 +73,7 @@ public class DrawerHelper {
                                 .withName(R.string.nd_settings)
                                 .withIcon(R.drawable.ic_settings)
                                 .withSelectedIcon(R.drawable.ic_settings_selected)
+                                .withSelectable(false)
                                 .withIdentifier(10)
                 )
                 .withOnDrawerItemClickListener(listener)
