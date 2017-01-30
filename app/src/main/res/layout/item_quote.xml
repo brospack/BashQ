@@ -124,6 +124,7 @@
                 android:paddingBottom="8dp"
                 android:paddingTop="8dp"
                 android:src="@drawable/ic_crux"
+                tools:ignore="ContentDescription"
                 />
 
             <ImageView
@@ -135,6 +136,7 @@
                 android:paddingBottom="8dp"
                 android:paddingTop="8dp"
                 android:src="@drawable/ic_minus"
+                tools:ignore="ContentDescription"
                 />
 
             <TextView
@@ -162,6 +164,7 @@
                 android:paddingBottom="8dp"
                 android:paddingTop="8dp"
                 android:src="@drawable/ic_plus"
+                tools:ignore="ContentDescription"
                 />
 
         </RelativeLayout>

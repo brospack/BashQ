@@ -13,17 +13,10 @@ import by.vshkl.bashq.ui.fragment.ComicsFragment;
 
 public class ComicsPagerAdapter extends FragmentPagerAdapter {
 
-    private Context context;
     private List<Integer> years = new ArrayList<>();
 
     public ComicsPagerAdapter(FragmentManager fm) {
         super(fm);
-        initializeYearsList();
-    }
-
-    public ComicsPagerAdapter(FragmentManager fm, Context context) {
-        super(fm);
-        this.context = context;
         initializeYearsList();
     }
 

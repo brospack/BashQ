@@ -11,7 +11,6 @@ public abstract class EndlessScrollListener extends RecyclerView.OnScrollListene
     private int currentPage = 0;
     private int previousTotalItemCount = 0;
     private boolean loading = true;
-    private int startingPageIndex = 0;
 
     RecyclerView.LayoutManager layoutManager;
 
@@ -69,7 +68,7 @@ public abstract class EndlessScrollListener extends RecyclerView.OnScrollListene
     }
 
     public void resetState() {
-        this.currentPage = this.startingPageIndex;
+        this.currentPage = 0;
         this.previousTotalItemCount = 0;
         this.loading = true;
     }

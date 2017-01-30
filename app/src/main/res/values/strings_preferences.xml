@@ -2,11 +2,11 @@
 <resources>
 
     <!-- Font size -->
-    <string name="pref_font_size_default">17</string>
-    <string name="pref_font_size_title">Text size</string>
-    <string name="pref_font_size_key">pref_font_size_key</string>
-    <string name="pref_font_size_summary">Select quote text size</string>
-    <string-array name="pref_font_size_entries">
+    <string name="pref_font_size_default" translatable="false">17</string>
+    <string name="pref_font_size_title" translatable="true">Text size</string>
+    <string name="pref_font_size_key" translatable="false">pref_font_size_key</string>
+    <string name="pref_font_size_summary" translatable="true">Select quote text size</string>
+    <string-array name="pref_font_size_entries" translatable="false">
         <item>15</item>
         <item>16</item>
         <item>17</item>
@@ -14,7 +14,7 @@
         <item>19</item>
         <item>20</item>
     </string-array>
-    <string-array name="pref_font_size_values">
+    <string-array name="pref_font_size_values"  translatable="false">
         <item>15</item>
         <item>16</item>
         <item>17</item>

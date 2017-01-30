@@ -82,7 +82,6 @@ public class QuotesFragment extends Fragment implements QuotesView, OnQuoteItemL
     private static final String TAG_CALENDAR_PICKER = "CALENDAR_PICKER";
 
     private MainActivity parentActivity;
-    private QuotesComponent quotesComponent;
     private QuotesAdapter quotesAdapter;
     private EndlessScrollListener scrollListener;
     private String datePart = null;
@@ -377,7 +376,7 @@ public class QuotesFragment extends Fragment implements QuotesView, OnQuoteItemL
     //==================================================================================================================
 
     private void initializeDaggerComponent(ApplicationComponent applicationComponent) {
-        quotesComponent = DaggerQuotesComponent.builder()
+        QuotesComponent quotesComponent = DaggerQuotesComponent.builder()
                 .quotesModule(new QuotesModule())
                 .applicationComponent(applicationComponent)
                 .build();

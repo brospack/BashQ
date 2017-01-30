@@ -4,13 +4,6 @@
     <string name="comics_title" translatable="true">Comics</string>
     <string name="copy_to_clipboard" translatable="true">Copy to clipboard</string>
 
-    <!-- Actions -->
-    <string name="action_settings" translatable="true">Settings</string>
-    <string name="action_comic_share" translatable="true">Share comic</string>
-    <string name="action_comic_share_pic" translatable="true">Share picture</string>
-    <string name="action_comic_download_pic" translatable="true">Download picture</string>
-    <string name="action_vote_old" translatable="false">[:||||:]</string>
-
     <!-- Drawer items -->
     <string name="nd_new" translatable="true">New</string>
     <string name="nd_random" translatable="true">Random</string>
@@ -61,9 +54,9 @@
     <string name="shortcut_comics_message_disabled" translatable="true">Disabled</string>
 
     <!-- Various items -->
-    <string name="quote_comic_label">Comic</string>
+    <string name="quote_comic_label" translatable="false">Comic</string>
 
     <!-- Transitions -->
-    <string name="comic_view_transition">COMIC_VIEW</string>
+    <string name="comic_view_transition" translatable="f">COMIC_VIEW</string>
 
 </resources>

@@ -45,7 +45,6 @@ public class MainActivity extends AppCompatActivity implements Drawer.OnDrawerIt
     @BindView(R.id.toolbar) MarqueeToolbar toolbar;
     @BindView(R.id.tabs) TabLayout tabLayout;
 
-    private MainActivityComponent mainActivityComponent;
     private Subsection currentSubsection;
 
     @Override
@@ -162,7 +161,7 @@ public class MainActivity extends AppCompatActivity implements Drawer.OnDrawerIt
     //==================================================================================================================
 
     private void initializeDaggerComponent(ApplicationComponent applicationComponent) {
-        mainActivityComponent = DaggerMainActivityComponent.builder()
+        MainActivityComponent mainActivityComponent = DaggerMainActivityComponent.builder()
                 .activityModule(new ActivityModule(MainActivity.this))
                 .navigationModule(new NavigationModule())
                 .applicationComponent(applicationComponent)

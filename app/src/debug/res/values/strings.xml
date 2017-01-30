@@ -1,3 +1,3 @@
 <resources>
-    <string name="app_name">BashQ debug</string>
+    <string name="app_name" translatable="false">BashQ debug</string>
 </resources>

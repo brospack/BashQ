@@ -62,7 +62,6 @@ public class ComicsFragment extends Fragment implements ComicsView, OnComicItemC
     private static final String KEY_YEAR = "year";
 
     private MainActivity parentActivity;
-    private ComicsComponent comicsComponent;
     private ComicsAdapter comicsAdapter;
     private String comicImageLink;
     private Unbinder unbinder;
@@ -251,7 +250,7 @@ public class ComicsFragment extends Fragment implements ComicsView, OnComicItemC
     //==================================================================================================================
 
     private void initializeDaggerComponent(ApplicationComponent applicationComponent) {
-        comicsComponent = DaggerComicsComponent.builder()
+        ComicsComponent comicsComponent = DaggerComicsComponent.builder()
                 .comicsModule(new ComicsModule())
                 .applicationComponent(applicationComponent)
                 .build();

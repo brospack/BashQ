@@ -3,12 +3,6 @@
     <string name="comics_title" translatable="true">Комиксы</string>
     <string name="copy_to_clipboard" translatable="true">Скопировать в буфер обмена</string>
 
-    <!-- Actions -->
-    <string name="action_settings" translatable="true">Настройки</string>
-    <string name="action_comic_share" translatable="true">Поделиться ссылкой на комикс</string>
-    <string name="action_comic_share_pic" translatable="true">Поделиться картинкой</string>
-    <string name="action_comic_download_pic" translatable="true">Скачать картинку</string>
-
     <!-- Drawer items -->
     <string name="nd_new" translatable="true">Новые</string>
     <string name="nd_random" translatable="true">Случайные</string>

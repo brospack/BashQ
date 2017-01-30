@@ -66,7 +66,7 @@ public class ComicsPagerFragment extends Fragment {
     //==================================================================================================================
 
     private void initializePageAdapter() {
-        vpContainer.setAdapter(new ComicsPagerAdapter(getChildFragmentManager(), getActivity()));
+        vpContainer.setAdapter(new ComicsPagerAdapter(getChildFragmentManager()));
     }
 
     private void initializeTabLayout() {
