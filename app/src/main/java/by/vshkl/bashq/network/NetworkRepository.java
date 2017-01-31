@@ -338,8 +338,7 @@ public class NetworkRepository implements Repository {
                 List<Quote> quotes = null;
 
                 try {
-                    Response response = client.newCall(request).execute();
-                    try {
+                    try (Response response = client.newCall(request).execute()) {
                         ResponseBody responseBody = response.body();
                         if (responseBody == null) {
                             emitter.onNext(Collections.<Quote>emptyList());
@@ -371,8 +370,6 @@ public class NetworkRepository implements Repository {
                         }
 
                         emitter.onNext(quotes != null ? new ArrayList<>(quotes) : Collections.<Quote>emptyList());
-                    } finally {
-                        response.close();
                     }
                 } catch (IOException e) {
                     emitter.onNext(Collections.<Quote>emptyList());

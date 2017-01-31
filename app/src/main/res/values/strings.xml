@@ -57,6 +57,6 @@
     <string name="quote_comic_label" translatable="false">Comic</string>
 
     <!-- Transitions -->
-    <string name="comic_view_transition" translatable="f">COMIC_VIEW</string>
+    <string name="comic_view_transition" translatable="false">COMIC_VIEW</string>
 
 </resources>
