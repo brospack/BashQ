@@ -18,6 +18,7 @@ import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import by.vshkl.bashq.database.AppDatabase;
@@ -38,6 +39,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import okhttp3.ResponseBody;
 
 import static android.R.attr.action;
 
@@ -62,23 +64,23 @@ public class NetworkRepository implements Repository {
 
     @Override
     public Observable<Boolean> saveQuote(final Quote quote) {
-        final QuoteEntity quoteEntity = QuoteMapper.transform(quote);
-
-        final ProcessModelTransaction<QuoteEntity> processModelTransaction = new ProcessModelTransaction.Builder<>(
-                new ProcessModelTransaction.ProcessModel<QuoteEntity>() {
-                    @Override
-                    public void processModel(QuoteEntity quoteEntity, DatabaseWrapper wrapper) {
-                        quoteEntity.insert();
-                    }
-                })
-                .add(quoteEntity)
-                .build();
-
-        final DatabaseDefinition database = FlowManager.getDatabase(AppDatabase.class);
-
         return Observable.create(new ObservableOnSubscribe<Boolean>() {
             @Override
             public void subscribe(final ObservableEmitter<Boolean> emitter) throws Exception {
+                final QuoteEntity quoteEntity = QuoteMapper.transform(quote);
+
+                final ProcessModelTransaction<QuoteEntity> processModelTransaction = new ProcessModelTransaction.Builder<>(
+                        new ProcessModelTransaction.ProcessModel<QuoteEntity>() {
+                            @Override
+                            public void processModel(QuoteEntity quoteEntity, DatabaseWrapper wrapper) {
+                                quoteEntity.insert();
+                            }
+                        })
+                        .add(quoteEntity)
+                        .build();
+
+                final DatabaseDefinition database = FlowManager.getDatabase(AppDatabase.class);
+
                 database.beginTransactionAsync(processModelTransaction)
                         .success(new Transaction.Success() {
                             @Override
@@ -89,8 +91,7 @@ public class NetworkRepository implements Repository {
                         .error(new Transaction.Error() {
                             @Override
                             public void onError(Transaction transaction, Throwable error) {
-                                emitter.onError(error);
-                                emitter.onComplete();
+                                emitter.onNext(false);
                             }
                         })
                         .build()
@@ -100,24 +101,24 @@ public class NetworkRepository implements Repository {
     }
 
     @Override
-    public Observable<Boolean> deleteQuote(Quote quote) {
-        final QuoteEntity quoteEntity = QuoteMapper.transform(quote);
-
-        final ProcessModelTransaction<QuoteEntity> processModelTransaction = new ProcessModelTransaction.Builder<>(
-                new ProcessModelTransaction.ProcessModel<QuoteEntity>() {
-                    @Override
-                    public void processModel(QuoteEntity quoteEntity, DatabaseWrapper wrapper) {
-                        quoteEntity.delete();
-                    }
-                })
-                .add(quoteEntity)
-                .build();
-
-        final DatabaseDefinition database = FlowManager.getDatabase(AppDatabase.class);
-
+    public Observable<Boolean> deleteQuote(final Quote quote) {
         return Observable.create(new ObservableOnSubscribe<Boolean>() {
             @Override
             public void subscribe(final ObservableEmitter<Boolean> emitter) throws Exception {
+                final QuoteEntity quoteEntity = QuoteMapper.transform(quote);
+
+                final ProcessModelTransaction<QuoteEntity> processModelTransaction = new ProcessModelTransaction.Builder<>(
+                        new ProcessModelTransaction.ProcessModel<QuoteEntity>() {
+                            @Override
+                            public void processModel(QuoteEntity quoteEntity, DatabaseWrapper wrapper) {
+                                quoteEntity.delete();
+                            }
+                        })
+                        .add(quoteEntity)
+                        .build();
+
+                final DatabaseDefinition database = FlowManager.getDatabase(AppDatabase.class);
+
                 database.beginTransactionAsync(processModelTransaction)
                         .success(new Transaction.Success() {
                             @Override
@@ -128,8 +129,7 @@ public class NetworkRepository implements Repository {
                         .error(new Transaction.Error() {
                             @Override
                             public void onError(Transaction transaction, Throwable error) {
-                                emitter.onError(error);
-                                emitter.onComplete();
+                                emitter.onNext(false);
                             }
                         })
                         .build()
@@ -140,33 +140,24 @@ public class NetworkRepository implements Repository {
 
     @Override
     public Observable<Boolean> voteQuote(final String quoteId, final Quote.VoteState requiredVoteStatus) {
-        String voteUrl = UrlBuilder.BuildVoteUrl(requiredVoteStatus, quoteId);
-
-        final Request request = new Request.Builder()
-                .url(voteUrl)
-                .post(RequestBody.create(MediaType.parse(
-                        "application/x-www-form-urlencoded; charset=UTF-8"),
-                        "quote=" + quoteId + "&act=" + action))
-                .build();
-
         return Observable.create(new ObservableOnSubscribe<Boolean>() {
             @Override
             public void subscribe(ObservableEmitter<Boolean> emitter) throws Exception {
+                String voteUrl = UrlBuilder.BuildVoteUrl(requiredVoteStatus, quoteId);
+
+                final Request request = new Request.Builder()
+                        .url(voteUrl)
+                        .post(RequestBody.create(MediaType.parse(
+                                "application/x-www-form-urlencoded; charset=UTF-8"),
+                                "quote=" + quoteId + "&act=" + action))
+                        .build();
+
                 try {
-                    Response response = client.newCall(request).execute();
-                    try {
-                        if (response.isSuccessful()) {
-                            emitter.onNext(true);
-                        } else {
-                            emitter.onNext(null);
-                        }
-                    } finally {
-                        response.close();
+                    try (Response response = client.newCall(request).execute()) {
+                        emitter.onNext(response.isSuccessful());
                     }
                 } catch (IOException e) {
-                    e.printStackTrace();
-                    emitter.onError(e);
-                    emitter.onComplete();
+                    emitter.onNext(false);
                 }
             }
         });
@@ -174,18 +165,17 @@ public class NetworkRepository implements Repository {
 
     @Override
     public Observable<String> getComicImageUrl(final String comicUrlPart) {
-        String comicUrl = UrlBuilder.BuildComicUrl(comicUrlPart);
-
-        final Request request = new Request.Builder()
-                .url(comicUrl)
-                .build();
-
         return Observable.create(new ObservableOnSubscribe<String>() {
             @Override
             public void subscribe(ObservableEmitter<String> emitter) throws Exception {
+                String comicUrl = UrlBuilder.BuildComicUrl(comicUrlPart);
+
+                final Request request = new Request.Builder()
+                        .url(comicUrl)
+                        .build();
+
                 try {
-                    Response response = client.newCall(request).execute();
-                    try {
+                    try (Response response = client.newCall(request).execute()) {
                         Document document = Jsoup.parse(response.body().string());
 
                         Element comicElement = document.select("img#cm_strip").first();
@@ -194,13 +184,9 @@ public class NetworkRepository implements Repository {
                         } else {
                             emitter.onNext(null);
                         }
-                    } finally {
-                        response.close();
                     }
                 } catch (IOException e) {
-                    e.printStackTrace();
-                    emitter.onError(e);
-                    emitter.onComplete();
+                    emitter.onNext("");
                 }
             }
         });
@@ -208,27 +194,22 @@ public class NetworkRepository implements Repository {
 
     @Override
     public Observable<List<ComicsThumbnail>> getComics(final int year) {
-        String comicsCalendarUrl = UrlBuilder.BuildComicsCalendarUrl(year);
-
-        final Request request = new Request.Builder()
-                .url(comicsCalendarUrl)
-                .build();
-
         return Observable.create(new ObservableOnSubscribe<List<ComicsThumbnail>>() {
             @Override
             public void subscribe(ObservableEmitter<List<ComicsThumbnail>> emitter) throws Exception {
+                String comicsCalendarUrl = UrlBuilder.BuildComicsCalendarUrl(year);
+
+                final Request request = new Request.Builder()
+                        .url(comicsCalendarUrl)
+                        .build();
+
                 try {
-                    Response response = client.newCall(request).execute();
-                    try {
+                    try (Response response = client.newCall(request).execute()) {
                         Document document = Jsoup.parse(response.body().string());
                         emitter.onNext(parseComics(document));
-                    } finally {
-                        response.close();
                     }
                 } catch (IOException e) {
-                    e.printStackTrace();
-                    emitter.onError(e);
-                    emitter.onComplete();
+                    emitter.onNext(Collections.<ComicsThumbnail>emptyList());
                 }
             }
         });
@@ -307,7 +288,6 @@ public class NetworkRepository implements Repository {
                     comics.setThumbLink(comicsElement.child(0).attr("src"));
                     comics.setImageLink(comics.getThumbLink().replace("ts/", ""));
                     comics.setComicsLink(comicsElement.attr("href"));
-
                     comicsList.add(comics);
                 }
             }
@@ -329,41 +309,47 @@ public class NetworkRepository implements Repository {
                                                       @NonNull CursorResult<QuoteEntity> tResult) {
                                 emitter.onNext(QuoteEntityMapper.transform(tResult.toList()));
                             }
-
                         })
                         .execute();
             }
         });
     }
 
-    private Observable<List<Quote>> getQuotesFromNetwork(Subsection subsection, boolean next, String urlPartBest) {
-        String fullUrl = UrlBuilder.BuildMainUrl(subsection);
-        if (next) {
-            fullUrl += nextUrlPart;
-        }
-
-        if (urlPartBest != null) {
-            if (subsection == Subsection.BEST_MONTH || subsection == Subsection.BEST_YEAR
-                    || subsection == Subsection.ABYSS_BEST) {
-                fullUrl = UrlBuilder.BuildMainUrl(subsection);
-                fullUrl += urlPartBest;
-            }
-        }
-
-        final Request request = new Request.Builder().url(fullUrl).build();
-
+    private Observable<List<Quote>> getQuotesFromNetwork(final Subsection subsection, final boolean next,
+                                                         final String urlPartBest) {
         return Observable.create(new ObservableOnSubscribe<List<Quote>>() {
             @Override
             public void subscribe(ObservableEmitter<List<Quote>> emitter) throws Exception {
-                List<Quote> quotes = new ArrayList<>();
+                String fullUrl = UrlBuilder.BuildMainUrl(subsection);
+                if (next) {
+                    fullUrl += nextUrlPart;
+                }
+
+                if (urlPartBest != null) {
+                    if (subsection == Subsection.BEST_MONTH || subsection == Subsection.BEST_YEAR
+                            || subsection == Subsection.ABYSS_BEST) {
+                        fullUrl = UrlBuilder.BuildMainUrl(subsection);
+                        fullUrl += urlPartBest;
+                    }
+                }
+
+                final Request request = new Request.Builder().url(fullUrl).build();
+
+                List<Quote> quotes = null;
 
                 try {
                     Response response = client.newCall(request).execute();
                     try {
-                        Document document = Jsoup.parse(response.body().string());
+                        ResponseBody responseBody = response.body();
+                        if (responseBody == null) {
+                            emitter.onNext(Collections.<Quote>emptyList());
+                            return;
+                        }
+                        Document document = Jsoup.parse(responseBody.string());
 
                         Elements quoteElements = document.select(".quote");
                         if (quoteElements != null) {
+                            quotes = new ArrayList<>();
                             for (Element quoteElement : quoteElements) {
                                 Quote quote = parseQuote(quoteElement);
                                 if (quote.getId() != null) {
@@ -384,15 +370,12 @@ public class NetworkRepository implements Repository {
                             nextUrlPart = nextLink.substring(nextLink.indexOf("?"));
                         }
 
-                        emitter.onNext(quotes);
+                        emitter.onNext(quotes != null ? new ArrayList<>(quotes) : Collections.<Quote>emptyList());
                     } finally {
                         response.close();
                     }
-
                 } catch (IOException e) {
-                    e.printStackTrace();
-                    emitter.onError(e);
-                    emitter.onComplete();
+                    emitter.onNext(Collections.<Quote>emptyList());
                 }
             }
         });

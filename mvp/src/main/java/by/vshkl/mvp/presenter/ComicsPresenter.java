@@ -4,11 +4,9 @@ import java.util.List;
 
 import by.vshkl.mvp.domain.FetchComicsUsecase;
 import by.vshkl.mvp.model.ComicsThumbnail;
-import by.vshkl.mvp.model.Errors;
 import by.vshkl.mvp.view.ComicsView;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
 public class ComicsPresenter implements Presenter<ComicsView> {
@@ -63,16 +61,7 @@ public class ComicsPresenter implements Presenter<ComicsView> {
     public void getComics() {
         fetchComicsUsecase.setYear(year);
         disposable = fetchComicsUsecase.execute()
-                .subscribeOn(Schedulers.newThread())
-                .onErrorReturn(new Function<Throwable, List<ComicsThumbnail>>() {
-                    @Override
-                    public List<ComicsThumbnail> apply(Throwable throwable) throws Exception {
-                        throwable.printStackTrace();
-                        view.hideLoading();
-                        view.showError(Errors.COMICS_LOADING_FAILED);
-                        return null;
-                    }
-                })
+                .subscribeOn(Schedulers.io())
                 .subscribe(new Consumer<List<ComicsThumbnail>>() {
                     @Override
                     public void accept(List<ComicsThumbnail> comicsThumbnails) throws Exception {

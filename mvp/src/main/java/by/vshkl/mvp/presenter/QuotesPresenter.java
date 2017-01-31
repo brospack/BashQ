@@ -13,7 +13,6 @@ import by.vshkl.mvp.presenter.common.Subsection;
 import by.vshkl.mvp.view.QuotesView;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
 public class QuotesPresenter implements Presenter<QuotesView> {
@@ -104,19 +103,10 @@ public class QuotesPresenter implements Presenter<QuotesView> {
         fetchQuotesUsecase.setNext(next);
         fetchQuotesUsecase.setUrlPartBest(urlPartBest);
         disposable = fetchQuotesUsecase.execute()
-                .subscribeOn(Schedulers.newThread())
-                .onErrorReturn(new Function<Throwable, List<Quote>>() {
-                    @Override
-                    public List<Quote> apply(Throwable throwable) throws Exception {
-                        throwable.printStackTrace();
-                        view.hideLoading();
-                        view.showError(Errors.QUOTES_LOAD_FAILED);
-                        return null;
-                    }
-                })
+                .subscribeOn(Schedulers.io())
                 .subscribe(new Consumer<List<Quote>>() {
                     @Override
-                    public void accept(List<Quote> quotes) throws Exception {
+                    public void accept(List<Quote> quotes) {
                         if (quotes != null) {
                             view.hideLoading();
                             view.showQuotes(quotes);
@@ -133,15 +123,7 @@ public class QuotesPresenter implements Presenter<QuotesView> {
         voteQuoteUsecase.setQuoteId(voteQuoteId);
         voteQuoteUsecase.setRequiredQuoteVoteState(requiredVoteState);
         disposable = voteQuoteUsecase.execute()
-                .subscribeOn(Schedulers.newThread())
-                .onErrorReturn(new Function<Throwable, Boolean>() {
-                    @Override
-                    public Boolean apply(Throwable throwable) throws Exception {
-                        throwable.printStackTrace();
-                        view.showError(Errors.QUOTES_VOTE_FAILED);
-                        return null;
-                    }
-                })
+                .subscribeOn(Schedulers.io())
                 .subscribe(new Consumer<Boolean>() {
                     @Override
                     public void accept(Boolean aBoolean) throws Exception {
@@ -155,15 +137,7 @@ public class QuotesPresenter implements Presenter<QuotesView> {
     public void getQuoteComicImage() {
         fetchQuoteComicImageUsecase.setComicUrlPart(comicUrlPart);
         disposable = fetchQuoteComicImageUsecase.execute()
-                .subscribeOn(Schedulers.newThread())
-                .onErrorReturn(new Function<Throwable, String>() {
-                    @Override
-                    public String apply(Throwable throwable) throws Exception {
-                        throwable.printStackTrace();
-                        view.showError(Errors.QUOTE_COMIC_IMAGE_LOAD_FAILED);
-                        return null;
-                    }
-                })
+                .subscribeOn(Schedulers.io())
                 .subscribe(new Consumer<String>() {
                     @Override
                     public void accept(String s) throws Exception {
@@ -177,15 +151,7 @@ public class QuotesPresenter implements Presenter<QuotesView> {
     public void saveQuote(Quote quote) {
         saveQuoteUsecase.setQuote(quote);
         disposable = saveQuoteUsecase.execute()
-                .subscribeOn(Schedulers.newThread())
-                .onErrorReturn(new Function<Throwable, Boolean>() {
-                    @Override
-                    public Boolean apply(Throwable throwable) throws Exception {
-                        throwable.printStackTrace();
-                        view.showError(Errors.QUOTES_FAVOURITE_ADD_FAILED);
-                        return null;
-                    }
-                })
+                .subscribeOn(Schedulers.io())
                 .subscribe(new Consumer<Boolean>() {
                     @Override
                     public void accept(Boolean aBoolean) throws Exception {
@@ -201,15 +167,7 @@ public class QuotesPresenter implements Presenter<QuotesView> {
     public void deleteQuote(Quote quote, final int position) {
         deleteQuoteUsecase.setQuote(quote);
         disposable = deleteQuoteUsecase.execute()
-                .subscribeOn(Schedulers.newThread())
-                .onErrorReturn(new Function<Throwable, Boolean>() {
-                    @Override
-                    public Boolean apply(Throwable throwable) throws Exception {
-                        throwable.printStackTrace();
-                        view.showError(Errors.QUOTES_FAVOURITE_DELETE_FAILED);
-                        return null;
-                    }
-                })
+                .subscribeOn(Schedulers.io())
                 .subscribe(new Consumer<Boolean>() {
                     @Override
                     public void accept(Boolean aBoolean) throws Exception {
