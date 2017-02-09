@@ -158,6 +158,10 @@ public class MainActivity extends AppCompatActivity implements Drawer.OnDrawerIt
         tabLayout.setVisibility(View.GONE);
     }
 
+    public MarqueeToolbar getToolbar() {
+        return toolbar;
+    }
+
     //==================================================================================================================
 
     private void initializeDaggerComponent(ApplicationComponent applicationComponent) {

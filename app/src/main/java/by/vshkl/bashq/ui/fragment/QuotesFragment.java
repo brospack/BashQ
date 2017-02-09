@@ -14,6 +14,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
@@ -67,7 +68,7 @@ import xyz.hanks.library.SmallBang;
 
 public class QuotesFragment extends Fragment implements QuotesView, OnQuoteItemLongClickListener,
         OnVoteUpClickListener, OnVoteDownClickListener, OnVoteOldClickListener, OnQuoteComicLabelClickListener,
-        OnDownloadClickListener, OnShareClickListener, OnRefreshListener, OnDateSetListener {
+        OnDownloadClickListener, OnShareClickListener, OnRefreshListener, OnDateSetListener, OnClickListener {
 
     @Inject QuotesPresenter quotesPresenter;
 
@@ -101,6 +102,7 @@ public class QuotesFragment extends Fragment implements QuotesView, OnQuoteItemL
         super.onCreate(savedInstanceState);
         initializeDaggerComponent(((BashqApplication) parentActivity.getApplication()).getApplicationComponent());
         initializePresenter();
+        parentActivity.getToolbar().setOnClickListener(this);
     }
 
     @Nullable
@@ -270,6 +272,15 @@ public class QuotesFragment extends Fragment implements QuotesView, OnQuoteItemL
     }
 
     //==================================================================================================================
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.toolbar:
+                rvQuotes.scrollToPosition(0);
+                break;
+        }
+    }
 
     @Override
     public void onRefresh() {
