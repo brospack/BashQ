@@ -8,7 +8,7 @@
     <string name="nd_new" translatable="true">New</string>
     <string name="nd_random" translatable="true">Random</string>
     <string name="nd_best" translatable="true">Best</string>
-    <string name="nd_best_day_week" translatable="true">Fest for a week</string>
+    <string name="nd_best_day_week" translatable="true">Best for a week</string>
     <string name="nd_best_month" translatable="true">Best for %1$s</string>
     <string name="nd_best_year" translatable="true">Best fot %1$s</string>
     <string name="nd_rating" translatable="true">By rating</string>
