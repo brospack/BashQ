@@ -11,10 +11,9 @@ import by.vshkl.bashq.R;
 
 class ComicsViewHolder extends RecyclerView.ViewHolder {
 
-    @BindView(R.id.img_comics_thumbnail)
-    SimpleDraweeView imgThumbnail;
+    @BindView(R.id.img_comics_thumbnail) SimpleDraweeView imgThumbnail;
 
-    public ComicsViewHolder(View itemView) {
+    ComicsViewHolder(View itemView) {
         super(itemView);
         ButterKnife.bind(this, itemView);
     }

@@ -35,9 +35,8 @@
                 android:layout_weight="85"
                 >
 
-                <TextView
+                <by.vshkl.bashq.ui.component.RobotoMediumTextView
                     android:id="@+id/number"
-                    fontPath="fonts/Roboto-Regular.ttf"
                     android:layout_width="wrap_content"
                     android:layout_height="16dp"
                     android:layout_gravity="start"
@@ -47,9 +46,8 @@
                     tools:text="#444444"
                     />
 
-                <TextView
+                <by.vshkl.bashq.ui.component.RobotoMediumTextView
                     android:id="@+id/date"
-                    fontPath="fonts/Roboto-Regular.ttf"
                     android:layout_width="wrap_content"
                     android:layout_height="16dp"
                     android:layout_gravity="end"
@@ -61,9 +59,8 @@
 
             </FrameLayout>
 
-            <TextView
+            <by.vshkl.bashq.ui.component.RobotoMediumTextView
                 android:id="@+id/comic"
-                fontPath="fonts/Roboto-Regular.ttf"
                 android:layout_width="0dp"
                 android:layout_height="16dp"
                 android:layout_gravity="end"
@@ -89,9 +86,8 @@
             android:layerType="software"
             />
 
-        <TextView
+        <by.vshkl.bashq.ui.component.RobotoRegularTextView
             android:id="@+id/content"
-            fontPath="fonts/Roboto-Medium.ttf"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingBottom="8dp"
@@ -139,9 +135,8 @@
                 tools:ignore="ContentDescription"
                 />
 
-            <TextView
+            <by.vshkl.bashq.ui.component.RobotoMediumTextView
                 android:id="@+id/rating"
-                fontPath="fonts/Roboto-Regular.ttf"
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
                 android:layout_toStartOf="@+id/voteUp"
