@@ -2,7 +2,6 @@ package by.vshkl.bashq;
 
 import android.app.Application;
 import android.content.Context;
-import android.graphics.Typeface;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.raizlabs.android.dbflow.config.FlowConfig;
@@ -13,7 +12,6 @@ import com.squareup.leakcanary.RefWatcher;
 import by.vshkl.bashq.injection.component.ApplicationComponent;
 import by.vshkl.bashq.injection.component.DaggerApplicationComponent;
 import by.vshkl.bashq.injection.module.ApplicationModule;
-import uk.co.chrisjenx.calligraphy.TypefaceUtils;
 
 public class BashqApplication extends Application {
 
