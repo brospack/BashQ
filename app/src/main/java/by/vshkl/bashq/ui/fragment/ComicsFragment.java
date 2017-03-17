@@ -94,12 +94,7 @@ public class ComicsFragment extends Fragment implements ComicsView, OnComicItemC
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_comics, container, false);
         unbinder = ButterKnife.bind(ComicsFragment.this, view);
-        int year = getArguments().getInt(KEY_YEAR);
-        if (NetworkStateHelper.isConnected(getContext())) {
-            getComicsForYear(year);
-        } else {
-            handleNoConnection();
-        }
+
         return view;
     }
 
@@ -108,8 +103,9 @@ public class ComicsFragment extends Fragment implements ComicsView, OnComicItemC
         super.onViewCreated(view, savedInstanceState);
         initializeSwipeRefreshLayout();
         initializeRecyclerView();
-        if (NetworkStateHelper.isConnected(getContext())) {
-            comicsPresenter.onCreate();
+        int year = getArguments().getInt(KEY_YEAR);
+        if (NetworkStateHelper.isConnected(getContext().getApplicationContext())) {
+            getComicsForYear(year);
         } else {
             handleNoConnection();
         }
@@ -214,7 +210,6 @@ public class ComicsFragment extends Fragment implements ComicsView, OnComicItemC
         ComicsImageOverlayView overlay = new ComicsImageOverlayView(getContext());
         overlay.setOnDownloadClickListener(ComicsFragment.this);
         overlay.setOnShareClickListener(ComicsFragment.this);
-
         new ImageViewer.Builder(getContext(), comicsAdapter.getComicsImageUrls())
                 .setStartPosition(position)
                 .setOverlayView(overlay)
@@ -262,7 +257,6 @@ public class ComicsFragment extends Fragment implements ComicsView, OnComicItemC
                 gridLayoutManager = new GridLayoutManager(getContext(), 6);
                 break;
         }
-
         rvComics.setLayoutManager(gridLayoutManager);
         comicsAdapter = new ComicsAdapter();
         comicsAdapter.setOnComicItemClickListener(ComicsFragment.this);

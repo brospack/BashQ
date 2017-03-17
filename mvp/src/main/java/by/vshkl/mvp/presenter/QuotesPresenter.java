@@ -51,15 +51,6 @@ public class QuotesPresenter implements Presenter<QuotesView> {
     }
 
     @Override
-    public void onStart() {
-    }
-
-    @Override
-    public void onPause() {
-
-    }
-
-    @Override
     public void onStop() {
         if (disposable != null && !disposable.isDisposed()) {
             disposable.dispose();

@@ -24,12 +24,7 @@ public class ComicsPresenter implements Presenter<ComicsView> {
 
     @Override
     public void onCreate() {
-        view.showLoading();
-        getComics();
-    }
 
-    @Override
-    public void onStart() {
     }
 
     @Override
@@ -37,11 +32,6 @@ public class ComicsPresenter implements Presenter<ComicsView> {
         if (disposable != null && !disposable.isDisposed()) {
             disposable.dispose();
         }
-    }
-
-    @Override
-    public void onPause() {
-
     }
 
     @Override

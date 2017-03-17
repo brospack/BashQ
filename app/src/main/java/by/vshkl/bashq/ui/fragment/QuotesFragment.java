@@ -118,7 +118,8 @@ public class QuotesFragment extends Fragment implements QuotesView, OnQuoteItemL
         initializeSwipeRefreshLayout();
         initializeRecyclerView();
         initializeFloatingActionButtons();
-        if (NetworkStateHelper.isConnected(getContext()) || parentActivity.getCurrentSubsection().equals(Subsection.FAVOURITE_QUOTES)) {
+        if (NetworkStateHelper.isConnected(getContext().getApplicationContext())
+                || parentActivity.getCurrentSubsection().equals(Subsection.FAVOURITE_QUOTES)) {
             quotesPresenter.onCreate();
         } else {
             handleNoConnection();
@@ -189,7 +190,7 @@ public class QuotesFragment extends Fragment implements QuotesView, OnQuoteItemL
             public void run() {
                 addQuotes(quotes);
                 parentActivity.setToolbarTitle(ToolbarTitleHelper.GetToolbarTitle(
-                        getContext(), parentActivity.getCurrentSubsection(), datePart));
+                        getContext().getApplicationContext(), parentActivity.getCurrentSubsection(), datePart));
             }
         });
     }
@@ -200,11 +201,9 @@ public class QuotesFragment extends Fragment implements QuotesView, OnQuoteItemL
             @Override
             public void run() {
                 QuotesFragment.this.comicImageLink = imageUrl;
-
                 ComicsImageOverlayView overlay = new ComicsImageOverlayView(getContext());
                 overlay.setOnDownloadClickListener(QuotesFragment.this);
                 overlay.setOnShareClickListener(QuotesFragment.this);
-
                 new ImageViewer.Builder(getContext(), new String[]{imageUrl})
                         .setOverlayView(overlay)
                         .show();
@@ -285,7 +284,7 @@ public class QuotesFragment extends Fragment implements QuotesView, OnQuoteItemL
     @Override
     public void onQuoteItemLongClicked(Quote quote, int position) {
         DialogHelper.showQuoteActionsBottomSheetDialog(
-                getContext(), parentActivity.getNavigator(), quotesPresenter, quote, position);
+                getContext().getApplicationContext(), parentActivity.getNavigator(), quotesPresenter, quote, position);
     }
 
     @Override
@@ -337,7 +336,6 @@ public class QuotesFragment extends Fragment implements QuotesView, OnQuoteItemL
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(milliseconds);
         Locale locale = Locale.getDefault();
-
         switch (parentActivity.getCurrentSubsection()) {
             case BEST_MONTH:
                 datePart = (new StringBuilder()
@@ -397,11 +395,9 @@ public class QuotesFragment extends Fragment implements QuotesView, OnQuoteItemL
     private void initializeRecyclerView() {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         rvQuotes.setLayoutManager(linearLayoutManager);
-
         quotesAdapter = new QuotesAdapter(PrefHelper.getQuoteFontSize(parentActivity));
         quotesAdapter.setSmallBang(SmallBang.attach2Window(parentActivity));
         rvQuotes.setAdapter(quotesAdapter);
-
         rvQuotes.addOnScrollListener(new HidingScrollListener() {
             @Override
             public void onHide() {
@@ -413,7 +409,6 @@ public class QuotesFragment extends Fragment implements QuotesView, OnQuoteItemL
                 showUiElements();
             }
         });
-
         scrollListener = new EndlessScrollListener(linearLayoutManager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
@@ -423,7 +418,6 @@ public class QuotesFragment extends Fragment implements QuotesView, OnQuoteItemL
             }
         };
         rvQuotes.addOnScrollListener(scrollListener);
-
         quotesAdapter.setOnVoteUpClickListener(QuotesFragment.this);
         quotesAdapter.setOnVoteDownClickListener(QuotesFragment.this);
         quotesAdapter.setOnVoteOldClickListener(QuotesFragment.this);
