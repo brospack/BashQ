@@ -69,10 +69,8 @@ public class ComicsFragment extends Fragment implements ComicsView, OnComicItemC
     public static ComicsFragment newInstance(int year) {
         Bundle args = new Bundle();
         args.putInt(KEY_YEAR, year);
-
         ComicsFragment fragment = new ComicsFragment();
         fragment.setArguments(args);
-
         return fragment;
     }
 
@@ -96,14 +94,12 @@ public class ComicsFragment extends Fragment implements ComicsView, OnComicItemC
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_comics, container, false);
         unbinder = ButterKnife.bind(ComicsFragment.this, view);
-
         int year = getArguments().getInt(KEY_YEAR);
         if (NetworkStateHelper.isConnected(getContext())) {
             getComicsForYear(year);
         } else {
             handleNoConnection();
         }
-
         return view;
     }
 
@@ -112,13 +108,8 @@ public class ComicsFragment extends Fragment implements ComicsView, OnComicItemC
         super.onViewCreated(view, savedInstanceState);
         initializeSwipeRefreshLayout();
         initializeRecyclerView();
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
         if (NetworkStateHelper.isConnected(getContext())) {
-            comicsPresenter.onStart();
+            comicsPresenter.onCreate();
         } else {
             handleNoConnection();
         }

@@ -118,13 +118,8 @@ public class QuotesFragment extends Fragment implements QuotesView, OnQuoteItemL
         initializeSwipeRefreshLayout();
         initializeRecyclerView();
         initializeFloatingActionButtons();
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
         if (NetworkStateHelper.isConnected(getContext()) || parentActivity.getCurrentSubsection().equals(Subsection.FAVOURITE_QUOTES)) {
-            quotesPresenter.onStart();
+            quotesPresenter.onCreate();
         } else {
             handleNoConnection();
         }

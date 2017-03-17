@@ -46,13 +46,12 @@ public class QuotesPresenter implements Presenter<QuotesView> {
 
     @Override
     public void onCreate() {
-
+        view.showLoading();
+        getQuotes(false);
     }
 
     @Override
     public void onStart() {
-        view.showLoading();
-        getQuotes(false);
     }
 
     @Override

@@ -24,13 +24,12 @@ public class ComicsPresenter implements Presenter<ComicsView> {
 
     @Override
     public void onCreate() {
-
+        view.showLoading();
+        getComics();
     }
 
     @Override
     public void onStart() {
-        view.showLoading();
-        getComics();
     }
 
     @Override
