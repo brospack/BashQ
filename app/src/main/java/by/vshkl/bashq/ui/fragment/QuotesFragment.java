@@ -284,7 +284,7 @@ public class QuotesFragment extends Fragment implements QuotesView, OnQuoteItemL
     @Override
     public void onQuoteItemLongClicked(Quote quote, int position) {
         DialogHelper.showQuoteActionsBottomSheetDialog(
-                getContext().getApplicationContext(), parentActivity.getNavigator(), quotesPresenter, quote, position);
+                getContext(), parentActivity.getNavigator(), quotesPresenter, quote, position);
     }
 
     @Override
