@@ -80,11 +80,9 @@ public class QuotesAdapter extends RecyclerView.Adapter<QuoteViewHolder> {
         });
 
         if (quote.getRating() == null) {
-            holder.rlVotes.setVisibility(View.GONE);
-            holder.vVotesDivider.setVisibility(View.GONE);
+            changeVoteSectionVisibility(holder, View.GONE);
         } else {
-            holder.rlVotes.setVisibility(View.VISIBLE);
-            holder.vVotesDivider.setVisibility(View.VISIBLE);
+            changeVoteSectionVisibility(holder, View.VISIBLE);
 
             updateVoteStateImage(quote.getVoteState(), holder);
 
@@ -231,5 +229,13 @@ public class QuotesAdapter extends RecyclerView.Adapter<QuoteViewHolder> {
 
     public void setOnQuoteComicLabelClickListener(OnQuoteComicLabelClickListener onQuoteComicLabelClickListener) {
         this.onQuoteComicLabelClickListener = onQuoteComicLabelClickListener;
+    }
+
+    private void changeVoteSectionVisibility(QuoteViewHolder holder, int visibility) {
+        holder.ivVoteOld.setVisibility(visibility);
+        holder.ivVoteUp.setVisibility(visibility);
+        holder.ivVoteDown.setVisibility(visibility);
+        holder.tvRating.setVisibility(visibility);
+        holder.vVotesDivider.setVisibility(visibility);
     }
 }

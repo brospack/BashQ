@@ -6,7 +6,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.text.format.DateUtils;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.jzxiang.pickerview.TimePickerDialog;
@@ -83,49 +82,59 @@ public class DialogHelper {
                                                          final int quotePosition) {
         final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(context);
         bottomSheetDialog.setContentView(R.layout.dialog_quote_actions);
-        ((TextView) bottomSheetDialog.findViewById(R.id.tv_bs_title))
-                .setText(context.getString(R.string.quote_action_title, quote.getId()));
 
-        FrameLayout bsShareLink = (FrameLayout) bottomSheetDialog.findViewById(R.id.bs_share_link);
-        bsShareLink.setVisibility(quote.getLink() != null ? View.VISIBLE : View.GONE);
+        TextView tvTitle = (TextView) bottomSheetDialog.findViewById(R.id.tv_bs_title);
+        View ivLink = bottomSheetDialog.findViewById(R.id.iv_bs_link);
+        View tvLink = bottomSheetDialog.findViewById(R.id.tv_bs_link);
+        View tvText = bottomSheetDialog.findViewById(R.id.tv_bs_text);
+        View ivFavAdd = bottomSheetDialog.findViewById(R.id.iv_bs_favourite_add);
+        TextView tvFavAdd = (TextView) bottomSheetDialog.findViewById(R.id.tv_bs_favourite_add);
 
-        FrameLayout bsAddToFavourite = (FrameLayout) bottomSheetDialog.findViewById(R.id.bs_favourite_add);
-        bsAddToFavourite.setVisibility(quote.getVoteCount() != -1 ? View.VISIBLE : View.GONE);
+        if (tvTitle != null) {
+            tvTitle.setText(context.getString(R.string.quote_action_title, quote.getId()));
+        }
 
-        FrameLayout bsRemoveFromFavourite = (FrameLayout) bottomSheetDialog.findViewById(R.id.bs_favourite_remove);
-        bsRemoveFromFavourite.setVisibility(quote.getVoteCount() != -1 ? View.GONE : View.VISIBLE);
+        if (ivLink != null && tvLink != null) {
+            ivLink.setVisibility(quote.getLink() != null ? View.VISIBLE : View.GONE);
+            tvLink.setVisibility(quote.getLink() != null ? View.VISIBLE : View.GONE);
+            tvLink.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    navigator.navigateToQuoteShareLinkChooser(context, UrlBuilder.BuildQuoteUrl(quote.getId()));
+                    bottomSheetDialog.dismiss();
+                }
+            });
+        }
 
-        bottomSheetDialog.findViewById(R.id.bs_share_link).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                navigator.navigateToQuoteShareLinkChooser(context, UrlBuilder.BuildQuoteUrl(quote.getId()));
-                bottomSheetDialog.dismiss();
-            }
-        });
+        if (tvText != null) {
+            tvText.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    navigator.navigateToQuoteShareTextChooser(context, quote.getContent());
+                    bottomSheetDialog.dismiss();
+                }
+            });
+        }
 
-        bottomSheetDialog.findViewById(R.id.bs_share_text).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                navigator.navigateToQuoteShareTextChooser(context, quote.getContent());
-                bottomSheetDialog.dismiss();
-            }
-        });
-
-        bottomSheetDialog.findViewById(R.id.bs_favourite_add).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                presenter.saveQuote(quote);
-                bottomSheetDialog.dismiss();
-            }
-        });
-
-        bottomSheetDialog.findViewById(R.id.bs_favourite_remove).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                presenter.deleteQuote(quote, quotePosition);
-                bottomSheetDialog.dismiss();
-            }
-        });
+        if (ivFavAdd != null && tvFavAdd != null) {
+            tvFavAdd.setText(quote.getVoteCount() == -1
+                    ? context.getString(R.string.quote_action_remove_from_favourite)
+                    : context.getString(R.string.quote_action_add_to_favourite));
+            tvFavAdd.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    switch (quote.getVoteCount()) {
+                        case -1:
+                            presenter.deleteQuote(quote, quotePosition);
+                            break;
+                        default:
+                            presenter.saveQuote(quote);
+                            break;
+                    }
+                    bottomSheetDialog.dismiss();
+                }
+            });
+        }
 
         bottomSheetDialog.show();
     }

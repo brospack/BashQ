@@ -338,9 +338,9 @@ public class QuotesFragment extends Fragment implements QuotesView, OnQuoteItemL
     }
 
     @Override
-    public void onDateSet(TimePickerDialog timePickerView, long millseconds) {
+    public void onDateSet(TimePickerDialog timePickerView, long milliseconds) {
         Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(millseconds);
+        calendar.setTimeInMillis(milliseconds);
         Locale locale = Locale.getDefault();
 
         switch (parentActivity.getCurrentSubsection()) {

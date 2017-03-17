@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<GridLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="@dimen/activity_vertical_margin"
-    android:orientation="vertical"
+    android:columnCount="2"
+    android:rowCount="4"
+    android:orientation="horizontal"
     >
 
     <TextView
@@ -16,119 +18,102 @@
         android:layout_marginStart="16dp"
         android:gravity="center_vertical"
         android:textSize="18sp"
+        android:layout_columnSpan="2"
         />
 
-    <FrameLayout
-        android:id="@+id/bs_share_link"
+    <ImageView
+        android:id="@+id/iv_bs_link"
+        android:layout_width="24dp"
+        android:layout_height="48dp"
+        android:paddingTop="12dp"
+        android:paddingBottom="12dp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:src="@drawable/ic_link"
+        tools:ignore="ContentDescription"
+        />
+
+    <TextView
+        android:id="@+id/tv_bs_link"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:visibility="gone"
-        >
+        android:gravity="center_vertical"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+        android:text="@string/quote_action_share_link"
+        android:textSize="18sp"
+        />
 
-        <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_gravity="center_vertical"
-            android:layout_marginEnd="@dimen/activity_horizontal_margin"
-            android:layout_marginStart="@dimen/activity_horizontal_margin"
-            android:src="@drawable/ic_link"
-            tools:ignore="ContentDescription"
-            />
+    <ImageView
+        android:id="@+id/iv_bs_text"
+        android:layout_width="24dp"
+        android:layout_height="48dp"
+        android:paddingTop="12dp"
+        android:paddingBottom="12dp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:src="@drawable/ic_text"
+        tools:ignore="ContentDescription"
+        />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginEnd="@dimen/activity_horizontal_margin"
-            android:layout_marginStart="72dp"
-            android:text="@string/quote_action_share_link"
-            android:textSize="18sp"
-            />
-
-    </FrameLayout>
-
-    <FrameLayout
-        android:id="@+id/bs_share_text"
+    <TextView
+        android:id="@+id/tv_bs_text"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        >
+        android:gravity="center_vertical"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+        android:text="@string/quote_action_share_text"
+        android:textSize="18sp"
+        />
 
-        <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_gravity="center_vertical"
-            android:layout_marginEnd="@dimen/activity_horizontal_margin"
-            android:layout_marginStart="@dimen/activity_horizontal_margin"
-            android:src="@drawable/ic_text"
-            tools:ignore="ContentDescription"
-            />
+    <ImageView
+        android:id="@+id/iv_bs_favourite_add"
+        android:layout_width="24dp"
+        android:layout_height="48dp"
+        android:paddingTop="12dp"
+        android:paddingBottom="12dp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:src="@drawable/ic_favourite"
+        tools:ignore="ContentDescription"
+        />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginEnd="@dimen/activity_horizontal_margin"
-            android:layout_marginStart="72dp"
-            android:text="@string/quote_action_share_text"
-            android:textSize="18sp"
-            />
-
-    </FrameLayout>
-
-    <FrameLayout
-        android:id="@+id/bs_favourite_add"
+    <TextView
+        android:id="@+id/tv_bs_favourite_add"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        >
+        android:gravity="center_vertical"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+        android:text="@string/quote_action_add_to_favourite"
+        android:textSize="18sp"
+        />
 
-        <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_gravity="center_vertical"
-            android:layout_marginEnd="@dimen/activity_horizontal_margin"
-            android:layout_marginStart="@dimen/activity_horizontal_margin"
-            android:src="@drawable/ic_favourite"
-            tools:ignore="ContentDescription"
-            />
+    <!--<ImageView-->
+        <!--android:id="@+id/iv_bs_favourite_remove"-->
+        <!--android:layout_width="24dp"-->
+        <!--android:layout_height="48dp"-->
+        <!--android:paddingTop="12dp"-->
+        <!--android:paddingBottom="12dp"-->
+        <!--android:layout_gravity="center_vertical"-->
+        <!--android:layout_marginEnd="@dimen/activity_horizontal_margin"-->
+        <!--android:layout_marginStart="@dimen/activity_horizontal_margin"-->
+        <!--android:src="@drawable/ic_favourite"-->
+        <!--tools:ignore="ContentDescription"-->
+        <!--/>-->
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginEnd="@dimen/activity_horizontal_margin"
-            android:layout_marginStart="72dp"
-            android:text="@string/quote_action_add_to_favourite"
-            android:textSize="18sp"
-            />
+    <!--<TextView-->
+        <!--android:id="@+id/tv_bs_favourite_remove"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="48dp"-->
+        <!--android:gravity="center_vertical"-->
+        <!--android:layout_marginStart="@dimen/activity_horizontal_margin"-->
+        <!--android:layout_marginEnd="@dimen/activity_horizontal_margin"-->
+        <!--android:text="@string/quote_action_remove_from_favourite"-->
+        <!--android:textSize="18sp"-->
+        <!--/>-->
 
-    </FrameLayout>
-
-    <FrameLayout
-        android:id="@+id/bs_favourite_remove"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        >
-
-        <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_gravity="center_vertical"
-            android:layout_marginEnd="@dimen/activity_horizontal_margin"
-            android:layout_marginStart="@dimen/activity_horizontal_margin"
-            android:src="@drawable/ic_favourite"
-            tools:ignore="ContentDescription"
-            />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginEnd="@dimen/activity_horizontal_margin"
-            android:layout_marginStart="72dp"
-            android:text="@string/quote_action_remove_from_favourite"
-            android:textSize="18sp"
-            />
-
-    </FrameLayout>
-
-</LinearLayout>
+</GridLayout>

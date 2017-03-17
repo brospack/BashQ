@@ -54,7 +54,7 @@
     <string name="shortcut_comics_message_disabled" translatable="true">Disabled</string>
 
     <!-- Various items -->
-    <string name="quote_comic_label" translatable="false">Comic</string>
+    <string name="quote_comic_label" translatable="false">Comics</string>
 
     <!-- Transitions -->
     <string name="comic_view_transition" translatable="false">COMIC_VIEW</string>

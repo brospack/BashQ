@@ -18,7 +18,6 @@ class QuoteViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.content) RobotoRegularTextView tvContent;
     @BindView(R.id.comic) RobotoMediumTextView tvComicLabel;
     @BindView(R.id.rating) RobotoMediumTextView tvRating;
-    @BindView(R.id.votes) RelativeLayout rlVotes;
     @BindView(R.id.votesDivider) View vVotesDivider;
     @BindView(R.id.voteUp) ImageView ivVoteUp;
     @BindView(R.id.voteDown) ImageView ivVoteDown;
