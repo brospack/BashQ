@@ -20,11 +20,11 @@
 ## Screenshots
 
 <div style="display:flex;" >
-<img src="https://github.com/vshkl/BashQ/blob/master/screenshots/screenshot_01.png" width="14%" >
-<img style="margin-left:10px;" src="https://github.com/vshkl/BashQ/blob/master/screenshots/screenshot_02.png" width="14%" >
-<img style="margin-left:10px;" src="https://github.com/vshkl/BashQ/blob/master/screenshots/screenshot_03.png" width="14%" >
-<img style="margin-left:10px;" src="https://github.com/vshkl/BashQ/blob/master/screenshots/screenshot_04.png" width="14%" >
-<img style="margin-left:10px;" src="https://github.com/vshkl/BashQ/blob/master/screenshots/screenshot_05.png" width="14%" >
-<img style="margin-left:10px;" src="https://github.com/vshkl/BashQ/blob/master/screenshots/screenshot_06.png" width="14%" >
-<img style="margin-left:10px;" src="https://github.com/vshkl/BashQ/blob/master/screenshots/screenshot_07.png" width="14%" >
+<img src="https://github.com/vshkl/BashQ/blob/master/screenshots/screenshot_01.png" width="13%" >
+<img style="margin-left:10px;" src="https://github.com/vshkl/BashQ/blob/master/screenshots/screenshot_02.png" width="13%" >
+<img style="margin-left:10px;" src="https://github.com/vshkl/BashQ/blob/master/screenshots/screenshot_03.png" width="13%" >
+<img style="margin-left:10px;" src="https://github.com/vshkl/BashQ/blob/master/screenshots/screenshot_04.png" width="13%" >
+<img style="margin-left:10px;" src="https://github.com/vshkl/BashQ/blob/master/screenshots/screenshot_05.png" width="13%" >
+<img style="margin-left:10px;" src="https://github.com/vshkl/BashQ/blob/master/screenshots/screenshot_06.png" width="13%" >
+<img style="margin-left:10px;" src="https://github.com/vshkl/BashQ/blob/master/screenshots/screenshot_07.png" width="13%" >
 </div>
