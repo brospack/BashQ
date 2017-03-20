@@ -1,10 +1,10 @@
-# BashQ #
+# BashQ
 
-### Description ###
+<img src="https://github.com/vshkl/BashQ/blob/master/app/src/main/ic_launcher-web.png" align="left" width="100" hspace="10" vspace="10">
 
-Android app for reading quotes and viewing comics from [bash.im](http://bash.im).
+<br>Android app for reading quotes and viewing comics from [bash.im](http://bash.im).<br><br><br>
 
-### Key features ###
+## Key features
 
 * View quotes by sections
 * Vote for quotes
@@ -17,12 +17,14 @@ Android app for reading quotes and viewing comics from [bash.im](http://bash.im)
 * Change quotes text size in settings
 * English and russian translation
 
-### Screenshots ###
+## Screenshots
 
-![Quotes list](https://github.com/vshkl/BashQ/blob/master/screenshots/screenshot_01.png "Quotes list")
-![Navigation drawer](https://github.com/vshkl/BashQ/blob/master/screenshots/screenshot_02.png "Navigation drawer")
-![Date picker fab](https://github.com/vshkl/BashQ/blob/master/screenshots/screenshot_03.png "Date picker fab")
-![Date picker](https://github.com/vshkl/BashQ/blob/master/screenshots/screenshot_04.png "Date picker")
-![Quote actions](https://github.com/vshkl/BashQ/blob/master/screenshots/screenshot_05.png "Quote actions")
-![Comics gallery](https://github.com/vshkl/BashQ/blob/master/screenshots/screenshot_06.png "Comics gallery")
-![Comic view](https://github.com/vshkl/BashQ/blob/master/screenshots/screenshot_07.png "Comic view")
+<div style="display:flex;" >
+<img src="https://github.com/vshkl/BashQ/blob/master/screenshots/screenshot_01.png" width="14%" >
+<img style="margin-left:10px;" src="https://github.com/vshkl/BashQ/blob/master/screenshots/screenshot_02.png" width="14%" >
+<img style="margin-left:10px;" src="https://github.com/vshkl/BashQ/blob/master/screenshots/screenshot_03.png" width="14%" >
+<img style="margin-left:10px;" src="https://github.com/vshkl/BashQ/blob/master/screenshots/screenshot_04.png" width="14%" >
+<img style="margin-left:10px;" src="https://github.com/vshkl/BashQ/blob/master/screenshots/screenshot_05.png" width="14%" >
+<img style="margin-left:10px;" src="https://github.com/vshkl/BashQ/blob/master/screenshots/screenshot_06.png" width="14%" >
+<img style="margin-left:10px;" src="https://github.com/vshkl/BashQ/blob/master/screenshots/screenshot_07.png" width="14%" >
+</div>
