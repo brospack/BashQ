@@ -6,6 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.gms.ads.AdRequest;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,6 +16,7 @@ import by.vshkl.bashq.ui.common.RatingHelper;
 import by.vshkl.mvp.model.Quote;
 import by.vshkl.mvp.model.Rating;
 import xyz.hanks.library.SmallBang;
+
 
 import static by.vshkl.mvp.model.Quote.VoteState.VOTED_DOWN;
 import static by.vshkl.mvp.model.Quote.VoteState.VOTED_OLD;
@@ -41,6 +44,7 @@ public class QuotesAdapter extends RecyclerView.Adapter<QuoteViewHolder> {
         void onQuoteComicLabelClicked(String comicLinkPart);
     }
 
+    private static final int adStep = 10;
     private int quoteTextSize;
     private List<Quote> quotes = new ArrayList<>();
     private SmallBang bang;
@@ -49,9 +53,11 @@ public class QuotesAdapter extends RecyclerView.Adapter<QuoteViewHolder> {
     private OnVoteOldClickListener onVoteOldClickListener;
     private OnQuoteItemLongClickListener onQuoteItemLongClickListener;
     private OnQuoteComicLabelClickListener onQuoteComicLabelClickListener;
+    private AdRequest adRequest;
 
     public QuotesAdapter(int quoteTextSize) {
         this.quoteTextSize = quoteTextSize;
+        adRequest = new AdRequest.Builder().addTestDevice(AdRequest.DEVICE_ID_EMULATOR).build();
     }
 
     @Override
@@ -64,6 +70,16 @@ public class QuotesAdapter extends RecyclerView.Adapter<QuoteViewHolder> {
     public void onBindViewHolder(final QuoteViewHolder holder, int position) {
         final Quote quote = quotes.get(position);
         final int quotePosition = position;
+
+        if (quote == null) {
+            holder.avNativeAd.loadAd(adRequest);
+            holder.rvQuotesContainer.setVisibility(View.GONE);
+            holder.avNativeAd.setVisibility(View.VISIBLE);
+            return;
+        } else {
+            holder.avNativeAd.setVisibility(View.GONE);
+            holder.rvQuotesContainer.setVisibility(View.VISIBLE);
+        }
 
         holder.tvNumber.setText(quote.getId());
         holder.tvDate.setText(quote.getDate());
@@ -190,9 +206,13 @@ public class QuotesAdapter extends RecyclerView.Adapter<QuoteViewHolder> {
     }
 
     public void addQuotes(List<Quote> quotes) {
-        for (Quote quote : quotes) {
-            if (!this.quotes.contains(quote)) {
-                this.quotes.add(quote);
+        int count = quotes.size();
+        for (int i = 0; i < count; i++) {
+            if (i != 0 && i % adStep == 0) {
+                this.quotes.add(null);
+            }
+            if (!this.quotes.contains(quotes.get(i))) {
+                this.quotes.add(quotes.get(i));
             }
         }
     }
