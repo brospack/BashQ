@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import by.vshkl.bashq.R;
+import by.vshkl.bashq.ui.adapter.QuoteViewHolder.AdView;
+import by.vshkl.bashq.ui.adapter.QuoteViewHolder.QuoteView;
 import by.vshkl.bashq.ui.common.RatingHelper;
 import by.vshkl.mvp.model.Quote;
 import by.vshkl.mvp.model.Rating;
@@ -55,6 +57,8 @@ public class QuotesAdapter extends RecyclerView.Adapter<QuoteViewHolder> {
     private OnQuoteComicLabelClickListener onQuoteComicLabelClickListener;
     private AdRequest adRequest;
 
+    private QuoteView quoteView;
+
     public QuotesAdapter(int quoteTextSize) {
         this.quoteTextSize = quoteTextSize;
         adRequest = new AdRequest.Builder().addTestDevice(AdRequest.DEVICE_ID_EMULATOR).build();
@@ -72,20 +76,18 @@ public class QuotesAdapter extends RecyclerView.Adapter<QuoteViewHolder> {
         final int quotePosition = position;
 
         if (quote == null) {
-            holder.avNativeAd.loadAd(adRequest);
-            holder.rvQuotesContainer.setVisibility(View.GONE);
-            holder.avNativeAd.setVisibility(View.VISIBLE);
+            AdView adView = new AdView(holder.vsAd.inflate());
+            adView.avNativeAd.loadAd(adRequest);
             return;
         } else {
-            holder.avNativeAd.setVisibility(View.GONE);
-            holder.rvQuotesContainer.setVisibility(View.VISIBLE);
+            quoteView = new QuoteView(holder.vsQuote.inflate());
         }
 
-        holder.tvNumber.setText(quote.getId());
-        holder.tvDate.setText(quote.getDate());
-        holder.tvContent.setTextSize(quoteTextSize);
-        holder.tvContent.setText(Html.fromHtml(quote.getContent().trim()));
-        holder.tvContent.setOnLongClickListener(new View.OnLongClickListener() {
+        quoteView.tvNumber.setText(quote.getId());
+        quoteView.tvDate.setText(quote.getDate());
+        quoteView.tvContent.setTextSize(quoteTextSize);
+        quoteView.tvContent.setText(Html.fromHtml(quote.getContent().trim()));
+        quoteView.tvContent.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
                 if (onQuoteItemLongClickListener != null) {
@@ -96,14 +98,14 @@ public class QuotesAdapter extends RecyclerView.Adapter<QuoteViewHolder> {
         });
 
         if (quote.getRating() == null) {
-            changeVoteSectionVisibility(holder, View.GONE);
+            changeVoteSectionVisibility(View.GONE);
         } else {
-            changeVoteSectionVisibility(holder, View.VISIBLE);
+            changeVoteSectionVisibility(View.VISIBLE);
 
-            updateVoteStateImage(quote.getVoteState(), holder);
+            updateVoteStateImage(quote.getVoteState());
 
-            holder.tvRating.setText(quote.getRating());
-            holder.ivVoteUp.setOnClickListener(new View.OnClickListener() {
+            quoteView.tvRating.setText(quote.getRating());
+            quoteView.ivVoteUp.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     bang.bang(view, 75, null);
@@ -113,10 +115,10 @@ public class QuotesAdapter extends RecyclerView.Adapter<QuoteViewHolder> {
                         }
                         notifyDataSetChanged();
                     }
-                    updateVoteState(VOTED_UP, holder, quotePosition);
+                    updateVoteState(VOTED_UP, quotePosition);
                 }
             });
-            holder.ivVoteDown.setOnClickListener(new View.OnClickListener() {
+            quoteView.ivVoteDown.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     bang.bang(view, 75, null);
@@ -126,10 +128,10 @@ public class QuotesAdapter extends RecyclerView.Adapter<QuoteViewHolder> {
                         }
                         notifyDataSetChanged();
                     }
-                    updateVoteState(VOTED_DOWN, holder, quotePosition);
+                    updateVoteState(VOTED_DOWN, quotePosition);
                 }
             });
-            holder.ivVoteOld.setOnClickListener(new View.OnClickListener() {
+            quoteView.ivVoteOld.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     bang.bang(view, 75, null);
@@ -139,14 +141,14 @@ public class QuotesAdapter extends RecyclerView.Adapter<QuoteViewHolder> {
                         }
                         notifyDataSetChanged();
                     }
-                    updateVoteState(VOTED_OLD, holder, quotePosition);
+                    updateVoteState(VOTED_OLD, quotePosition);
                 }
             });
         }
 
         if (quote.getComicLink() != null) {
-            holder.tvComicLabel.setVisibility(View.VISIBLE);
-            holder.tvComicLabel.setOnClickListener(new View.OnClickListener() {
+            quoteView.tvComicLabel.setVisibility(View.VISIBLE);
+            quoteView.tvComicLabel.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     if (onQuoteComicLabelClickListener != null) {
@@ -155,7 +157,7 @@ public class QuotesAdapter extends RecyclerView.Adapter<QuoteViewHolder> {
                 }
             });
         } else {
-            holder.tvComicLabel.setVisibility(View.GONE);
+            quoteView.tvComicLabel.setVisibility(View.GONE);
         }
     }
 
@@ -166,11 +168,11 @@ public class QuotesAdapter extends RecyclerView.Adapter<QuoteViewHolder> {
 
     //==================================================================================================================
 
-    private void updateVoteState(Quote.VoteState voteState, QuoteViewHolder holder, int position) {
+    private void updateVoteState(Quote.VoteState voteState, int position) {
         Quote quote = quotes.get(position);
 
         quote.setVoteState(voteState);
-        updateVoteStateImage(voteState, holder);
+        updateVoteStateImage(voteState);
 
         Rating rating = RatingHelper.updateRating(voteState, new Rating(quote.getRating(), quote.getVoteCount()));
 
@@ -180,27 +182,27 @@ public class QuotesAdapter extends RecyclerView.Adapter<QuoteViewHolder> {
         quotes.set(position, quote);
     }
 
-    private void updateVoteStateImage(Quote.VoteState voteState, QuoteViewHolder holder) {
+    private void updateVoteStateImage(Quote.VoteState voteState) {
         switch (voteState) {
             case VOTED_UP:
-                holder.ivVoteUp.setImageResource(R.drawable.ic_plus_selected);
-                holder.ivVoteDown.setImageResource(R.drawable.ic_minus);
-                holder.ivVoteOld.setImageResource(R.drawable.ic_crux);
+                quoteView.ivVoteUp.setImageResource(R.drawable.ic_plus_selected);
+                quoteView.ivVoteDown.setImageResource(R.drawable.ic_minus);
+                quoteView.ivVoteOld.setImageResource(R.drawable.ic_crux);
                 break;
             case VOTED_DOWN:
-                holder.ivVoteUp.setImageResource(R.drawable.ic_plus);
-                holder.ivVoteDown.setImageResource(R.drawable.ic_minus_selected);
-                holder.ivVoteOld.setImageResource(R.drawable.ic_crux);
+                quoteView.ivVoteUp.setImageResource(R.drawable.ic_plus);
+                quoteView.ivVoteDown.setImageResource(R.drawable.ic_minus_selected);
+                quoteView.ivVoteOld.setImageResource(R.drawable.ic_crux);
                 break;
             case VOTED_OLD:
-                holder.ivVoteUp.setImageResource(R.drawable.ic_plus);
-                holder.ivVoteDown.setImageResource(R.drawable.ic_minus);
-                holder.ivVoteOld.setImageResource(R.drawable.ic_crux_selected);
+                quoteView.ivVoteUp.setImageResource(R.drawable.ic_plus);
+                quoteView.ivVoteDown.setImageResource(R.drawable.ic_minus);
+                quoteView.ivVoteOld.setImageResource(R.drawable.ic_crux_selected);
                 break;
             default:
-                holder.ivVoteUp.setImageResource(R.drawable.ic_plus);
-                holder.ivVoteDown.setImageResource(R.drawable.ic_minus);
-                holder.ivVoteOld.setImageResource(R.drawable.ic_crux);
+                quoteView.ivVoteUp.setImageResource(R.drawable.ic_plus);
+                quoteView.ivVoteDown.setImageResource(R.drawable.ic_minus);
+                quoteView.ivVoteOld.setImageResource(R.drawable.ic_crux);
                 break;
         }
     }
@@ -251,11 +253,11 @@ public class QuotesAdapter extends RecyclerView.Adapter<QuoteViewHolder> {
         this.onQuoteComicLabelClickListener = onQuoteComicLabelClickListener;
     }
 
-    private void changeVoteSectionVisibility(QuoteViewHolder holder, int visibility) {
-        holder.ivVoteOld.setVisibility(visibility);
-        holder.ivVoteUp.setVisibility(visibility);
-        holder.ivVoteDown.setVisibility(visibility);
-        holder.tvRating.setVisibility(visibility);
-        holder.vVotesDivider.setVisibility(visibility);
+    private void changeVoteSectionVisibility(int visibility) {
+        quoteView.ivVoteOld.setVisibility(visibility);
+        quoteView.ivVoteUp.setVisibility(visibility);
+        quoteView.ivVoteDown.setVisibility(visibility);
+        quoteView.tvRating.setVisibility(visibility);
+        quoteView.vVotesDivider.setVisibility(visibility);
     }
 }

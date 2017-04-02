@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rv_quote_container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingEnd="16dp"
+    android:paddingStart="16dp"
+    >
+
+    <by.vshkl.bashq.ui.view.RobotoMediumTextView
+        android:id="@+id/number"
+        android:layout_width="wrap_content"
+        android:layout_height="32dp"
+        android:layout_alignParentStart="true"
+        android:layout_gravity="start"
+        android:gravity="center_vertical"
+        android:textColor="@color/colorSecondaryText"
+        android:textSize="14sp"
+        tools:text="#444444"
+        />
+
+    <by.vshkl.bashq.ui.view.RobotoMediumTextView
+        android:id="@+id/date"
+        android:layout_width="wrap_content"
+        android:layout_height="32dp"
+        android:layout_alignParentEnd="true"
+        android:gravity="center_vertical"
+        android:textColor="@color/colorSecondaryText"
+        android:textSize="14sp"
+        tools:text="2016-07-28 13:12"
+        />
+
+    <by.vshkl.bashq.ui.view.RobotoMediumTextView
+        android:id="@+id/comic"
+        android:layout_width="wrap_content"
+        android:layout_height="32dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_toStartOf="@id/date"
+        android:gravity="center_vertical"
+        android:shadowColor="@color/colorIcons"
+        android:shadowRadius="1"
+        android:text="@string/quote_comic_label"
+        android:textAllCaps="true"
+        android:textColor="@color/colorAccent"
+        android:textSize="14sp"
+        android:visibility="visible"
+        />
+
+    <View
+        android:id="@+id/numberDivider"
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:layout_below="@+id/number"
+        android:background="@drawable/dotted_line"
+        android:layerType="software"
+        />
+
+    <by.vshkl.bashq.ui.view.RobotoRegularTextView
+        android:id="@+id/content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/numberDivider"
+        android:paddingBottom="8dp"
+        android:paddingTop="8dp"
+        android:textColor="@color/colorPrimaryText"
+        android:textSize="17sp"
+        tools:text="Комментарий в обсуждении чехла для телефона, который защищает от слежки путём блокирования излучения частотой до 1000 МГц:- Заблокировать все каналы связи на средстве связи, конечно, прикольно, но с тем же успехом я могу носить в кармане бутерброд."
+        />
+
+    <View
+        android:id="@+id/votesDivider"
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:layout_below="@id/content"
+        android:background="@drawable/dotted_line"
+        android:layerType="software"
+        />
+
+    <ImageView
+        android:id="@+id/voteOld"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@id/votesDivider"
+        android:background="@drawable/ripple"
+        android:paddingBottom="8dp"
+        android:paddingTop="8dp"
+        android:src="@drawable/ic_crux"
+        tools:ignore="ContentDescription"
+        />
+
+    <ImageView
+        android:id="@+id/voteDown"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/votesDivider"
+        android:layout_toStartOf="@+id/rating"
+        android:background="@drawable/ripple"
+        android:paddingBottom="8dp"
+        android:paddingTop="8dp"
+        android:src="@drawable/ic_minus"
+        tools:ignore="ContentDescription"
+        />
+
+    <by.vshkl.bashq.ui.view.RobotoMediumTextView
+        android:id="@+id/rating"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_below="@id/votesDivider"
+        android:layout_toStartOf="@+id/voteUp"
+        android:paddingBottom="8dp"
+        android:paddingEnd="16dp"
+        android:paddingStart="16dp"
+        android:paddingTop="8dp"
+        android:textColor="@color/colorSecondaryText"
+        android:textSize="16sp"
+        tools:text="2235"
+        />
+
+    <ImageView
+        android:id="@+id/voteUp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@id/votesDivider"
+        android:background="@drawable/ripple"
+        android:paddingBottom="8dp"
+        android:paddingTop="8dp"
+        android:src="@drawable/ic_plus"
+        tools:ignore="ContentDescription"
+        />
+
+</RelativeLayout>
