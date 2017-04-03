@@ -1,4 +1,4 @@
-package by.vshkl.bashq.ui.adapter;
+package by.vshkl.bashq.ui;
 
 import android.support.v7.widget.RecyclerView;
 
