@@ -15,7 +15,7 @@
         android:theme="@style/AppTheme.AppBarOverlay"
         >
 
-        <by.vshkl.bashq.ui.component.MarqueeToolbar
+        <by.vshkl.bashq.ui.view.MarqueeToolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"

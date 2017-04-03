@@ -1,4 +1,4 @@
-package by.vshkl.bashq.ui.component;
+package by.vshkl.bashq.ui.view;
 
 import android.content.Context;
 import android.util.AttributeSet;

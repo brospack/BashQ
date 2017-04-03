@@ -11,6 +11,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
+import com.google.android.gms.ads.MobileAds;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
@@ -27,7 +28,7 @@ import by.vshkl.bashq.injection.component.MainActivityComponent;
 import by.vshkl.bashq.injection.module.ActivityModule;
 import by.vshkl.bashq.injection.module.NavigationModule;
 import by.vshkl.bashq.ui.common.DrawerHelper;
-import by.vshkl.bashq.ui.component.MarqueeToolbar;
+import by.vshkl.bashq.ui.view.MarqueeToolbar;
 import by.vshkl.bashq.ui.fragment.ComicsPagerFragment;
 import by.vshkl.bashq.ui.fragment.QuotesFragment;
 import by.vshkl.mvp.presenter.common.Subsection;
@@ -52,6 +53,8 @@ public class MainActivity extends AppCompatActivity implements Drawer.OnDrawerIt
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(MainActivity.this);
+
+        MobileAds.initialize(getApplicationContext(), getString(R.string.banner_ad_app_id));
 
         setSupportActionBar(toolbar);
 
